@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "jsx": "react-native",
+    "sourceMap": false,
+    "outDir": "build",
+    "baseUrl": "./src",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strictNullChecks": false,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "typeRoots": ["./@types", "./node_modules/@types"],
+    "paths": {
+      "@assets/*": ["assets/*"],
+      "@core/*": ["core/*"],
+      "@navigators/*": ["navigators/*"],
+      "@theme/*": ["theme/*"],
+      "@pages/*": ["pages/*"]
+    }
+  },
+  "include": ["src"]
+}

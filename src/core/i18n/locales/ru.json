@@ -1,0 +1,15 @@
+{
+  "title": "SIMobile",
+  "error": "Ошибка",
+  "auth": {
+    "yourName": "Ваше имя",
+    "login": "Вход"
+  },
+  "hub": {
+    "enterHub": "Войти в лобби",
+    "exit": "Выход"
+  },
+  "errors": {
+    "serverNotFound": "Подходящий сервер не найден",
+  }
+}
