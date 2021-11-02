@@ -5,4 +5,5 @@ export const TYPES = {
   AuthToken: Symbol.for('AuthToken'),
   ServerUri: Symbol.for('ServerUri'),
   SignalRClient: Symbol.for('SignalRClient'),
+  GamesService: Symbol.for('GamesService'),
 };

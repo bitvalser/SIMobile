@@ -8,6 +8,8 @@ import { ISiApiClient } from '@core/services/si-api-client/si-api-client.types';
 import { SiApiClient } from '@core/services/si-api-client/si-api-client.service';
 import { ISignalRClient } from '@core/services/signalr-client/signalr-client.types';
 import { SignalRClient } from '@core/services/signalr-client/signalr-client.service';
+import { IGamesService } from '@core/services/games-service/games-service.types';
+import { GamesService } from '@core/services/games-service/games-service.service';
 
 const InversifyContext = createContext<interfaces.Container>(null);
 
@@ -26,5 +28,6 @@ appContainer
     container.get<ISiApiClient>(TYPES.SiApiClient).authToken$.getValue(),
   );
 appContainer.bind<ISignalRClient>(TYPES.SignalRClient).to(SignalRClient);
+appContainer.bind<IGamesService>(TYPES.GamesService).to(GamesService);
 
 export { appContainer, InversifyContext };

@@ -7,7 +7,14 @@
   },
   "hub": {
     "enterHub": "Войти в лобби",
-    "exit": "Выход"
+    "exit": "Выход",
+    "status": "Статус",
+    "gameCreated": "Создана",
+    "gameStarted": "Начата",
+    "round": "Раунд",
+    "final": "Финал",
+    "games": "Игры",
+    "gameEnd": "Игра окончена"
   },
   "errors": {
     "serverNotFound": "Подходящий сервер не найден",

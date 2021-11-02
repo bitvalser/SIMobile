@@ -1,6 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "lint": {
+          "validProperties": [
+            "shadow-color",
+            "shadow-opacity",
+            "shadow-offset",
+            "resize-mode",
+            "shadow-radius",
+            "padding-horizontal",
+            "padding-vertical",
+            "margin-vertical",
+            "margin-horizontal",
+            "tint-color",
+            "aspect-ratio",
+            "elevation"
+          ],
+        }
+      }
+    ],
+    "target": "ES2019",
     "module": "es6",
     "jsx": "react-native",
     "sourceMap": false,
@@ -9,6 +30,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
