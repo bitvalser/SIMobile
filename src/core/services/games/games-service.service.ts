@@ -1,20 +1,13 @@
+import { GameRole } from '@core/constants/game-role.constants';
 import { SignalEvent } from '@core/constants/signal-event.constants';
 import { SignalRequest } from '@core/constants/signal-request.constants';
 import { GameItem } from '@core/interfaces/game-item.interface';
 import { inject, injectable } from 'inversify';
 import { BehaviorSubject, EMPTY, interval, Observable, of } from 'rxjs';
-import {
-  expand,
-  switchMap,
-  map,
-  combineAll,
-  tap,
-  filter,
-  buffer,
-} from 'rxjs/operators';
+import { expand, switchMap, map, combineAll, tap, filter, buffer } from 'rxjs/operators';
 import { SignalRClient } from '../signalr-client/signalr-client.service';
 import { TYPES } from '../types';
-import { DataSlice, IGamesService } from './games-service.types';
+import { DataSlice, IGamesService, JoinGameResponse } from './games-service.types';
 
 const UPDATE_DELAY = 2000;
 
@@ -32,13 +25,11 @@ export class GamesService implements IGamesService {
     this.onGamesChanged = this.onGamesChanged.bind(this);
     this.onGamesDeleted = this.onGamesDeleted.bind(this);
     this.onGamesCreated = this.onGamesCreated.bind(this);
+    this.joinGame = this.joinGame.bind(this);
   }
 
   private getGameSlice(fromId: number = 0): Observable<DataSlice<GameItem>> {
-    return this.signalR.invoke<DataSlice<GameItem>>(
-      SignalRequest.GetGamesSlice,
-      fromId,
-    );
+    return this.signalR.invoke<DataSlice<GameItem>>(SignalRequest.GetGamesSlice, fromId);
   }
 
   public getAllGames(): Observable<GameItem[]> {
@@ -59,9 +50,7 @@ export class GamesService implements IGamesService {
           : of(slice.data),
       ),
       tap((data) => {
-        this.gamesState$.next(
-          data.reduce((acc, val) => ({ ...acc, [val.gameID]: val }), {}),
-        );
+        this.gamesState$.next(data.reduce((acc, val) => ({ ...acc, [val.gameID]: val }), {}));
       }),
     );
   }
@@ -110,5 +99,9 @@ export class GamesService implements IGamesService {
         this.gamesState$.next(newState);
       }),
     );
+  }
+
+  public joinGame(gameId: number, role: GameRole, password?: string): Observable<JoinGameResponse> {
+    return this.signalR.invoke<JoinGameResponse>(SignalRequest.JoinGameNew, gameId, role, true, password);
   }
 }

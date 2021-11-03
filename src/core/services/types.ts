@@ -6,4 +6,5 @@ export const TYPES = {
   ServerUri: Symbol.for('ServerUri'),
   SignalRClient: Symbol.for('SignalRClient'),
   GamesService: Symbol.for('GamesService'),
+  ModalsService: Symbol.for('ModalsService'),
 };

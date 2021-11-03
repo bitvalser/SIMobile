@@ -8,8 +8,10 @@ import { ISiApiClient } from '@core/services/si-api-client/si-api-client.types';
 import { SiApiClient } from '@core/services/si-api-client/si-api-client.service';
 import { ISignalRClient } from '@core/services/signalr-client/signalr-client.types';
 import { SignalRClient } from '@core/services/signalr-client/signalr-client.service';
-import { IGamesService } from '@core/services/games-service/games-service.types';
-import { GamesService } from '@core/services/games-service/games-service.service';
+import { IGamesService } from '@core/services/games/games-service.types';
+import { GamesService } from '@core/services/games/games-service.service';
+import { IModalsService } from '@core/services/modals/modals.types';
+import { ModalsService } from '@core/services/modals/modals.service';
 
 const InversifyContext = createContext<interfaces.Container>(null);
 
@@ -29,5 +31,6 @@ appContainer
   );
 appContainer.bind<ISignalRClient>(TYPES.SignalRClient).to(SignalRClient);
 appContainer.bind<IGamesService>(TYPES.GamesService).to(GamesService);
+appContainer.bind<IModalsService>(TYPES.ModalsService).to(ModalsService);
 
 export { appContainer, InversifyContext };

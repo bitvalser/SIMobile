@@ -3,4 +3,5 @@ export enum SignalEvent {
   GameCreated = 'GameCreated',
   GameChanged = 'GameChanged',
   GameDeleted = 'GameDeleted',
+  Receive = 'Receive',
 }

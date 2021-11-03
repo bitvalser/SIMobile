@@ -46,7 +46,7 @@ const Auth = () => {
         <Styled.ModalContent>
           <Styled.Title>{t('title')}</Styled.Title>
           <Styled.YourNameText>{t('auth.yourName')}</Styled.YourNameText>
-          <Styled.Input onChangeText={setName} />
+          <Styled.Input onChangeText={setName} placeholder={t('auth.yourNamePlaceholder')} />
         </Styled.ModalContent>
         <AppButton
           onPress={handleLogin}

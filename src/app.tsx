@@ -7,6 +7,7 @@ import { UIManager, Platform, StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import { defaultTheme } from './theme';
 import { appContainer, InversifyContext } from './inversify.config';
+import { ModalsContainer } from '@core/components/modals-container';
 
 if (
   Platform.OS === 'android' &&
@@ -23,6 +24,7 @@ const App = (): JSX.Element => (
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={null}>
             <RootNavigator />
+            <ModalsContainer />
           </Suspense>
         </I18nextProvider>
       </ThemeProvider>

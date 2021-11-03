@@ -1,8 +1,10 @@
 {
   "title": "SIMobile",
   "error": "Ошибка",
+  "dialog": "Диалог",
   "auth": {
     "yourName": "Ваше имя",
+    "yourNamePlaceholder": "Введите имя...",
     "login": "Вход"
   },
   "hub": {
@@ -14,9 +16,15 @@
     "round": "Раунд",
     "final": "Финал",
     "games": "Игры",
-    "gameEnd": "Игра окончена"
+    "gameEnd": "Игра окончена",
+    "enterPlayer": "Войти Игроком",
+    "enterMaster": "Войти Ведущим",
+    "enterSpectator": "Войти Зрителем",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введите пароль..."
   },
   "errors": {
     "serverNotFound": "Подходящий сервер не найден",
+    "unknownError": "Неизвестная ошибка"
   }
 }

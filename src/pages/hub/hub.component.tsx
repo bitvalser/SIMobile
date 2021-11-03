@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { BackgroundContainer } from '@core/components/background-container';
 import { useService } from '@core/hooks/use-service.hook';
-import { GamesService } from '@core/services/games-service/games-service.service';
+import { GamesService } from '@core/services/games/games-service.service';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import { useNavigation } from '@react-navigation/core';
 import { GameRole } from '@core/constants/game-role.constants';
@@ -12,6 +12,7 @@ import * as Styled from './hub.styles';
 import { AppRoutes } from '@navigators/root';
 import { useTranslation } from 'react-i18next';
 import { Observable } from 'rxjs';
+import { useJoinModal } from './components/join-modal';
 
 const Hub = () => {
   const {
@@ -22,6 +23,7 @@ const Hub = () => {
     onGamesDeleted,
   } = useService(GamesService);
   const navigation = useNavigation();
+  const [showModal] = useJoinModal();
   const [t] = useTranslation();
   const games = useSubscription(
     gamesState$.pipe(map((data) => Object.values(data))),
@@ -42,8 +44,21 @@ const Hub = () => {
     };
   }, [getAllGames, onGamesChanged, onGamesDeleted, onGamesCreated]);
 
-  const onSelectGame = (id: number) => () => {
-    navigation.navigate(AppRoutes.Game, { gameId: id });
+  const onSelectGame = (
+    id: number,
+    name: string,
+    withPassword: boolean,
+    withMaster: boolean,
+  ) => () => {
+    showModal({
+      gameId: id,
+      name,
+      withPassword,
+      withMaster,
+      onJoin: () => {
+        navigation.navigate(AppRoutes.Game, { gameId: id });
+      },
+    });
   };
 
   return (
@@ -83,7 +98,13 @@ const Hub = () => {
           );
 
           return (
-            <TouchableOpacity onPress={onSelectGame(gameID)}>
+            <TouchableOpacity
+              onPress={onSelectGame(
+                gameID,
+                gameName,
+                passwordRequired,
+                !leadPlayer.isOnline,
+              )}>
               <GameItem
                 title={gameName}
                 maxPlayers={players.length}

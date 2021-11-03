@@ -6,6 +6,7 @@ export interface AppTheme {
     white: `#${string}`;
     black: `#${string}`;
     gray: `#${string}`;
+    danger: `#${string}`;
     secondaryBackground: `#${string}`;
   };
 }
@@ -16,6 +17,7 @@ export const defaultTheme: AppTheme = {
     background: '#5a95e2',
     secondaryBackground: '#c0cff4',
     highlight: '#98b9ff',
+    danger: '#8b0000',
     white: '#fff',
     black: '#000',
     gray: '#E0E0E0',
