@@ -18,7 +18,6 @@ export const ModalContainer = styled.View`
   shadow-opacity: 0.8;
   shadow-radius: 2px;
   elevation: 5;
-  z-index: 99;
 `;
 
 export const Header = styled.View`

@@ -21,7 +21,12 @@
     "enterMaster": "Войти Ведущим",
     "enterSpectator": "Войти Зрителем",
     "password": "Пароль",
-    "passwordPlaceholder": "Введите пароль..."
+    "passwordPlaceholder": "Введите пароль...",
+    "searchPlaceholder": "Поиск...",
+    "filterPassword": "Без пароля",
+    "filterClassic": "Классические",
+    "filterSimple": "Упрощённые",
+    "filterNew": "Новые"
   },
   "errors": {
     "serverNotFound": "Подходящий сервер не найден",

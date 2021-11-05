@@ -25,6 +25,7 @@ export const YourNameText = styled.Text`
 
 export const Input = styled.TextInput`
   margin-top: 12px;
+  height: 40px;
   background: ${({ theme }) => theme.pallette.white};
   border: 1px solid ${({ theme }) => theme.pallette.black};
 `;

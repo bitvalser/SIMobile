@@ -12,6 +12,8 @@ import { IGamesService } from '@core/services/games/games-service.types';
 import { GamesService } from '@core/services/games/games-service.service';
 import { IModalsService } from '@core/services/modals/modals.types';
 import { ModalsService } from '@core/services/modals/modals.service';
+import { IToastsService } from '@core/services/toasts/toasts.types';
+import { ToastsService } from '@core/services/toasts/toasts.service';
 
 const InversifyContext = createContext<interfaces.Container>(null);
 
@@ -21,16 +23,13 @@ appContainer.bind<i18n>(TYPES.Translation).toConstantValue(translation);
 appContainer.bind<ISiApiClient>(TYPES.SiApiClient).to(SiApiClient);
 appContainer
   .bind<interfaces.Factory<string>>(TYPES.ServerUri)
-  .toFactory<string>(({ container }) => () =>
-    container.get<ISiApiClient>(TYPES.SiApiClient).serverUri$.getValue(),
-  );
+  .toFactory<string>(({ container }) => () => container.get<ISiApiClient>(TYPES.SiApiClient).serverUri$.getValue());
 appContainer
   .bind<interfaces.Factory<string>>(TYPES.AuthToken)
-  .toFactory<string>(({ container }) => () =>
-    container.get<ISiApiClient>(TYPES.SiApiClient).authToken$.getValue(),
-  );
+  .toFactory<string>(({ container }) => () => container.get<ISiApiClient>(TYPES.SiApiClient).authToken$.getValue());
 appContainer.bind<ISignalRClient>(TYPES.SignalRClient).to(SignalRClient);
 appContainer.bind<IGamesService>(TYPES.GamesService).to(GamesService);
 appContainer.bind<IModalsService>(TYPES.ModalsService).to(ModalsService);
+appContainer.bind<IToastsService>(TYPES.ToastsService).to(ToastsService);
 
 export { appContainer, InversifyContext };

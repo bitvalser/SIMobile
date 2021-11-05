@@ -14,7 +14,10 @@ const Game = () => {
   const { on } = useService(SignalRClient);
 
   useEffect(() => {
-    on(SignalEvent.Receive).subscribe(console.log);
+    const subscription = on(SignalEvent.Receive).subscribe(console.log);
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [on]);
 
   return (

@@ -5,5 +5,6 @@ export interface JoinModalProps extends ModalOptions {
   name: string;
   withPassword: boolean;
   withMaster: boolean;
+  canJoinPlayer: boolean;
   onJoin: () => void;
 }

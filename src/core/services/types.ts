@@ -7,4 +7,5 @@ export const TYPES = {
   SignalRClient: Symbol.for('SignalRClient'),
   GamesService: Symbol.for('GamesService'),
   ModalsService: Symbol.for('ModalsService'),
+  ToastsService: Symbol.for('ToastsService'),
 };

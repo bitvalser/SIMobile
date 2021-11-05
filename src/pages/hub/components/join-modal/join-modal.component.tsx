@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { Alert } from 'react-native';
 import { finalize } from 'rxjs/operators';
 import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { JoinModalProps } from './join-modal.types';
@@ -10,49 +9,60 @@ import { AppButton } from '@core/components/button';
 import { GameRole } from '@core/constants/game-role.constants';
 import { useService } from '@core/hooks/use-service.hook';
 import { GamesService } from '@core/services/games/games-service.service';
+import { ToastsService } from '@core/services/toasts/toasts.service';
+import { ToastsContainer } from '@core/components/toasts-container';
 
 const JOIN_SUCCESS_CODE = 0;
+const TOASTS_CONTAINER = 'join-modal';
 
-const JoinModal: FC<JoinModalProps> = ({ close, gameId, onJoin, name, withMaster, withPassword }) => {
+const JoinModal: FC<JoinModalProps> = ({ close, gameId, onJoin, name, withMaster, withPassword, canJoinPlayer }) => {
   const [t] = useTranslation();
   const { joinGame } = useService(GamesService);
+  const { showToast } = useService(ToastsService);
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
 
   const handleJoin = (role: GameRole) => () => {
     setLoading(true);
-    joinGame(gameId, role, password)
-      .pipe(finalize(() => setLoading(false)))
-      .subscribe(({ code, errorMessage }) => {
-        if (code === JOIN_SUCCESS_CODE) {
-          onJoin();
-          close();
-        } else {
-          Alert.alert(errorMessage);
-        }
-      });
+    joinGame(gameId, role, password).subscribe(({ code, errorMessage }) => {
+      setLoading(false);
+      if (code === JOIN_SUCCESS_CODE) {
+        onJoin();
+        close();
+      } else {
+        showToast({
+          type: 'danger',
+          text: errorMessage,
+          container: TOASTS_CONTAINER,
+        });
+      }
+    });
   };
 
-  const disableInput = withPassword && !password;
+  const disableInput = (withPassword && !password) || loading;
 
   return (
-    <Dialog onClose={close} title={name}>
-      <Styled.Content>
-        {withPassword && (
-          <>
-            <Styled.PasswordText>{t('hub.password')}</Styled.PasswordText>
-            <Styled.Input onChangeText={setPassword} placeholder={t('hub.passwordPlaceholder')} />
-          </>
-        )}
-      </Styled.Content>
-      {!loading && (
+    <>
+      <ToastsContainer container={TOASTS_CONTAINER} />
+      <Dialog onClose={close} title={name}>
+        <Styled.Content>
+          {withPassword && (
+            <>
+              <Styled.PasswordText>{t('hub.password')}</Styled.PasswordText>
+              <Styled.Input onChangeText={setPassword} placeholder={t('hub.passwordPlaceholder')} />
+            </>
+          )}
+        </Styled.Content>
+
         <Styled.Footer>
-          <AppButton disabled={disableInput} text={t('hub.enterPlayer')} onPress={handleJoin(GameRole.Player)} />
+          {canJoinPlayer && (
+            <AppButton disabled={disableInput} text={t('hub.enterPlayer')} onPress={handleJoin(GameRole.Player)} />
+          )}
           {withMaster && <AppButton disabled text={t('hub.enterMaster')} onPress={handleJoin(GameRole.Master)} />}
           <AppButton text={t('hub.enterSpectator')} disabled={disableInput} onPress={handleJoin(GameRole.Spectator)} />
         </Styled.Footer>
-      )}
-    </Dialog>
+      </Dialog>
+    </>
   );
 };
 

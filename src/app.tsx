@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components/native';
 import { defaultTheme } from './theme';
 import { appContainer, InversifyContext } from './inversify.config';
 import { ModalsContainer } from '@core/components/modals-container';
+import { ToastsContainer } from '@core/components/toasts-container';
 
 if (
   Platform.OS === 'android' &&
@@ -24,6 +25,7 @@ const App = (): JSX.Element => (
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={null}>
             <RootNavigator />
+            <ToastsContainer />
             <ModalsContainer />
           </Suspense>
         </I18nextProvider>

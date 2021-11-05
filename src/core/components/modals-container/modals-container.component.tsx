@@ -1,8 +1,8 @@
+import React, { FC } from 'react';
+import { Modal } from 'react-native';
 import { useService } from '@core/hooks/use-service.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import { ModalsService } from '@core/services/modals/modals.service';
-import React, { FC } from 'react';
-import { Modal } from 'react-native';
 
 const ModalsContainer: FC = () => {
   const { modalsState$ } = useService(ModalsService);
