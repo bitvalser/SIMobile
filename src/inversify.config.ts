@@ -14,6 +14,8 @@ import { IModalsService } from '@core/services/modals/modals.types';
 import { ModalsService } from '@core/services/modals/modals.service';
 import { IToastsService } from '@core/services/toasts/toasts.types';
 import { ToastsService } from '@core/services/toasts/toasts.service';
+import { IGameController } from '@core/services/game-controller/game-controller.types';
+import { GameController } from '@core/services/game-controller/game-controller.service';
 
 const InversifyContext = createContext<interfaces.Container>(null);
 
@@ -31,5 +33,10 @@ appContainer.bind<ISignalRClient>(TYPES.SignalRClient).to(SignalRClient);
 appContainer.bind<IGamesService>(TYPES.GamesService).to(GamesService);
 appContainer.bind<IModalsService>(TYPES.ModalsService).to(ModalsService);
 appContainer.bind<IToastsService>(TYPES.ToastsService).to(ToastsService);
+appContainer
+  .bind<interfaces.Factory<IGameController>>(TYPES.GameController)
+  .toFactory<IGameController>(({ container }) => () =>
+    new GameController(container.get(TYPES.SignalRClient), container.get<ISiApiClient>(TYPES.SiApiClient).userName$),
+  );
 
 export { appContainer, InversifyContext };

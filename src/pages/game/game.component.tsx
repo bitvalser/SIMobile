@@ -1,28 +1,32 @@
 import React, { useEffect } from 'react';
-import { Text } from 'react-native';
 import { BackgroundContainer } from '@core/components/background-container';
-import { useRoute } from '@react-navigation/core';
-import { GameRouteProp } from './game.types';
-import { useService } from '@core/hooks/use-service.hook';
-import { SignalRClient } from '@core/services/signalr-client/signalr-client.service';
-import { SignalEvent } from '@core/constants/signal-event.constants';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import { useNavigation } from '@react-navigation/core';
+import { ChatHeader } from './components/chat-header';
+import * as Styled from './game.styles';
 
 const Game = () => {
-  const {
-    params: { gameId },
-  } = useRoute<GameRouteProp>();
-  const { on } = useService(SignalRClient);
+  const [gameController, leave] = useGameController();
+  const navigation = useNavigation();
+
+  useEffect(
+    () => () => {
+      leave();
+    },
+    [leave],
+  );
 
   useEffect(() => {
-    const subscription = on(SignalEvent.Receive).subscribe(console.log);
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [on]);
+    if (!gameController) {
+      navigation.goBack();
+    }
+  }, [gameController, navigation]);
 
   return (
     <BackgroundContainer>
-      <Text>Game {gameId}</Text>
+      <Styled.Container>
+        <ChatHeader />
+      </Styled.Container>
     </BackgroundContainer>
   );
 };

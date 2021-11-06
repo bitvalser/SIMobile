@@ -5,7 +5,8 @@ import { GameItem } from '@core/interfaces/game-item.interface';
 import { inject, injectable } from 'inversify';
 import { BehaviorSubject, EMPTY, interval, Observable, of } from 'rxjs';
 import { expand, switchMap, map, combineAll, tap, filter, buffer } from 'rxjs/operators';
-import { SignalRClient } from '../signalr-client/signalr-client.service';
+import { IGameController } from '../game-controller/game-controller.types';
+import { ISignalRClient } from '../signalr-client/signalr-client.types';
 import { TYPES } from '../types';
 import { DataSlice, IGamesService, JoinGameResponse } from './games-service.types';
 
@@ -15,10 +16,13 @@ const UPDATE_DELAY = 2000;
 export class GamesService implements IGamesService {
   public static type = TYPES.GamesService;
   @inject(TYPES.SignalRClient)
-  private signalR: SignalRClient;
+  private signalR: ISignalRClient;
+  @inject(TYPES.GameController)
+  private gameControllerFactory: () => IGameController;
   public gamesState$: BehaviorSubject<{
     [id: number]: GameItem;
   }> = new BehaviorSubject({});
+  private currentGameController: IGameController;
 
   public constructor() {
     this.getAllGames = this.getAllGames.bind(this);
@@ -26,6 +30,21 @@ export class GamesService implements IGamesService {
     this.onGamesDeleted = this.onGamesDeleted.bind(this);
     this.onGamesCreated = this.onGamesCreated.bind(this);
     this.joinGame = this.joinGame.bind(this);
+    this.removeGameController = this.removeGameController.bind(this);
+    this.createGameController = this.createGameController.bind(this);
+    this.getCurrentGameController = this.getCurrentGameController.bind(this);
+  }
+
+  public createGameController(): void {
+    this.currentGameController = this.gameControllerFactory().start();
+  }
+
+  public getCurrentGameController(): IGameController {
+    return this.currentGameController;
+  }
+
+  public removeGameController(): void {
+    this.currentGameController = null;
   }
 
   private getGameSlice(fromId: number = 0): Observable<DataSlice<GameItem>> {

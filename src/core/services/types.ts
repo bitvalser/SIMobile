@@ -8,4 +8,5 @@ export const TYPES = {
   GamesService: Symbol.for('GamesService'),
   ModalsService: Symbol.for('ModalsService'),
   ToastsService: Symbol.for('ToastsService'),
+  GameController: Symbol.for('GameController'),
 };

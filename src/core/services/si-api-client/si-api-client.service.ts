@@ -14,12 +14,9 @@ export class SiApiClient implements ISiApiClient {
   private apiUrl: string;
   @inject(TYPES.Translation)
   private translation: i18n;
-  public serverUri$: BehaviorSubject<string> = new BehaviorSubject<string>(
-    null,
-  );
-  public authToken$: BehaviorSubject<string> = new BehaviorSubject<string>(
-    null,
-  );
+  public serverUri$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public authToken$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public userName$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   public constructor() {
     this.getSupportedServers = this.getSupportedServers.bind(this);
@@ -27,16 +24,9 @@ export class SiApiClient implements ISiApiClient {
   }
 
   public getSupportedServers(): Observable<SiServer> {
-    return from(
-      fetch(`${this.apiUrl}/servers`).then((res) => res.json()) as Promise<
-        SiServer[]
-      >,
-    ).pipe(
+    return from(fetch(`${this.apiUrl}/servers`).then((res) => res.json()) as Promise<SiServer[]>).pipe(
       map((servers) => {
-        const server = servers.find(
-          ({ protocolVersion }) =>
-            protocolVersion === SUPPORTED_PROTOCOL_VERSION,
-        );
+        const server = servers.find(({ protocolVersion }) => protocolVersion === SUPPORTED_PROTOCOL_VERSION);
         if (!server) {
           throw new Error(this.translation.t('errors.serverNotFound'));
         }
@@ -63,6 +53,7 @@ export class SiApiClient implements ISiApiClient {
     ).pipe(
       tap((token) => {
         this.authToken$.next(token);
+        this.userName$.next(name);
       }),
     );
   }

@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { map } from 'rxjs/operators';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { RefreshControl, TouchableOpacity } from 'react-native';
+import { finalize, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { useTheme } from 'styled-components/native';
 import { BackgroundContainer } from '@core/components/background-container';
 import { useService } from '@core/hooks/use-service.hook';
 import { GamesService } from '@core/services/games/games-service.service';
@@ -18,6 +19,7 @@ import { GameType } from '@core/constants/game-type.constants';
 const Hub = () => {
   const { gamesState$, getAllGames, onGamesChanged, onGamesCreated, onGamesDeleted } = useService(GamesService);
   const navigation = useNavigation();
+  const theme = useTheme();
   const [showModal] = useJoinModal();
   const [t] = useTranslation();
   const [filters, setFilters] = useState({
@@ -27,6 +29,7 @@ const Hub = () => {
     new: false,
   });
   const [searchValue, setSearchValue] = useState('');
+  const [loading, setLoading] = useState(false);
   const games = useSubscription(gamesState$.pipe(map((data) => Object.values(data))), []);
 
   const filteredGames = useMemo(
@@ -42,8 +45,15 @@ const Hub = () => {
     [games, filters, searchValue],
   );
 
+  const refreshList = useCallback(() => {
+    setLoading(true);
+    getAllGames()
+      .pipe(finalize(() => setLoading(false)))
+      .subscribe();
+  }, []);
+
   useEffect(() => {
-    getAllGames().subscribe();
+    refreshList();
     const subscriptions = [onGamesChanged(), onGamesCreated(), onGamesDeleted()].map((handler: Observable<any>) =>
       handler.subscribe(),
     );
@@ -52,7 +62,7 @@ const Hub = () => {
         subscription.unsubscribe();
       });
     };
-  }, [getAllGames, onGamesChanged, onGamesDeleted, onGamesCreated]);
+  }, [getAllGames, onGamesChanged, onGamesDeleted, onGamesCreated, refreshList]);
 
   const handleFilterChange = (filer: string) => () => {
     setFilters((prevFilters) => ({
@@ -84,6 +94,7 @@ const Hub = () => {
     <BackgroundContainer>
       <Styled.GameList
         data={filteredGames}
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshList} />}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews
         initialNumToRender={5}
@@ -95,12 +106,12 @@ const Hub = () => {
               </Styled.GamesText>
               <Styled.GameFilterChip
                 onClick={handleFilterChange('simple')}
-                selected={filters.classic}
+                selected={filters.simple}
                 text={t('hub.filterSimple')}
               />
               <Styled.GameFilterChip
                 onClick={handleFilterChange('classic')}
-                selected={filters.simple}
+                selected={filters.classic}
                 text={t('hub.filterClassic')}
               />
               <Styled.GameFilterChip

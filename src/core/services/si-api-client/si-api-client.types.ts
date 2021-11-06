@@ -8,6 +8,7 @@ export interface SiServer {
 export interface ISiApiClient {
   serverUri$: BehaviorSubject<string>;
   authToken$: BehaviorSubject<string>;
+  userName$: BehaviorSubject<string>;
   getSupportedServers(): Observable<SiServer>;
   login(name: string, password?: string): Observable<string>;
 }

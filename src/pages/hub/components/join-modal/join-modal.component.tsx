@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { finalize } from 'rxjs/operators';
 import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { JoinModalProps } from './join-modal.types';
 import * as Styled from './join-modal.styles';
@@ -17,7 +16,7 @@ const TOASTS_CONTAINER = 'join-modal';
 
 const JoinModal: FC<JoinModalProps> = ({ close, gameId, onJoin, name, withMaster, withPassword, canJoinPlayer }) => {
   const [t] = useTranslation();
-  const { joinGame } = useService(GamesService);
+  const { joinGame, createGameController } = useService(GamesService);
   const { showToast } = useService(ToastsService);
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
@@ -27,6 +26,7 @@ const JoinModal: FC<JoinModalProps> = ({ close, gameId, onJoin, name, withMaster
     joinGame(gameId, role, password).subscribe(({ code, errorMessage }) => {
       setLoading(false);
       if (code === JOIN_SUCCESS_CODE) {
+        createGameController();
         onJoin();
         close();
       } else {

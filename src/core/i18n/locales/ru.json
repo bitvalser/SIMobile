@@ -28,6 +28,9 @@
     "filterSimple": "Упрощённые",
     "filterNew": "Новые"
   },
+  "game": {
+    "messages": "Сообщения"
+  },
   "errors": {
     "serverNotFound": "Подходящий сервер не найден",
     "unknownError": "Неизвестная ошибка"
