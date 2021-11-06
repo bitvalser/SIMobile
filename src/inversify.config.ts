@@ -36,7 +36,12 @@ appContainer.bind<IToastsService>(TYPES.ToastsService).to(ToastsService);
 appContainer
   .bind<interfaces.Factory<IGameController>>(TYPES.GameController)
   .toFactory<IGameController>(({ container }) => () =>
-    new GameController(container.get(TYPES.SignalRClient), container.get<ISiApiClient>(TYPES.SiApiClient).userName$),
+    new GameController(
+      container.get(TYPES.SignalRClient),
+      container.get<ISiApiClient>(TYPES.SiApiClient),
+      container.get<IToastsService>(TYPES.ToastsService),
+      container.get<i18n>(TYPES.Translation),
+    ),
   );
 
 export { appContainer, InversifyContext };

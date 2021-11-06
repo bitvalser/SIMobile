@@ -29,7 +29,13 @@
     "filterNew": "Новые"
   },
   "game": {
-    "messages": "Сообщения"
+    "messages": "Сообщения",
+    "connectionLost": "Соединение с хостом игры разорвалось",
+    "userConnected": "{user} подключился",
+    "userDisconnected": "{user} отключился",
+    "questionNoRisk": "Вопрос\nбез риска",
+    "questionSecret": "Вопрос с\nсекретом",
+    "questionAuction": "Вопрос со\nставкой"
   },
   "errors": {
     "serverNotFound": "Подходящий сервер не найден",
