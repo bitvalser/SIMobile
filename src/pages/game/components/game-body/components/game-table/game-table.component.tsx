@@ -9,8 +9,8 @@ const GameTable: FC = () => {
   const [{ roundThemes$ }] = useGameController();
   const themes = useSubscription(
     roundThemes$.pipe(
-      filter((data) => data.length > 0 && data.some(({ questions }) => questions.length > 0)),
-      map((data) => data.filter(({ questions }) => questions.length > 0)),
+      filter((data) => data.length > 0 && data.some((item) => item?.questions?.length > 0)),
+      map((data) => data.filter(({ questions }) => questions.some((price) => price > 0))),
     ),
     [],
   );

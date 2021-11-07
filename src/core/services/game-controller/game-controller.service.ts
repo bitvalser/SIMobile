@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject, Subscription } from 'rxjs';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { delay, map, tap, withLatestFrom } from 'rxjs/operators';
@@ -12,7 +12,6 @@ import { GameMessage, IGameController } from './game-controller.types';
 import { GameUser } from '@core/interfaces/game-user.interface';
 import { GamePlayer } from '@core/interfaces/game-player.interface';
 import { i18n } from 'i18next';
-import { GameRole } from '@core/constants/game-role.constants';
 import { GameShowMode } from '@core/constants/game-show-mode.constants';
 import { ISiApiClient } from '../si-api-client/si-api-client.types';
 import { QuestionType } from '@core/constants/question-type.constants';
@@ -20,6 +19,10 @@ import { AtomType } from '@core/constants/atom-type.constants';
 import { GameAnswer } from '@core/interfaces/game-answer.interface';
 import { GameAtom } from '@core/interfaces/game-atom.interface';
 import { IToastsService } from '../toasts/toasts.types';
+import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.types';
+import { UserAction } from '@core/interfaces/user-action.interface';
+import { TimerCommand } from '@core/constants/timer-command.constants';
+import { TimerEvent } from '@core/interfaces/timer-event.interface';
 
 export const QUESTION_SELECTED_DELAY = 2000;
 
@@ -27,7 +30,6 @@ export class GameController implements IGameController {
   private subscriptions: Subscription[] = [];
   public chatMessages$: BehaviorSubject<ChatMessage[]> = new BehaviorSubject([]);
   public roundThemes$: BehaviorSubject<RoundTheme[]> = new BehaviorSubject([]);
-  public printThemes$: Subject<void> = new Subject();
   public gameMaster$: BehaviorSubject<GameUser> = new BehaviorSubject(null);
   public players$: BehaviorSubject<GamePlayer[]> = new BehaviorSubject([]);
   public spectators$: BehaviorSubject<GameUser[]> = new BehaviorSubject([]);
@@ -37,6 +39,13 @@ export class GameController implements IGameController {
   public atom$: BehaviorSubject<GameAtom> = new BehaviorSubject(null);
   public rightAnswer$: BehaviorSubject<GameAnswer> = new BehaviorSubject(null);
   public questionSelected$: Subject<[number, number]> = new Subject();
+  public userAction$: Subject<UserAction> = new Subject();
+  public userReplic$: Subject<{ name: string; text: string }> = new Subject();
+  public timerChannel$: Subject<TimerEvent> = new Subject();
+  public canTry$: Subject<void> = new Subject();
+  public timerMaxTime$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public pauseChannel$: Subject<boolean> = new Subject();
+  public userAvatarState$: ReplaySubject<{ name: string; state: AvatarState }> = new ReplaySubject(12);
   public currentPlayer$: Observable<GamePlayer> = this.players$.pipe(
     withLatestFrom(this.siApiClient.userName$),
     map(([data, userName]) => data.find(({ name }) => name === userName)),
@@ -129,7 +138,8 @@ export class GameController implements IGameController {
               break;
             }
             case MessageType.Connected: {
-              const role = +args[1];
+              const role = args[1];
+              const index = +args[2];
               const newUser = {
                 name: args[3],
                 isConnected: true,
@@ -138,18 +148,18 @@ export class GameController implements IGameController {
                 isReady: false,
               };
               switch (role) {
-                case GameRole.Master:
+                case 'master':
                   this.gameMaster$.next(newUser);
                   break;
-                case GameRole.Player: {
+                case 'player': {
                   const currentPlayers = [...this.players$.getValue()];
-                  currentPlayers.splice(+args[2], 1, newUser);
+                  currentPlayers.splice(index, 1, newUser);
                   this.players$.next(currentPlayers);
                   break;
                 }
-                case GameRole.Spectator: {
-                  const currentPlayers = [...this.players$.getValue()];
-                  currentPlayers.splice(+args[2], 1, newUser);
+                case 'viewer': {
+                  const currentPlayers = [...this.spectators$.getValue()];
+                  currentPlayers.splice(index, 1, newUser);
                   this.spectators$.next(currentPlayers);
                   break;
                 }
@@ -201,7 +211,7 @@ export class GameController implements IGameController {
                 })),
               );
               if (args[1] === '+') {
-                this.printThemes$.next();
+                this.showMode$.next(GameShowMode.RoundThemes);
               }
               break;
             }
@@ -245,10 +255,12 @@ export class GameController implements IGameController {
               this.questionType$.next(null);
               this.atom$.next(null);
               this.rightAnswer$.next(null);
+              this.userReplic$.next(null);
               break;
             case MessageType.QuestionType:
               this.questionType$.next(args[1] as QuestionType);
               this.showMode$.next(GameShowMode.Question);
+              this.userReplic$.next(null);
               break;
             case MessageType.Atom: {
               const atomType = args[1];
@@ -270,6 +282,7 @@ export class GameController implements IGameController {
                   break;
               }
               this.showMode$.next(GameShowMode.Atom);
+              this.userReplic$.next(null);
               break;
             }
             case MessageType.Replic: {
@@ -285,6 +298,16 @@ export class GameController implements IGameController {
                     delay: 3000,
                   });
                   break;
+                case 'p': {
+                  const player = this.players$.getValue()?.[+args[1][1]];
+                  if (player) {
+                    this.userReplic$.next({
+                      name: player.name,
+                      text: args[2],
+                    });
+                  }
+                  break;
+                }
               }
               break;
             }
@@ -301,6 +324,116 @@ export class GameController implements IGameController {
                     this.roundThemes$.next(currentRound);
                   }),
               );
+              this.players$.getValue().forEach(({ name }) => {
+                this.userAvatarState$.next({ name, state: AvatarState.Default });
+              });
+              break;
+            case MessageType.Picture:
+              this.players$.next(
+                this.players$.getValue().map((user) => ({
+                  ...user,
+                  ...(user.name === args[1]
+                    ? {
+                        avatar: args[2].replace('<SERVERHOST>', this.siApiClient.serverUri$.getValue()),
+                      }
+                    : {}),
+                })),
+              );
+              break;
+            case MessageType.WrongTry: {
+              const player = this.players$.getValue()?.[+args[1]];
+              if (player) {
+                this.userAvatarState$.next({
+                  name: player.name,
+                  state: AvatarState.WrongTry,
+                });
+              }
+              break;
+            }
+            case MessageType.Pass: {
+              const player = this.players$.getValue()?.[+args[1]];
+              if (player) {
+                this.userAvatarState$.next({
+                  name: player.name,
+                  state: AvatarState.Quail,
+                });
+              }
+              break;
+            }
+            case MessageType.PersonFinalStake: {
+              const player = this.players$.getValue()?.[+args[1]];
+              if (player) {
+                this.userAvatarState$.next({
+                  name: player.name,
+                  state: AvatarState.Final,
+                });
+              }
+              break;
+            }
+            case MessageType.SetChooser:
+              break;
+            case MessageType.Timer: {
+              const timerIndex = parseInt(args[1], 10);
+              const timerCommand = args[2];
+              const timerArgument = args.length > 3 ? +args[3] : 0;
+              const timerPersonIndex = args.length > 4 ? +args[4] : null;
+
+              const players = this.players$.getValue();
+
+              this.timerChannel$.next({
+                command: timerCommand as TimerCommand,
+                index: timerIndex,
+                playerName: players?.[timerPersonIndex]?.name,
+                time: timerArgument,
+              });
+
+              switch (timerCommand) {
+                case TimerCommand.Go:
+                  if (timerIndex === 2 && timerPersonIndex >= 0 && timerPersonIndex < players.length) {
+                    this.userAction$.next({
+                      user: players[timerPersonIndex],
+                      timer: timerArgument,
+                    });
+                  }
+                  break;
+                case TimerCommand.MaxTime:
+                  if (timerIndex === 1) {
+                    this.timerMaxTime$.next(+args[3]);
+                  }
+                  break;
+              }
+
+              break;
+            }
+            case MessageType.Person: {
+              const isWon = args[1] === '+';
+              const personIndex = +args[2];
+              if (this.players$.getValue()?.[personIndex]) {
+                this.userAvatarState$.next({
+                  name: this.players$.getValue()[personIndex].name,
+                  state: isWon ? AvatarState.Success : AvatarState.Wrong,
+                });
+                this.players$.next(
+                  this.players$.getValue().map((user, index) => ({
+                    ...user,
+                    ...(index === personIndex
+                      ? {
+                          sum: user.sum + (isWon ? 1 : -1) * +args[3],
+                        }
+                      : {}),
+                  })),
+                );
+              }
+              this.userReplic$.next(null);
+              break;
+            }
+            case MessageType.Pause:
+              if (args.length > 4) {
+                this.pauseChannel$.next(args[1] === '+');
+              }
+              break;
+            case MessageType.Try:
+              this.canTry$.next();
               break;
           }
         } else {

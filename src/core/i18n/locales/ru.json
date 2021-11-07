@@ -33,6 +33,7 @@
     "connectionLost": "Соединение с хостом игры разорвалось",
     "userConnected": "{user} подключился",
     "userDisconnected": "{user} отключился",
+    "players": "Игроки",
     "questionNoRisk": "Вопрос\nбез риска",
     "questionSecret": "Вопрос с\nсекретом",
     "questionAuction": "Вопрос со\nставкой"

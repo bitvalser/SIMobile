@@ -10,9 +10,10 @@ export const Container = styled.View`
 `;
 
 export const PreviewText = styled.Text`
-  font-size: 72px;
-  line-height: 100px;
+  font-size: 62px;
+  line-height: 80px;
   text-transform: uppercase;
+  text-align: center;
   display: flex;
   color: ${({ theme }) => theme.pallette.primary};
 `;

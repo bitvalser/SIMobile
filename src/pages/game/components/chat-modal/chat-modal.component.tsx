@@ -48,6 +48,8 @@ const ChatModal: FC<ChatModalProps> = ({ close }) => {
   );
 };
 
-const useChatModal = createModalHook<ChatModalProps>((props) => () => <ChatModal {...props} />);
+const useChatModal = createModalHook<ChatModalProps>((props) => () => <ChatModal {...props} />, {
+  statusBarTranslucent: true,
+});
 
 export default useChatModal;

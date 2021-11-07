@@ -6,6 +6,7 @@ import { ChatHeader } from './components/chat-header';
 import * as Styled from './game.styles';
 import GameBody from './components/game-body/game-body.component';
 import { ButtonFooter } from './components/button-footer';
+import { UserAction } from './components/user-action';
 
 const Game = () => {
   const [gameController, leave] = useGameController();
@@ -29,6 +30,7 @@ const Game = () => {
       <Styled.Container>
         <ChatHeader />
         <GameBody />
+        <UserAction />
         <ButtonFooter />
       </Styled.Container>
     </BackgroundContainer>

@@ -26,3 +26,7 @@ export const FloatMessage = styled(Animated.View)`
   border-radius: 4px;
   background: ${({ theme }) => theme.pallette.white};
 `;
+
+export const Divider = styled.View`
+  width: 8px;
+`;

@@ -5,12 +5,14 @@ import useSubscription from '@core/hooks/use-subscription.hook';
 import { Animated, Easing, TouchableOpacity } from 'react-native';
 import useChatModal from '../chat-modal/chat-modal.component';
 import { MessageItem } from '../chat-modal/components/message-item';
+import useUsersModal from '../users-modal/users-modal.component';
 import * as Styled from './chat-header.styles';
 import { map } from 'rxjs/operators';
 
 const ChatHeader: FC = () => {
   const appearAnim = useRef(new Animated.Value(0)).current;
-  const [showModal] = useChatModal();
+  const [showChatModal] = useChatModal();
+  const [showUsersModal] = useUsersModal();
   const [{ chatMessages$ }] = useGameController();
   const [lastMessage, previousMessage] = useSubscription(
     chatMessages$.pipe(map((items) => items.slice(items.length - 2).reverse())),
@@ -68,8 +70,12 @@ const ChatHeader: FC = () => {
           </Styled.FloatMessage>
         )}
       </Styled.MessageContainer>
-      <TouchableOpacity onPress={showModal}>
+      <TouchableOpacity onPress={showChatModal}>
         <AppIcon name="chat" color="primary" />
+      </TouchableOpacity>
+      <Styled.Divider />
+      <TouchableOpacity onPress={showUsersModal}>
+        <AppIcon name="group" color="primary" />
       </TouchableOpacity>
     </Styled.Container>
   );

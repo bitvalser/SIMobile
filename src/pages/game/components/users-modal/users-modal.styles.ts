@@ -1,8 +1,8 @@
+import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
+import { GamePlayer } from '@core/interfaces/game-player.interface';
 import { ComponentType } from 'react';
 import { FlatList, FlatListProps } from 'react-native';
 import styled from 'styled-components/native';
-import { ChatMessage } from '@core/interfaces/chat-message.interface';
-import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
 
 export const Container = styled.KeyboardAvoidingView`
   display: flex;
@@ -14,9 +14,9 @@ export const Container = styled.KeyboardAvoidingView`
 
 export const Header = styled.View`
   padding: 8px 0;
+  padding-top: ${DimensionsStyle.tabBarHeight + 8}px;
   align-items: center;
   background: ${({ theme }) => theme.pallette.background};
-  padding-top: ${DimensionsStyle.tabBarHeight + 8}px;
   display: flex;
   flex-direction: row;
 `;
@@ -36,29 +36,6 @@ export const CloseText = styled.Text`
   padding: 4px;
 `;
 
-export const Footer = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 40px;
-  margin-bottom: 2px;
-`;
-
-export const MessagesList = styled(FlatList)`
+export const UsersList = styled(FlatList)`
   padding: 0 12px;
-` as ComponentType<FlatListProps<ChatMessage>>;
-
-export const Input = styled.TextInput`
-  margin-top: 12px;
-  width: 100%;
-  padding-right: 48px;
-  height: 40px;
-  background: ${({ theme }) => theme.pallette.white};
-  border: 1px solid ${({ theme }) => theme.pallette.black};
-`;
-
-export const SendIconWrapper = styled.View`
-  position: absolute;
-  right: 8px;
-  top: 11px;
-`;
+` as ComponentType<FlatListProps<GamePlayer>>;

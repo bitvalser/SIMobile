@@ -5,6 +5,7 @@ import { AtomType } from '@core/constants/atom-type.constants';
 import * as Styled from './game-atom.styles';
 import { VideoAtom } from './components/video-atom';
 import { AudioAtom } from './components/audio-atom';
+import { TimerBorder } from './components/timer-border';
 
 const GameAtom: FC = () => {
   const [{ atom$ }] = useGameController();
@@ -20,6 +21,7 @@ const GameAtom: FC = () => {
         )}
         {atom.type === AtomType.Video && <VideoAtom uri={atom.data} />}
         {atom.type === AtomType.Voice && <AudioAtom uri={atom.data} />}
+        <TimerBorder />
       </Styled.Container>
     )
   );
