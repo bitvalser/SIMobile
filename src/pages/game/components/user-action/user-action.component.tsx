@@ -79,8 +79,15 @@ const UserAction: FC = () => {
               },
             ],
           }}>
-          <PlayerTimer name={userAction.user.name} initialTime={userAction.timer} />
-          <UserItem isConnected avatar={userAction.user.avatar} name={userAction.user.name} sum={userAction.user.sum} />
+          <Styled.TimerWrapper>
+            <PlayerTimer name={userAction.user.name} initialTime={userAction.timer} />
+          </Styled.TimerWrapper>
+          <UserItem
+            isConnected={userAction.user.isConnected}
+            avatar={userAction.user.avatar}
+            name={userAction.user.name}
+            sum={userAction.user.sum}
+          />
         </Styled.UserWrapper>
       </Styled.Container>
     )

@@ -5,4 +5,5 @@ export enum GameShowMode {
   Atom = 'atom',
   RoundThemes = 'round-themes',
   Answer = 'answer',
+  Replic = 'replic',
 }

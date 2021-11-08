@@ -16,7 +16,10 @@
             "margin-horizontal",
             "tint-color",
             "aspect-ratio",
-            "elevation"
+            "elevation",
+            "text-shadow-color",
+            "text-shadow-offset",
+            "text-shadow-radius"
           ],
         }
       }

@@ -34,6 +34,7 @@
     "userConnected": "{user} подключился",
     "userDisconnected": "{user} отключился",
     "players": "Игроки",
+    "pause": "Пауза",
     "questionNoRisk": "Вопрос\nбез риска",
     "questionSecret": "Вопрос с\nсекретом",
     "questionAuction": "Вопрос со\nставкой"

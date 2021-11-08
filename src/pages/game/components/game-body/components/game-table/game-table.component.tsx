@@ -19,7 +19,9 @@ const GameTable: FC = () => {
     <Styled.Container>
       <Styled.ThemesList
         data={themes}
-        renderItem={({ item, index }) => <ThemeItem theme={item.name} prices={item.questions} themeIndex={index} />}
+        renderItem={({ item, index }) => (
+          <ThemeItem theme={item.name} index={index} prices={item.questions} themeIndex={item.originalIndex} />
+        )}
         keyExtractor={(_, index) => index.toString()}
       />
     </Styled.Container>

@@ -1,64 +1,57 @@
-import React, { FC, useRef, useEffect, memo, useState } from 'react';
+import React, { FC, useEffect, memo, useState } from 'react';
+import { merge } from 'rxjs';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import * as Styled from './timer-border.styles';
 import { filter } from 'rxjs/operators';
-import { Animated } from 'react-native';
 import { TimerCommand } from '@core/constants/timer-command.constants';
+import { useTimerAnimation } from '@core/hooks/use-timer-animation.hook';
 
 const TimerBorder: FC = memo(() => {
-  const [{ timerChannel$, pauseChannel$, timerMaxTime$, canTry$ }] = useGameController();
+  const [{ timerChannel$, pauseChannel$, timerMaxTime$, canTry$, showTimerBorder$ }] = useGameController();
   const [showBorder, setShowBorder] = useState(false);
-  const timerAnim = useRef(new Animated.Value(0)).current;
-  const animationRef = useRef<Animated.CompositeAnimation>(
-    Animated.timing(timerAnim, {
-      toValue: 100,
-      useNativeDriver: false,
-      duration: timerMaxTime$.getValue() * 100,
-    }),
-  );
+  const [timerAnim, startTimer, pauseTimer, , isStarted] = useTimerAnimation(timerMaxTime$.getValue() * 100);
 
   useEffect(() => {
     const subscriptionPause = pauseChannel$.subscribe((isPaused) => {
       if (isPaused) {
-        animationRef.current?.stop();
-      } else {
-        animationRef.current?.start();
+        pauseTimer();
+      } else if (isStarted()) {
+        startTimer();
       }
     });
-    const subscriptionTry = canTry$.subscribe(() => {
-      animationRef.current?.start();
-      setShowBorder(true);
+    const subscriptionTry = merge(canTry$, showTimerBorder$).subscribe((isBorder) => {
+      setShowBorder(isBorder);
     });
     return () => {
       subscriptionPause.unsubscribe();
       subscriptionTry.unsubscribe();
     };
-  }, [pauseChannel$, canTry$]);
+  }, [pauseChannel$, canTry$, showTimerBorder$, pauseTimer, startTimer, isStarted]);
 
   useEffect(() => {
-    const subscription = timerChannel$.pipe(filter(({ index }) => index === 1)).subscribe(({ command, time }) => {
+    const subscription = timerChannel$.pipe(filter(({ index }) => index === 1)).subscribe(({ command }) => {
       switch (command) {
         case TimerCommand.Pause:
+          setShowBorder(false);
+          pauseTimer();
+          break;
         case TimerCommand.UserPause:
-          animationRef.current?.stop();
+          pauseTimer();
           break;
         case TimerCommand.Resume:
         case TimerCommand.UserResume:
-          animationRef.current?.start();
+          setShowBorder(true);
+          startTimer();
           break;
-        case TimerCommand.MaxTime:
-          animationRef.current = Animated.timing(timerAnim, {
-            toValue: 100,
-            useNativeDriver: false,
-            duration: time * 100,
-          });
+        case TimerCommand.Stop:
+          setShowBorder(false);
           break;
       }
     });
     return () => {
       subscription.unsubscribe();
     };
-  }, [timerAnim, timerChannel$]);
+  }, [pauseTimer, startTimer, timerAnim, timerChannel$]);
 
   return (
     showBorder && (

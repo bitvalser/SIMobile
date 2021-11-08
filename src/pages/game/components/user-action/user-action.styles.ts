@@ -15,6 +15,13 @@ export const UserWrapper = styled(Animated.View)`
   height: 115px;
 `;
 
+export const TimerWrapper = styled.View`
+  width: 100%;
+  position: absolute;
+  top: -6px;
+  z-index: 5;
+`;
+
 export const ReplicContainer = styled(Animated.View)`
   display: flex;
   width: 100%;

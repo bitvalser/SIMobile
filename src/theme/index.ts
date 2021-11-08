@@ -9,6 +9,7 @@ export interface AppTheme {
     gray: `#${string}`;
     danger: `#${string}`;
     secondaryBackground: `#${string}`;
+    secondaryHighlight: `#${string}`;
   };
 }
 
@@ -19,6 +20,7 @@ export const defaultTheme: AppTheme = {
     secondary: '#897831',
     secondaryBackground: '#c0cff4',
     highlight: '#98b9ff',
+    secondaryHighlight: '#00fefe',
     danger: '#8b0000',
     white: '#fff',
     black: '#000',

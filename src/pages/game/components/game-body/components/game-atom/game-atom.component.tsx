@@ -6,6 +6,7 @@ import * as Styled from './game-atom.styles';
 import { VideoAtom } from './components/video-atom';
 import { AudioAtom } from './components/audio-atom';
 import { TimerBorder } from './components/timer-border';
+import { PartialAtom } from './components/partial-atom';
 
 const GameAtom: FC = () => {
   const [{ atom$ }] = useGameController();
@@ -14,8 +15,8 @@ const GameAtom: FC = () => {
   return (
     atom && (
       <Styled.Container>
-        {atom.type === AtomType.Text && <Styled.QuestionText>{atom.data}</Styled.QuestionText>}
-        {atom.type === AtomType.Partial && <Styled.QuestionText>{atom.data}</Styled.QuestionText>}
+        {atom.type === AtomType.Text && atom.data && <Styled.QuestionText>{atom.data}</Styled.QuestionText>}
+        {atom.type === AtomType.Partial && <PartialAtom />}
         {atom.type === AtomType.Image && (
           <Styled.QuestionImage resizeMode="contain" fadeDuration={0} source={{ uri: atom.data }} />
         )}

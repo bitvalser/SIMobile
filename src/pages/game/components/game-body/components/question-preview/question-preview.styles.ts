@@ -15,6 +15,9 @@ export const PreviewText = styled.Text`
   text-transform: uppercase;
   text-align: center;
   display: flex;
+  text-shadow-color: #000;
+  text-shadow-offset: 0px 1px;
+  text-shadow-radius: 5px;
   color: ${({ theme }) => theme.pallette.primary};
 `;
 

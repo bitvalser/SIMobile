@@ -14,7 +14,7 @@ export const getBorderColor = (state: AvatarState, theme: AppTheme): string => {
     case AvatarState.Quail:
       return '#808080';
     case AvatarState.Selectable:
-      return '#0ff';
+      return theme.pallette.secondaryHighlight;
     case AvatarState.Final:
       return '#cb00f5';
     default:

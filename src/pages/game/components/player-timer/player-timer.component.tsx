@@ -1,42 +1,36 @@
-import React, { FC, useEffect, useRef, memo, useState } from 'react';
+import React, { FC, useEffect, memo, useState } from 'react';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
-import { Animated } from 'react-native';
 import * as Styled from './player-timer.styles';
 import { filter } from 'rxjs/operators';
 import { TimerCommand } from '@core/constants/timer-command.constants';
 import { PlayerTimerProps } from './player-timer.types';
+import { useTimerAnimation } from '@core/hooks/use-timer-animation.hook';
 
 const PlayerTimer: FC<PlayerTimerProps> = memo(({ name, initialTime = 0 }) => {
   const [{ timerChannel$, pauseChannel$ }] = useGameController();
   const [stop, setStop] = useState(initialTime === 0);
-  const timerAnim = useRef(new Animated.Value(0)).current;
-  const animationRef = useRef<Animated.CompositeAnimation>();
+  const [timerAnim, startTimer, pauseTimer, resetTimer] = useTimerAnimation(initialTime);
 
   useEffect(() => {
     if (initialTime > 0) {
       setStop(false);
-      timerAnim.setValue(0);
-      animationRef.current = Animated.timing(timerAnim, {
-        toValue: 100,
-        useNativeDriver: false,
-        duration: initialTime * 100,
-      });
-      animationRef.current.start();
+      resetTimer(initialTime * 100);
+      startTimer();
     }
-  }, [initialTime, timerAnim]);
+  }, [initialTime, resetTimer, startTimer, timerAnim]);
 
   useEffect(() => {
     const subscription = pauseChannel$.subscribe((isPaused) => {
       if (isPaused) {
-        animationRef.current?.stop();
+        pauseTimer();
       } else {
-        animationRef.current?.start();
+        startTimer();
       }
     });
     return () => {
       subscription.unsubscribe();
     };
-  }, [pauseChannel$]);
+  }, [pauseChannel$, pauseTimer, startTimer]);
 
   useEffect(() => {
     const subscription = timerChannel$
@@ -49,31 +43,26 @@ const PlayerTimer: FC<PlayerTimerProps> = memo(({ name, initialTime = 0 }) => {
         setStop(false);
         switch (command) {
           case TimerCommand.Go:
-            timerAnim.setValue(0);
-            animationRef.current = Animated.timing(timerAnim, {
-              toValue: 100,
-              useNativeDriver: false,
-              duration: time * 100,
-            });
-            animationRef.current.start();
+            resetTimer(time * 100);
+            startTimer();
             break;
           case TimerCommand.Stop:
             setStop(true);
             break;
           case TimerCommand.Pause:
           case TimerCommand.UserPause:
-            animationRef.current?.stop();
+            pauseTimer();
             break;
           case TimerCommand.Resume:
           case TimerCommand.UserResume:
-            animationRef.current?.start();
+            startTimer();
             break;
         }
       });
     return () => {
       subscription.unsubscribe();
     };
-  }, [name, timerAnim, timerChannel$]);
+  }, [name, pauseTimer, resetTimer, startTimer, timerAnim, timerChannel$]);
 
   return (
     !stop && (

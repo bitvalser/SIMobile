@@ -30,7 +30,9 @@ export interface IGameController {
   timerChannel$: Subject<TimerEvent>;
   pauseChannel$: Subject<boolean>;
   timerMaxTime$: BehaviorSubject<number>;
-  canTry$: Subject<void>;
+  canTry$: Subject<boolean>;
+  showTimerBorder$: BehaviorSubject<boolean>;
+  gameReplic$: BehaviorSubject<string>;
   sendChatMessage(message: string): Observable<void>;
   start(): this;
   leave(): void;

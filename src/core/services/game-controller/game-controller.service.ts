@@ -38,11 +38,13 @@ export class GameController implements IGameController {
   public questionType$: BehaviorSubject<QuestionType> = new BehaviorSubject(null);
   public atom$: BehaviorSubject<GameAtom> = new BehaviorSubject(null);
   public rightAnswer$: BehaviorSubject<GameAnswer> = new BehaviorSubject(null);
+  public gameReplic$: BehaviorSubject<string> = new BehaviorSubject(null);
   public questionSelected$: Subject<[number, number]> = new Subject();
   public userAction$: Subject<UserAction> = new Subject();
   public userReplic$: Subject<{ name: string; text: string }> = new Subject();
   public timerChannel$: Subject<TimerEvent> = new Subject();
-  public canTry$: Subject<void> = new Subject();
+  public canTry$: Subject<boolean> = new Subject();
+  public showTimerBorder$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public timerMaxTime$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public pauseChannel$: Subject<boolean> = new Subject();
   public userAvatarState$: ReplaySubject<{ name: string; state: AvatarState }> = new ReplaySubject(12);
@@ -178,6 +180,7 @@ export class GameController implements IGameController {
                     ...(user.name === name
                       ? {
                           isConnected: false,
+                          avatar: null,
                           name: '',
                         }
                       : {}),
@@ -207,6 +210,7 @@ export class GameController implements IGameController {
               this.roundThemes$.next(
                 args.slice(2).map((round, i) => ({
                   ...(currentThemes[i] || {}),
+                  originalIndex: i,
                   name: round,
                 })),
               );
@@ -234,6 +238,7 @@ export class GameController implements IGameController {
               this.roundThemes$.next(
                 prices.map((item, i) => ({
                   ...(currentThemes[i] || {}),
+                  originalIndex: i,
                   questions: item,
                 })),
               );
@@ -256,6 +261,7 @@ export class GameController implements IGameController {
               this.atom$.next(null);
               this.rightAnswer$.next(null);
               this.userReplic$.next(null);
+              this.showTimerBorder$.next(false);
               break;
             case MessageType.QuestionType:
               this.questionType$.next(args[1] as QuestionType);
@@ -273,8 +279,8 @@ export class GameController implements IGameController {
                     data: args[3].replace('<SERVERHOST>', this.siApiClient.serverUri$.getValue()),
                   });
                   break;
-                case AtomType.Text:
                 case AtomType.Partial:
+                case AtomType.Text:
                   this.atom$.next({
                     type: atomType,
                     data: args.splice(2).join(),
@@ -308,6 +314,17 @@ export class GameController implements IGameController {
                   }
                   break;
                 }
+                case 'l':
+                  break;
+                case 't':
+                  if (!this.atom$.getValue()) {
+                    this.gameReplic$.next(args[2]);
+                    this.showMode$.next(GameShowMode.Replic);
+                  }
+                  break;
+                default:
+                  this.addChatMessage(args[2]);
+                  break;
               }
               break;
             }
@@ -408,6 +425,7 @@ export class GameController implements IGameController {
             case MessageType.Person: {
               const isWon = args[1] === '+';
               const personIndex = +args[2];
+              console.log(this.players$.getValue()[personIndex], isWon, +args[3]);
               if (this.players$.getValue()?.[personIndex]) {
                 this.userAvatarState$.next({
                   name: this.players$.getValue()[personIndex].name,
@@ -432,9 +450,12 @@ export class GameController implements IGameController {
                 this.pauseChannel$.next(args[1] === '+');
               }
               break;
-            case MessageType.Try:
-              this.canTry$.next();
+            case MessageType.Try: {
+              const withBorder = args.length > 1 && args[1] === 'NF';
+              this.showTimerBorder$.next(withBorder);
+              this.canTry$.next(withBorder);
               break;
+            }
           }
         } else {
           this.addChatMessage(text, sender);

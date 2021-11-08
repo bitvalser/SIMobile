@@ -1,17 +1,19 @@
 import React, { FC, memo, useRef, useEffect } from 'react';
-import { Animated, Dimensions } from 'react-native';
+import { Animated, Dimensions, Easing } from 'react-native';
 import { PriceItem } from './components/price-item';
 import * as Styled from './theme-item.styles';
 import { ThemeItemProps } from './theme-item.types';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
-const ThemeItem: FC<ThemeItemProps> = memo(({ prices, theme, themeIndex }) => {
+const ThemeItem: FC<ThemeItemProps> = memo(({ prices, theme, themeIndex, index }) => {
   const appearAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.spring(appearAnim, {
+    Animated.timing(appearAnim, {
       useNativeDriver: true,
+      duration: 500,
+      easing: Easing.out(Easing.ease),
       toValue: 1,
     }).start();
   }, [appearAnim]);
@@ -23,7 +25,7 @@ const ThemeItem: FC<ThemeItemProps> = memo(({ prices, theme, themeIndex }) => {
           {
             translateX: appearAnim.interpolate({
               inputRange: [0, 1],
-              outputRange: [(themeIndex % 2 === 1 ? 1 : -1) * WINDOW_WIDTH, 0],
+              outputRange: [(index % 2 === 1 ? 1 : -1) * WINDOW_WIDTH, 0],
             }),
           },
         ],
