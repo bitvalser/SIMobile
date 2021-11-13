@@ -3,9 +3,9 @@ import { PlayerAvatar } from '@pages/game/components/player-avatar';
 import * as Styled from './user-item.styles';
 import { UserItemProps } from './user-item.types';
 
-const UserItem: FC<UserItemProps> = memo(({ avatar = null, sum, name, isConnected }) => {
+const UserItem: FC<UserItemProps> = memo(({ avatar = null, sum, name, isConnected, hide = false }) => {
   return (
-    <Styled.Container>
+    <Styled.Container hide={hide}>
       {isConnected ? <PlayerAvatar name={name} size={100} avatar={avatar} /> : <Styled.AvatarContainer />}
       <Styled.InfoContainer>
         <Styled.TextContainer>

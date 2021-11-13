@@ -6,4 +6,6 @@ export enum GameShowMode {
   RoundThemes = 'round-themes',
   Answer = 'answer',
   Replic = 'replic',
+  FinalThemes = 'final-themes',
+  Logo = 'logo',
 }

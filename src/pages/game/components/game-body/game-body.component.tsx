@@ -11,6 +11,8 @@ import { GameThemes } from '../game-themes';
 import { GameReplic } from '../game-replic';
 import { RoundThemes } from '../round-themes';
 import GamePause from './components/game-pause/game-pause.component';
+import { FinalThemes } from './components/final-themes';
+import { ShowLogo } from './components/show-logo';
 
 const GRADIENT_COLORS = ['#000451', '#183cf3', '#000451'];
 
@@ -27,6 +29,8 @@ const GameBody: FC = () => {
       {showMode === GameShowMode.GameThemes && <GameThemes />}
       {showMode === GameShowMode.Replic && <GameReplic />}
       {showMode === GameShowMode.RoundThemes && <RoundThemes />}
+      {showMode === GameShowMode.FinalThemes && <FinalThemes />}
+      {showMode === GameShowMode.Logo && <ShowLogo />}
       <GamePause />
     </Styled.Container>
   );

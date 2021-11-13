@@ -3,12 +3,13 @@ import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.
 import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+export const Container = styled.View<{ hide: boolean }>`
   display: flex;
   flex-direction: row;
   margin-bottom: 12px;
   max-height: 100px;
   height: 100px;
+  opacity: ${({ hide }) => (hide ? 0.5 : 1)};
   min-height: 100px;
   position: relative;
 `;

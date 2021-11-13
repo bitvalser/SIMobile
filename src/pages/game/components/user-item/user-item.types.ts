@@ -3,4 +3,5 @@ export interface UserItemProps {
   avatar?: string;
   isConnected: boolean;
   sum?: number;
+  hide?: boolean;
 }

@@ -27,4 +27,8 @@ export enum MessageType {
   Connected = 'CONNECTED',
   Disconnect = 'DISCONNECT',
   Disconnected = 'DISCONNECTED',
+  FinalRound = 'FINALROUND',
+  Out = 'OUT',
+  Stage = 'STAGE',
+  FinalThink = 'FINALTHINK',
 }

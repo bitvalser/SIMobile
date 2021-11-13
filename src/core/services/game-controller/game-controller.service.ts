@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable, of, ReplaySubject, Subject, Subscription }
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { delay, map, tap, withLatestFrom } from 'rxjs/operators';
-import { MessageType } from '@core/constants/mesage-type.constants';
+import { MessageType } from '@core/constants/message-type.constants';
 import { SignalEvent } from '@core/constants/signal-event.constants';
 import { SignalRequest } from '@core/constants/signal-request.constants';
 import { ChatMessage } from '@core/interfaces/chat-message.interface';
@@ -23,6 +23,7 @@ import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.
 import { UserAction } from '@core/interfaces/user-action.interface';
 import { TimerCommand } from '@core/constants/timer-command.constants';
 import { TimerEvent } from '@core/interfaces/timer-event.interface';
+import { GameStage } from '@core/constants/game-stage.constants';
 
 export const QUESTION_SELECTED_DELAY = 2000;
 
@@ -38,6 +39,7 @@ export class GameController implements IGameController {
   public questionType$: BehaviorSubject<QuestionType> = new BehaviorSubject(null);
   public atom$: BehaviorSubject<GameAtom> = new BehaviorSubject(null);
   public rightAnswer$: BehaviorSubject<GameAnswer> = new BehaviorSubject(null);
+  public gameStage$: BehaviorSubject<GameStage> = new BehaviorSubject(null);
   public gameReplic$: BehaviorSubject<string> = new BehaviorSubject(null);
   public questionSelected$: Subject<[number, number]> = new Subject();
   public userAction$: Subject<UserAction> = new Subject();
@@ -81,6 +83,14 @@ export class GameController implements IGameController {
         user: user,
       },
     ]);
+  }
+
+  private clearInfoState(): void {
+    this.questionType$.next(null);
+    this.atom$.next(null);
+    this.rightAnswer$.next(null);
+    this.userReplic$.next(null);
+    this.showTimerBorder$.next(false);
   }
 
   public sendChatMessage(message: string): Observable<void> {
@@ -215,7 +225,11 @@ export class GameController implements IGameController {
                 })),
               );
               if (args[1] === '+') {
-                this.showMode$.next(GameShowMode.RoundThemes);
+                if (this.gameStage$.getValue() === GameStage.Final) {
+                  this.showMode$.next(GameShowMode.FinalThemes);
+                } else {
+                  this.showMode$.next(GameShowMode.RoundThemes);
+                }
               }
               break;
             }
@@ -257,11 +271,7 @@ export class GameController implements IGameController {
               break;
             case MessageType.ShowTablo:
               this.showMode$.next(GameShowMode.Tablo);
-              this.questionType$.next(null);
-              this.atom$.next(null);
-              this.rightAnswer$.next(null);
-              this.userReplic$.next(null);
-              this.showTimerBorder$.next(false);
+              this.clearInfoState();
               break;
             case MessageType.QuestionType:
               this.questionType$.next(args[1] as QuestionType);
@@ -377,6 +387,13 @@ export class GameController implements IGameController {
               }
               break;
             }
+
+            case MessageType.FinalThink:
+              this.players$.getValue().forEach(({ name }) => {
+                this.userAvatarState$.next({ name, state: AvatarState.Default });
+              });
+              break;
+            case MessageType.PersonFinalAnswer:
             case MessageType.PersonFinalStake: {
               const player = this.players$.getValue()?.[+args[1]];
               if (player) {
@@ -456,6 +473,31 @@ export class GameController implements IGameController {
               this.canTry$.next(withBorder);
               break;
             }
+            case MessageType.FinalRound:
+              this.players$.next(
+                this.players$.getValue().map((item, i) => ({
+                  ...item,
+                  inFinal: args[i + 1] === '+',
+                })),
+              );
+              break;
+            case MessageType.Stage: {
+              const stage = args[1] as GameStage;
+              this.gameStage$.next(stage);
+              this.clearInfoState();
+              switch (stage) {
+                case GameStage.Before:
+                case GameStage.After:
+                  this.showMode$.next(GameShowMode.Logo);
+                  break;
+              }
+              break;
+            }
+            case MessageType.Out:
+              this.roundThemes$.next(
+                this.roundThemes$.getValue().filter(({ originalIndex }) => originalIndex !== +args[1]),
+              );
+              break;
           }
         } else {
           this.addChatMessage(text, sender);

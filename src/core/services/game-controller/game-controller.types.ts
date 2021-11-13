@@ -10,6 +10,7 @@ import { RoundTheme } from '@core/interfaces/round-theme.interface';
 import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.types';
 import { UserAction } from '@core/interfaces/user-action.interface';
 import { TimerEvent } from '@core/interfaces/timer-event.interface';
+import { GameStage } from '@core/constants/game-stage.constants';
 
 export interface IGameController {
   chatMessages$: BehaviorSubject<ChatMessage[]>;
@@ -32,6 +33,7 @@ export interface IGameController {
   timerMaxTime$: BehaviorSubject<number>;
   canTry$: Subject<boolean>;
   showTimerBorder$: BehaviorSubject<boolean>;
+  gameStage$: BehaviorSubject<GameStage>;
   gameReplic$: BehaviorSubject<string>;
   sendChatMessage(message: string): Observable<void>;
   start(): this;
