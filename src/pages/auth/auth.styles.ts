@@ -1,3 +1,4 @@
+import { AppText } from '@core/components/text';
 import styled from 'styled-components/native';
 
 export const ModalContainer = styled.View`
@@ -12,9 +13,8 @@ export const ModalContent = styled.View`
   padding: 12px;
 `;
 
-export const Title = styled.Text`
+export const Title = styled(AppText)`
   color: ${({ theme }) => theme.pallette.primary};
-  font-weight: bold;
   font-size: 20px;
   text-align: center;
 `;

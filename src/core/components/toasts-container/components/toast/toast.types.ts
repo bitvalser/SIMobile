@@ -1,5 +1,5 @@
 import { ToastInstance } from '@core/services/toasts/toasts.types';
-import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
+import { ReactNode } from 'react';
 
 export interface ToastProps {
   id: string;

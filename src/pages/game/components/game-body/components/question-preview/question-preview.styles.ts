@@ -1,4 +1,5 @@
 import { RotateContainer } from '@core/components/rotate-container';
+import { AppText } from '@core/components/text';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
@@ -9,15 +10,12 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const PreviewText = styled.Text`
+export const PreviewText = styled(AppText)`
   font-size: 62px;
   line-height: 80px;
   text-transform: uppercase;
   text-align: center;
   display: flex;
-  text-shadow-color: #000;
-  text-shadow-offset: 0px 1px;
-  text-shadow-radius: 5px;
   color: ${({ theme }) => theme.pallette.primary};
 `;
 

@@ -1,3 +1,4 @@
+import { AppText } from '@core/components/text';
 import { Animated, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -36,8 +37,7 @@ export const QuestionCeil = styled.View<{ ceils: number }>`
   justify-content: center;
 `;
 
-export const ThemeName = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
+export const ThemeName = styled(AppText)`
+  font-size: 18px;
   color: ${({ theme }) => theme.pallette.primary};
 `;

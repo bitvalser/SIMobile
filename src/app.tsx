@@ -9,11 +9,9 @@ import { defaultTheme } from './theme';
 import { appContainer, InversifyContext } from './inversify.config';
 import { ModalsContainer } from '@core/components/modals-container';
 import { ToastsContainer } from '@core/components/toasts-container';
+import { ErrorBoundary } from '@core/components/error-boundary';
 
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
@@ -24,9 +22,11 @@ const App = (): JSX.Element => (
       <ThemeProvider theme={defaultTheme}>
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={null}>
-            <RootNavigator />
-            <ToastsContainer />
-            <ModalsContainer />
+            <ErrorBoundary>
+              <RootNavigator />
+              <ToastsContainer />
+              <ModalsContainer />
+            </ErrorBoundary>
           </Suspense>
         </I18nextProvider>
       </ThemeProvider>

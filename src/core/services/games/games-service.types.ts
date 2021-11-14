@@ -1,6 +1,7 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { GameItem } from '@core/interfaces/game-item.interface';
 import { GameRole } from '@core/constants/game-role.constants';
+import { IGameController } from '../game-controller/game-controller.types';
 
 export interface DataSlice<T> {
   data: T[];
@@ -22,5 +23,8 @@ export interface IGamesService {
   onGamesCreated(): Observable<GameItem[]>;
   onGamesChanged(): Observable<GameItem[]>;
   onGamesDeleted(): Observable<string[]>;
+  createGameController(): void;
+  getCurrentGameController(): IGameController;
+  removeGameController(): void;
   joinGame(gameId: number, role: GameRole, password?: string): Observable<JoinGameResponse>;
 }

@@ -38,6 +38,7 @@ export interface IGameController {
   sendChatMessage(message: string): Observable<void>;
   start(): this;
   leave(): void;
+  createStringSnapshot(): string;
 }
 
 export interface GameMessage {

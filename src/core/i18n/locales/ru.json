@@ -2,6 +2,10 @@
   "title": "SIMobile",
   "error": "Ошибка",
   "dialog": "Диалог",
+  "about": {
+    "title": "Об игре",
+    "text": "Мобильный клиент для игры в \"Свою игру\" (SIGame)\n\n<bold>Автор мобильной версии</bold>: bitvalser@gmail.com\n<bold>Автор оригинальной игры</bold>: Владимир Хиль\n\n<bold>Сайт автора оригинальной игры</bold>:\n<originalLink>{{original_url}}</originalLink><bold>\n\nСвязь со мной</bold>:\n<vkLink>{{vk_url}}</vkLink>"
+  },
   "auth": {
     "yourName": "Ваше имя",
     "yourNamePlaceholder": "Введите имя...",
@@ -35,12 +39,21 @@
     "userDisconnected": "{user} отключился",
     "players": "Игроки",
     "pause": "Пауза",
+    "spectators": "Зрители",
+    "master": "Ведущий",
+    "participants": "Участники",
     "questionNoRisk": "Вопрос\nбез риска",
     "questionSecret": "Вопрос с\nсекретом",
     "questionAuction": "Вопрос со\nставкой"
   },
+  "settings": {
+    "title": "Настройки",
+    "sound": "Звук"
+  },
   "errors": {
     "serverNotFound": "Подходящий сервер не найден",
-    "unknownError": "Неизвестная ошибка"
+    "unknownError": "Неизвестная ошибка",
+    "errorId": "Идентификатор ошибки",
+    "boundaryText": "К сожалению произошла ошибка во время использования приложения и оно упало. Я уже отправил сообщение об ошибке себе на сервер, так что я постараюсь исправить её в ближайшее время.\n\nЕсли ты хочешь ускорить процесс и помочь мне с исправлением ошибки ты можешь написать мне напрямую и описть подробнее что случилось:\n"
   }
 }

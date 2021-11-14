@@ -80,9 +80,10 @@ const UserAction: FC = () => {
             ],
           }}>
           <Styled.TimerWrapper>
-            <PlayerTimer name={userAction.user.name} initialTime={userAction.timer} />
+            <PlayerTimer key={userAction.user.name} name={userAction.user.name} initialTime={userAction.timer} />
           </Styled.TimerWrapper>
           <UserItem
+            key={userAction.user.name}
             isConnected={userAction.user.isConnected}
             avatar={userAction.user.avatar}
             name={userAction.user.name}

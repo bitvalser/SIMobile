@@ -9,4 +9,8 @@ export const TYPES = {
   ModalsService: Symbol.for('ModalsService'),
   ToastsService: Symbol.for('ToastsService'),
   GameController: Symbol.for('GameController'),
+  SoundsService: Symbol.for('SoundsService'),
+  AppSettingsService: Symbol.for('AppSettingsService'),
+  Storage: Symbol.for('Storage'),
+  LogsService: Symbol.for('LogsService'),
 };

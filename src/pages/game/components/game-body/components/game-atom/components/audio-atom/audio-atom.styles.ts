@@ -3,8 +3,9 @@ import styled from 'styled-components/native';
 
 export const NoteText = styled.Text`
   font-size: 72px;
-  line-height: 144px;
+  line-height: 172px;
   display: flex;
+  font-family: ${({ theme }) => theme.fonts.secondary};
   color: ${({ theme }) => theme.pallette.primary};
 `;
 

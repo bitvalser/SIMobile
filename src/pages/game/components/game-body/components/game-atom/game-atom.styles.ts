@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { AppText } from '@core/components/text';
 
 export const Container = styled.View`
   display: flex;
@@ -9,14 +10,10 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const QuestionText = styled.Text`
-  font-size: 22px;
-  font-weight: bold;
+export const QuestionText = styled(AppText)`
+  font-size: 24px;
   text-align: center;
   margin: 12px;
-  text-shadow-color: #000;
-  text-shadow-offset: 0px 1px;
-  text-shadow-radius: 5px;
   color: ${({ theme }) => theme.pallette.primary};
 `;
 

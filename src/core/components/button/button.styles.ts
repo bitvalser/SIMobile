@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { AppText } from '../text';
 
 export const Container = styled.View<{ fullWidth: boolean; disabled: boolean }>`
   border: 1px solid ${({ theme }) => theme.pallette.primary};
@@ -6,10 +7,9 @@ export const Container = styled.View<{ fullWidth: boolean; disabled: boolean }>`
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.7)};
 `;
 
-export const ButtonText = styled.Text`
+export const ButtonText = styled(AppText)`
   color: ${({ theme }) => theme.pallette.primary};
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 22px;
   text-align: center;
 `;
 

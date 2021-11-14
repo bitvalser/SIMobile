@@ -1,3 +1,4 @@
+import { AppText } from '@core/components/text';
 import styled from 'styled-components/native';
 
 export const Container = styled.View<{ selected: boolean }>`
@@ -6,8 +7,7 @@ export const Container = styled.View<{ selected: boolean }>`
   border: 1px solid ${({ theme, selected }) => (selected ? theme.pallette.primary : theme.pallette.secondary)};
 `;
 
-export const ChipText = styled.Text<{ selected: boolean }>`
-  font-size: 16px;
-  font-weight: bold;
+export const ChipText = styled(AppText)<{ selected: boolean }>`
+  font-size: 18px;
   color: ${({ theme, selected }) => (selected ? theme.pallette.primary : theme.pallette.secondary)};
 `;

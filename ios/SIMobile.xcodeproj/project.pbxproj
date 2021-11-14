@@ -40,6 +40,8 @@
 		E349F24A56347512FA8A059F /* libPods-SIMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD49AA1A1190CE4B6DD94CC /* libPods-SIMobile.a */; };
 		EBF168CE9CA447BE9801F8A5 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F164558B6FC46E18FC1ECF6 /* Montserrat-ExtraLightItalic.ttf */; };
 		FFA1AA4947824D149A2A6853 /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C07B063EE1E8445D90B9A710 /* Montserrat-ExtraBoldItalic.ttf */; };
+		F4A5F9E28ECB42CBBB9CA677 /* Clefs.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D191DEDB400D4BB0946A8B61 /* Clefs.ttf */; };
+		B513C86B9C3A414B9C393347 /* SI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D815CEBFF8644B5ABE064570 /* SI.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +125,8 @@
 		F13E11BD9FAF4E78B0734315 /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BoldItalic.ttf"; path = "../src/assets/fonts/Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
 		F8008D4775C94E82BB387DA5 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		FC35DA8FB25D402489414703 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../src/assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		D191DEDB400D4BB0946A8B61 /* Clefs.ttf */ = {isa = PBXFileReference; name = "Clefs.ttf"; path = "../src/assets/fonts/Clefs.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D815CEBFF8644B5ABE064570 /* SI.ttf */ = {isa = PBXFileReference; name = "SI.ttf"; path = "../src/assets/fonts/SI.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +234,8 @@
 				53036D9420DB42B9BCD35C4F /* Octicons.ttf */,
 				B91F05C4590044A98B157E39 /* SimpleLineIcons.ttf */,
 				770049961D8B4DBCB2F8C333 /* Zocial.ttf */,
+				D191DEDB400D4BB0946A8B61 /* Clefs.ttf */,
+				D815CEBFF8644B5ABE064570 /* SI.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -464,6 +470,8 @@
 				6457AC1FA7E046E88AD6A14C /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				536E06C4C88349FCA412969B /* Montserrat-Thin.ttf in Resources */,
 				9AC92CFF91724EB6979D82AE /* Montserrat-ThinItalic.ttf in Resources */,
+				F4A5F9E28ECB42CBBB9CA677 /* Clefs.ttf in Resources */,
+				B513C86B9C3A414B9C393347 /* SI.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

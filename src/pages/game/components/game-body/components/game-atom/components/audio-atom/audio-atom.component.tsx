@@ -5,12 +5,12 @@ import { filter, map } from 'rxjs/operators';
 import { TimerCommand } from '@core/constants/timer-command.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import { useService } from '@core/hooks/use-service.hook';
-import { ToastsService } from '@core/services/toasts/toasts.service';
 import * as Styled from './audio-atom.styles';
 import { AudioAtomProps } from './audio-atom.types';
+import { SoundsService } from '@core/services/sounds/sounds.service';
 
-const AudioAtom: FC<AudioAtomProps> = memo(({ uri }) => {
-  const { showToast } = useService(ToastsService);
+const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
+  const { getMusic, releaseMusic } = useService(SoundsService);
   const [{ pauseChannel$, timerChannel$ }] = useGameController();
   const trackRef = useRef<Sound>();
 
@@ -27,34 +27,25 @@ const AudioAtom: FC<AudioAtomProps> = memo(({ uri }) => {
       if (isPause) {
         trackRef.current?.pause();
       } else {
-        trackRef.current?.play();
+        trackRef.current?.play(() => releaseMusic(musicId));
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [pauseChannel$, timerChannel$]);
+  }, [musicId, pauseChannel$, releaseMusic, timerChannel$]);
 
   useEffect(() => {
     if (!trackRef.current) {
-      trackRef.current = new Sound(uri, null, (error) => {
-        if (error) {
-          showToast({
-            type: 'danger',
-            text: error,
-          });
-        } else {
-          trackRef.current.play();
-        }
-      }).setNumberOfLoops(0);
+      getMusic(musicId).then((sound) => {
+        trackRef.current = sound.play(() => releaseMusic(musicId)).setNumberOfLoops(0);
+      });
     }
     return () => {
-      if (trackRef.current) {
-        trackRef.current.release();
-      }
+      releaseMusic(musicId);
     };
-  }, [showToast, uri]);
+  }, [getMusic, musicId, releaseMusic]);
 
   return (
     <Styled.Container>

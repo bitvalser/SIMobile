@@ -13,8 +13,7 @@ const resources = {
 
 const locale =
   Platform.OS === 'ios'
-    ? NativeModules.SettingsManager.settings.AppleLocale ||
-      NativeModules.SettingsManager.settings.AppleLanguages[0]
+    ? NativeModules.SettingsManager.settings.AppleLocale || NativeModules.SettingsManager.settings.AppleLanguages[0]
     : NativeModules.I18nManager.localeIdentifier;
 
 export const systemLanguage =

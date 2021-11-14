@@ -24,6 +24,9 @@ import { UserAction } from '@core/interfaces/user-action.interface';
 import { TimerCommand } from '@core/constants/timer-command.constants';
 import { TimerEvent } from '@core/interfaces/timer-event.interface';
 import { GameStage } from '@core/constants/game-stage.constants';
+import { ISoundsService } from '../sounds/sounds.types';
+import { AppSound } from '@core/constants/sound.constants';
+import { ILogsService } from '../logs/logs.types';
 
 export const QUESTION_SELECTED_DELAY = 2000;
 
@@ -60,6 +63,8 @@ export class GameController implements IGameController {
     private siApiClient: ISiApiClient,
     private toastsService: IToastsService,
     private translation: i18n,
+    private soundsService: ISoundsService,
+    private logsService: ILogsService,
   ) {
     this.start = this.start.bind(this);
     this.leave = this.leave.bind(this);
@@ -123,6 +128,7 @@ export class GameController implements IGameController {
           const type = args[0];
           console.log(type);
           console.log(args);
+          this.logsService.log(args.join('\t'));
           switch (type) {
             case MessageType.Info2: {
               const playersCount = +args[1];
@@ -165,14 +171,19 @@ export class GameController implements IGameController {
                   break;
                 case 'player': {
                   const currentPlayers = [...this.players$.getValue()];
-                  currentPlayers.splice(index, 1, newUser);
-                  this.players$.next(currentPlayers);
+                  if (currentPlayers[index]) {
+                    currentPlayers.splice(index, 1, {
+                      ...newUser,
+                      sum: currentPlayers[index].sum,
+                    });
+                    this.players$.next(currentPlayers);
+                  }
                   break;
                 }
                 case 'viewer': {
-                  const currentPlayers = [...this.spectators$.getValue()];
-                  currentPlayers.splice(index, 1, newUser);
-                  this.spectators$.next(currentPlayers);
+                  const currentViewers = [...this.spectators$.getValue()];
+                  currentViewers.splice(index, 1, newUser);
+                  this.spectators$.next(currentViewers);
                   break;
                 }
               }
@@ -229,6 +240,7 @@ export class GameController implements IGameController {
                   this.showMode$.next(GameShowMode.FinalThemes);
                 } else {
                   this.showMode$.next(GameShowMode.RoundThemes);
+                  this.soundsService.getSound(AppSound.RoundThemes).play();
                 }
               }
               break;
@@ -268,6 +280,7 @@ export class GameController implements IGameController {
             case MessageType.GameThemes:
               this.gameThemes$.next(args.slice(1));
               this.showMode$.next(GameShowMode.GameThemes);
+              this.soundsService.getSound(AppSound.RoundBegin).play();
               break;
             case MessageType.ShowTablo:
               this.showMode$.next(GameShowMode.Tablo);
@@ -281,8 +294,15 @@ export class GameController implements IGameController {
             case MessageType.Atom: {
               const atomType = args[1];
               switch (atomType) {
-                case AtomType.Video:
                 case AtomType.Voice:
+                  this.atom$.next({
+                    type: atomType,
+                    data: this.soundsService.loadMusic(
+                      args[3].replace('<SERVERHOST>', this.siApiClient.serverUri$.getValue()),
+                    ),
+                  });
+                  break;
+                case AtomType.Video:
                 case AtomType.Image:
                   this.atom$.next({
                     type: atomType,
@@ -293,7 +313,7 @@ export class GameController implements IGameController {
                 case AtomType.Text:
                   this.atom$.next({
                     type: atomType,
-                    data: args.splice(2).join(),
+                    data: args.splice(2).join('\n'),
                   });
                   break;
               }
@@ -442,10 +462,10 @@ export class GameController implements IGameController {
             case MessageType.Person: {
               const isWon = args[1] === '+';
               const personIndex = +args[2];
-              console.log(this.players$.getValue()[personIndex], isWon, +args[3]);
-              if (this.players$.getValue()?.[personIndex]) {
+              const player = this.players$.getValue()?.[personIndex];
+              if (player) {
                 this.userAvatarState$.next({
-                  name: this.players$.getValue()[personIndex].name,
+                  name: player.name,
                   state: isWon ? AvatarState.Success : AvatarState.Wrong,
                 });
                 this.players$.next(
@@ -458,6 +478,7 @@ export class GameController implements IGameController {
                       : {}),
                   })),
                 );
+                this.soundsService.getSound(isWon ? AppSound.ApplauseSmall : AppSound.AnswerWrong).play();
               }
               this.userReplic$.next(null);
               break;
@@ -505,6 +526,26 @@ export class GameController implements IGameController {
       }),
     );
     return this;
+  }
+
+  public createStringSnapshot(): string {
+    return JSON.stringify({
+      chatMessages: this.chatMessages$.getValue(),
+      roundThemes: this.roundThemes$.getValue(),
+      gameMaster: this.gameMaster$.getValue(),
+      players: this.players$.getValue(),
+      spectators: this.spectators$.getValue(),
+      gameThemes: this.gameThemes$.getValue(),
+      showMode: this.showMode$.getValue(),
+      questionType: this.questionType$.getValue(),
+      atom: this.atom$.getValue(),
+      rightAnswer: this.rightAnswer$.getValue(),
+      gameStage: this.gameStage$.getValue(),
+      gameReplic: this.gameReplic$.getValue(),
+      showTimerBorder: this.showTimerBorder$.getValue(),
+      timerMaxTime: this.timerMaxTime$.getValue(),
+      userName: this.siApiClient.userName$.getValue(),
+    });
   }
 
   public leave(): void {

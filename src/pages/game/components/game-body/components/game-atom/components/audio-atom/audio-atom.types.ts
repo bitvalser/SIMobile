@@ -1,3 +1,3 @@
 export interface AudioAtomProps {
-  uri: string;
+  musicId: string;
 }

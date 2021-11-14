@@ -1,7 +1,9 @@
+import { AppText } from '@core/components/text';
+import { GameRole } from '@core/constants/game-role.constants';
 import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
 import { GamePlayer } from '@core/interfaces/game-player.interface';
 import { ComponentType } from 'react';
-import { FlatList, FlatListProps } from 'react-native';
+import { SectionList, SectionListProps } from 'react-native';
 import styled from 'styled-components/native';
 
 export const Container = styled.KeyboardAvoidingView`
@@ -21,21 +23,19 @@ export const Header = styled.View`
   flex-direction: row;
 `;
 
-export const Title = styled.Text`
-  font-size: 20px;
+export const Title = styled(AppText)`
+  font-size: 24px;
   display: flex;
   flex: 1;
-  font-weight: bold;
   color: ${({ theme }) => theme.pallette.primary};
 `;
 
-export const CloseText = styled.Text`
+export const CloseText = styled(AppText)`
   font-size: 20px;
-  font-weight: bold;
   color: ${({ theme }) => theme.pallette.primary};
   padding: 4px;
 `;
 
-export const UsersList = styled(FlatList)`
+export const UsersList = styled(SectionList)`
   padding: 0 12px;
-` as ComponentType<FlatListProps<GamePlayer>>;
+` as ComponentType<SectionListProps<GamePlayer & { role: GameRole }>>;

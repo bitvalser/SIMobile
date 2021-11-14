@@ -11,6 +11,10 @@ export interface AppTheme {
     secondaryBackground: `#${string}`;
     secondaryHighlight: `#${string}`;
   };
+  fonts: {
+    primary: string;
+    secondary: string;
+  }
 }
 
 export const defaultTheme: AppTheme = {
@@ -25,5 +29,9 @@ export const defaultTheme: AppTheme = {
     white: '#fff',
     black: '#000',
     gray: '#E0E0E0',
+  },
+  fonts: {
+    primary: 'SI',
+    secondary: 'Clefs',
   },
 };

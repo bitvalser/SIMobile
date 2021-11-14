@@ -1,3 +1,4 @@
+import { AppText } from '@core/components/text';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
@@ -12,8 +13,7 @@ export const Container = styled.View`
   background-color: rgba(0, 0, 0, 0.6);
 `;
 
-export const PauseText = styled.Text`
+export const PauseText = styled(AppText)`
   font-size: 64px;
-  font-weight: bold;
   color: ${({ theme }) => theme.pallette.primary};
 `;

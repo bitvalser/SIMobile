@@ -21,7 +21,7 @@ const GameAtom: FC = () => {
           <Styled.QuestionImage resizeMode="contain" fadeDuration={0} source={{ uri: atom.data }} />
         )}
         {atom.type === AtomType.Video && <VideoAtom uri={atom.data} />}
-        {atom.type === AtomType.Voice && <AudioAtom uri={atom.data} />}
+        {atom.type === AtomType.Voice && <AudioAtom musicId={atom.data} />}
         <TimerBorder />
       </Styled.Container>
     )
