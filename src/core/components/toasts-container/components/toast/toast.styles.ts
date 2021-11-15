@@ -2,15 +2,12 @@ import { Animated } from 'react-native';
 import styled from 'styled-components/native';
 
 export const AnimatedContainer = styled(Animated.View)`
-  width: 100%;
-  position: absolute;
   display: flex;
   flex-direction: column;
   z-index: 999;
   elevation: 6;
   align-items: center;
   justify-content: center;
-  bottom: 0;
 `;
 
 export const ToastText = styled.Text<{ typeColor: string }>`
@@ -20,7 +17,8 @@ export const ToastText = styled.Text<{ typeColor: string }>`
 
 export const Content = styled.View`
   display: flex;
-  height: 40px;
+  min-height: 40px;
+  margin-bottom: 5px;
   flex-direction: row;
   background: ${({ theme }) => theme.pallette.white};
   padding: 8px 16px;

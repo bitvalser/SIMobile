@@ -7,6 +7,8 @@ import * as Styled from './game.styles';
 import GameBody from './components/game-body/game-body.component';
 import { ButtonFooter } from './components/button-footer';
 import { UserAction } from './components/user-action';
+import { PlayerEvents } from './components/player-events';
+import { ToastsContainer } from '@core/components/toasts-container';
 
 const Game = () => {
   const [gameController, leave] = useGameController();
@@ -31,7 +33,11 @@ const Game = () => {
         <ChatHeader />
         <GameBody />
         <UserAction />
+        <PlayerEvents />
         <ButtonFooter />
+        <Styled.ToastsContainer>
+          <ToastsContainer container="game" />
+        </Styled.ToastsContainer>
       </Styled.Container>
     </BackgroundContainer>
   );

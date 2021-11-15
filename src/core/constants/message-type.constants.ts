@@ -1,6 +1,5 @@
 export enum MessageType {
   Info2 = 'INFO2',
-  Info = 'INFO',
   ShowTablo = 'SHOWTABLO',
   Config = 'CONFIG',
   QuestionType = 'QTYPE',
@@ -31,4 +30,11 @@ export enum MessageType {
   Out = 'OUT',
   Stage = 'STAGE',
   FinalThink = 'FINALTHINK',
+  Answer = 'ANSWER',
+  Cat = 'CAT',
+  CatCost = 'CATCOST',
+  Stake = 'STAKE',
+  Cancel = 'CANCEL',
+  Choose = 'CHOOSE',
+  FinalStake = 'FINALSTAKE',
 }

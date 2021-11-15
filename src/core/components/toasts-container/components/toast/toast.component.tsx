@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, FC } from 'react';
 import { Animated } from 'react-native';
-import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
 import { useTheme } from 'styled-components/native';
 import { AppTheme } from '@theme/index';
 import { ToastProps } from './toast.types';
 import * as Styled from './toast.styles';
-
-const TOAST_HEIGHT = 40;
 
 const getColor = (type: ToastProps['type'], theme: AppTheme) => {
   switch (type) {
@@ -19,17 +16,17 @@ const getColor = (type: ToastProps['type'], theme: AppTheme) => {
   }
 };
 
-const Toast: FC<ToastProps> = React.memo(({ id, text, content, delay, index, type, onHide }) => {
-  const toggleAnim = useRef(new Animated.Value(TOAST_HEIGHT)).current;
+const Toast: FC<ToastProps> = React.memo(({ id, text, content, delay, type, onHide }) => {
   const opacityAnim = useRef(new Animated.Value(1)).current;
+  const appearAnim = useRef(new Animated.Value(20)).current;
   const theme = useTheme();
 
   useEffect(() => {
-    Animated.spring(toggleAnim, {
+    Animated.spring(appearAnim, {
       useNativeDriver: true,
-      toValue: -(index * (TOAST_HEIGHT + 8) + DimensionsStyle.safeAreaBottomHeight + 20),
+      toValue: 0,
     }).start();
-  }, [index, toggleAnim]);
+  }, [appearAnim]);
 
   useEffect(() => {
     Animated.timing(opacityAnim, {
@@ -46,7 +43,7 @@ const Toast: FC<ToastProps> = React.memo(({ id, text, content, delay, index, typ
         opacity: opacityAnim,
         transform: [
           {
-            translateY: toggleAnim,
+            translateY: appearAnim,
           },
         ],
       }}>

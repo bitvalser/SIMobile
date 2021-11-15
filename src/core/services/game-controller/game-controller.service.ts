@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, Subscription } from 'rxjs';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { delay, map, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, map, take, tap, withLatestFrom } from 'rxjs/operators';
 import { MessageType } from '@core/constants/message-type.constants';
 import { SignalEvent } from '@core/constants/signal-event.constants';
 import { SignalRequest } from '@core/constants/signal-request.constants';
@@ -27,6 +27,10 @@ import { GameStage } from '@core/constants/game-stage.constants';
 import { ISoundsService } from '../sounds/sounds.types';
 import { AppSound } from '@core/constants/sound.constants';
 import { ILogsService } from '../logs/logs.types';
+import { PlayerAction } from '@core/interfaces/player-action.interface';
+import { PlayerEvents } from '@core/constants/player-events.constants';
+import { SendMessageType } from '@core/constants/send-message-type.constants';
+import { StakeMessageType } from '@core/constants/stake-message-type.constants';
 
 export const QUESTION_SELECTED_DELAY = 2000;
 
@@ -52,10 +56,17 @@ export class GameController implements IGameController {
   public showTimerBorder$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public timerMaxTime$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public pauseChannel$: Subject<boolean> = new Subject();
+  public playerAction$: Subject<PlayerAction> = new Subject();
+  public yourQuestionChoice$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public userAvatarState$: ReplaySubject<{ name: string; state: AvatarState }> = new ReplaySubject(12);
+  public playerReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public currentPlayer$: Observable<GamePlayer> = this.players$.pipe(
     withLatestFrom(this.siApiClient.userName$),
     map(([data, userName]) => data.find(({ name }) => name === userName)),
+  );
+  public currentPlayerIndex$: Observable<number> = this.players$.pipe(
+    withLatestFrom(this.siApiClient.userName$),
+    map(([data, userName]) => data.findIndex(({ name }) => name === userName)),
   );
 
   public constructor(
@@ -69,11 +80,21 @@ export class GameController implements IGameController {
     this.start = this.start.bind(this);
     this.leave = this.leave.bind(this);
     this.sendChatMessage = this.sendChatMessage.bind(this);
+    this.choiceQuestion = this.choiceQuestion.bind(this);
+    this.removeTheme = this.removeTheme.bind(this);
+    this.sendAnswer = this.sendAnswer.bind(this);
+    this.tryAnswer = this.tryAnswer.bind(this);
+    this.sendStake = this.sendStake.bind(this);
+    this.sendFinalStake = this.sendFinalStake.bind(this);
+    this.selectCatCost = this.selectCatCost.bind(this);
+    this.selectCat = this.selectCat.bind(this);
+    this.mediaEnd = this.mediaEnd.bind(this);
+    this.ready = this.ready.bind(this);
   }
 
-  private sendSystemMessage<T = any>(message: string): Observable<T> {
+  private sendSystemMessage<T = any>(...messages: string[]): Observable<T> {
     return this.signalR.invoke(SignalRequest.SendMessage, {
-      Text: message,
+      Text: messages.join('\n'),
       IsSystem: true,
       Receiver: '@',
     });
@@ -98,6 +119,49 @@ export class GameController implements IGameController {
     this.showTimerBorder$.next(false);
   }
 
+  public choiceQuestion(theme: number, question: number): void {
+    this.yourQuestionChoice$.next(false);
+    this.sendSystemMessage(SendMessageType.Choice, theme.toString(), question.toString());
+  }
+
+  public removeTheme(theme: number): void {
+    this.sendSystemMessage(SendMessageType.Delete, theme.toString());
+  }
+
+  public sendAnswer(answer: string): void {
+    this.sendSystemMessage(SendMessageType.Answer, answer);
+  }
+
+  public tryAnswer(): void {
+    this.sendSystemMessage(SendMessageType.Try);
+  }
+
+  public sendStake(type: StakeMessageType, stake?: number): void {
+    this.sendSystemMessage(SendMessageType.Stake, type.toString(), stake?.toString());
+  }
+
+  public sendFinalStake(stake?: number): void {
+    this.sendSystemMessage(SendMessageType.FinalStake, stake.toString());
+  }
+
+  public selectCat(index: number): void {
+    this.sendSystemMessage(SendMessageType.Cat, index.toString());
+  }
+
+  public selectCatCost(sum: number): void {
+    this.sendSystemMessage(SendMessageType.CatCost, sum.toString());
+  }
+
+  public mediaEnd(): void {
+    this.sendSystemMessage(SendMessageType.Atom);
+  }
+
+  public ready(): void {
+    const isReady = this.playerReady$.getValue();
+    this.sendSystemMessage(SendMessageType.Ready, isReady ? '+' : '-');
+    this.playerReady$.next(!isReady);
+  }
+
   public sendChatMessage(message: string): Observable<void> {
     return this.signalR
       .invoke(SignalRequest.SendMessage, {
@@ -120,7 +184,7 @@ export class GameController implements IGameController {
   }
 
   public start(): this {
-    this.sendSystemMessage(MessageType.Info);
+    this.sendSystemMessage(SendMessageType.Info);
     this.subscriptions.push(
       this.signalR.on<[GameMessage]>(SignalEvent.Receive).subscribe(([{ isSystem, sender, text }]) => {
         if (isSystem) {
@@ -240,7 +304,6 @@ export class GameController implements IGameController {
                   this.showMode$.next(GameShowMode.FinalThemes);
                 } else {
                   this.showMode$.next(GameShowMode.RoundThemes);
-                  this.soundsService.getSound(AppSound.RoundThemes).play();
                 }
               }
               break;
@@ -280,7 +343,6 @@ export class GameController implements IGameController {
             case MessageType.GameThemes:
               this.gameThemes$.next(args.slice(1));
               this.showMode$.next(GameShowMode.GameThemes);
-              this.soundsService.getSound(AppSound.RoundBegin).play();
               break;
             case MessageType.ShowTablo:
               this.showMode$.next(GameShowMode.Tablo);
@@ -329,6 +391,7 @@ export class GameController implements IGameController {
               switch (replicType) {
                 case 's':
                   this.toastsService.showToast({
+                    container: 'game',
                     type: 'info',
                     text: args[2],
                     delay: 3000,
@@ -517,6 +580,70 @@ export class GameController implements IGameController {
             case MessageType.Out:
               this.roundThemes$.next(
                 this.roundThemes$.getValue().filter(({ originalIndex }) => originalIndex !== +args[1]),
+              );
+              break;
+            case MessageType.Answer:
+              this.playerAction$.next({
+                event: PlayerEvents.Answer,
+              });
+              break;
+            case MessageType.Cat:
+              this.playerAction$.next({
+                event: PlayerEvents.Cat,
+                players: args.slice(1).map((item) => item === '+'),
+              });
+              break;
+            case MessageType.CatCost:
+              this.playerAction$.next({
+                event: PlayerEvents.CatCost,
+                min: +args[1],
+                max: +args[2],
+                step: +args[3],
+              });
+              break;
+            case MessageType.Stake: {
+              this.subscriptions.push(
+                this.currentPlayer$.pipe(take(1)).subscribe((player) => {
+                  if (player) {
+                    this.playerAction$.next({
+                      event: PlayerEvents.Stake,
+                      nominal: args[1] === '+',
+                      stake: args[2] === '+',
+                      pass: args[3] === '+',
+                      allIn: args[4] === '+',
+                      min: +args[5],
+                      max: player.sum,
+                    });
+                  }
+                }),
+              );
+              break;
+            }
+            case MessageType.Cancel:
+              this.playerAction$.next(null);
+              break;
+            case MessageType.SetChooser:
+              this.subscriptions.push(
+                this.currentPlayerIndex$.pipe(take(1)).subscribe((index) => {
+                  if (index >= 0 && index === +args[1]) {
+                    this.yourQuestionChoice$.next(true);
+                  }
+                }),
+              );
+              break;
+            case MessageType.Choose:
+              this.yourQuestionChoice$.next(true);
+              break;
+            case MessageType.FinalStake:
+              this.subscriptions.push(
+                this.currentPlayer$.pipe(take(1)).subscribe((player) => {
+                  if (player) {
+                    this.playerAction$.next({
+                      event: PlayerEvents.Final,
+                      max: player.sum,
+                    });
+                  }
+                }),
               );
               break;
           }

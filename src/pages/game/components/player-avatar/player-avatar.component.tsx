@@ -11,7 +11,7 @@ import useSubscription from '@core/hooks/use-subscription.hook';
 
 const WRONG_TRY_DELAY = 500;
 
-const PlayerAvatar: FC<PlayerAvatarProps> = memo(({ avatar = null, size = 120, name }) => {
+const PlayerAvatar: FC<PlayerAvatarProps> = memo(({ avatar = null, size = 120, name, avatarState = null }) => {
   const [{ userAvatarState$ }] = useGameController();
   const state = useSubscription(
     userAvatarState$.pipe(
@@ -31,7 +31,7 @@ const PlayerAvatar: FC<PlayerAvatarProps> = memo(({ avatar = null, size = 120, n
   const theme = useTheme();
 
   return (
-    <Styled.Container borderColor={getBorderColor(state, theme)} size={size}>
+    <Styled.Container borderColor={getBorderColor(avatarState || state, theme)} size={size}>
       <Styled.AvatarImage source={avatar ? { uri: avatar } : defaultMaleAvatar} />
     </Styled.Container>
   );

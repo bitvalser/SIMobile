@@ -20,6 +20,10 @@ const Settings: FC = () => {
     [saveSetting, sound, updateSetting],
   );
 
+  const handleChange = (value: number[] | number) => {
+    setSound(value[0]);
+  };
+
   return (
     <BackgroundContainer>
       <Styled.Container>
@@ -32,7 +36,7 @@ const Settings: FC = () => {
             step={1}
             animationType="timing"
             value={sound}
-            onValueChange={setSound as (value: number | Array<number>) => void}
+            onValueChange={handleChange}
           />
           <Styled.SettingsValue>{sound}</Styled.SettingsValue>
         </Styled.RowContainer>

@@ -4,14 +4,25 @@ import { Observable, of } from 'rxjs';
 import { concatMap, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import * as Styled from './round-themes.styles';
+import { useService } from '@core/hooks/use-service.hook';
+import { SoundsService } from '@core/services/sounds/sounds.service';
+import { AppSound } from '@core/constants/sound.constants';
 
 const APPEAR_TIME_DELAY = 300;
 const SHOW_DELAY = 1100;
 
 const RoundThemes: FC = () => {
   const [{ roundThemes$ }] = useGameController();
+  const { getSound } = useService(SoundsService);
   const appearAnim = useRef(new Animated.Value(1)).current;
   const [currentTheme, setCurrentTheme] = useState<string>(null);
+
+  useEffect(() => {
+    const sound = getSound(AppSound.RoundBegin).play();
+    return () => {
+      sound.stop();
+    };
+  }, [getSound]);
 
   useEffect(() => {
     const subscription = roundThemes$

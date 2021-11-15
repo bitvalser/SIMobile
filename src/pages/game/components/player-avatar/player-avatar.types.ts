@@ -2,6 +2,7 @@ export interface PlayerAvatarProps {
   avatar?: string;
   name: string;
   size: number;
+  avatarState?: AvatarState;
 }
 
 export enum AvatarState {

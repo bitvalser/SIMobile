@@ -11,7 +11,7 @@ import { SoundsService } from '@core/services/sounds/sounds.service';
 
 const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
   const { getMusic, releaseMusic } = useService(SoundsService);
-  const [{ pauseChannel$, timerChannel$ }] = useGameController();
+  const [{ pauseChannel$, timerChannel$, mediaEnd }] = useGameController();
   const trackRef = useRef<Sound>();
 
   useEffect(() => {
@@ -27,25 +27,33 @@ const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
       if (isPause) {
         trackRef.current?.pause();
       } else {
-        trackRef.current?.play(() => releaseMusic(musicId));
+        trackRef.current?.play(() => {
+          releaseMusic(musicId);
+          mediaEnd();
+        });
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [musicId, pauseChannel$, releaseMusic, timerChannel$]);
+  }, [mediaEnd, musicId, pauseChannel$, releaseMusic, timerChannel$]);
 
   useEffect(() => {
     if (!trackRef.current) {
       getMusic(musicId).then((sound) => {
-        trackRef.current = sound.play(() => releaseMusic(musicId)).setNumberOfLoops(0);
+        trackRef.current = sound
+          .play(() => {
+            releaseMusic(musicId);
+            mediaEnd();
+          })
+          .setNumberOfLoops(0);
       });
     }
     return () => {
       releaseMusic(musicId);
     };
-  }, [getMusic, musicId, releaseMusic]);
+  }, [getMusic, mediaEnd, musicId, releaseMusic]);
 
   return (
     <Styled.Container>

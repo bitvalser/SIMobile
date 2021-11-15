@@ -1,11 +1,15 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef, useState, useEffect } from 'react';
 import { Animated, Easing, LayoutChangeEvent } from 'react-native';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import * as Styled from './game-themes.styles';
+import { useService } from '@core/hooks/use-service.hook';
+import { SoundsService } from '@core/services/sounds/sounds.service';
+import { AppSound } from '@core/constants/sound.constants';
 
 const GameThemes: FC = () => {
   const [{ gameThemes$ }] = useGameController();
+  const { getSound } = useService(SoundsService);
   const themes = useSubscription(gameThemes$, []);
   const [elementOpacity, setElementOpacity] = useState(0);
   const scrollAnim = useRef(new Animated.Value(0)).current;
@@ -13,6 +17,13 @@ const GameThemes: FC = () => {
     child: null,
     parent: null,
   });
+
+  useEffect(() => {
+    const sound = getSound(AppSound.RoundBegin).play();
+    return () => {
+      sound.stop();
+    };
+  }, [getSound]);
 
   const handleLayout = (container: 'parent' | 'child') => ({ nativeEvent }: LayoutChangeEvent) => {
     const height = nativeEvent.layout.height;

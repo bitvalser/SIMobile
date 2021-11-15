@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { AppButton } from '@core/components/button';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
@@ -7,7 +7,7 @@ import { LayoutAnimation } from 'react-native';
 import { tap } from 'rxjs/operators';
 
 const FinalThemes: FC = () => {
-  const [{ roundThemes$ }] = useGameController();
+  const [{ roundThemes$, removeTheme, yourQuestionChoice$ }] = useGameController();
   const themes = useSubscription(
     roundThemes$.pipe(
       tap(() => {
@@ -18,11 +18,16 @@ const FinalThemes: FC = () => {
     ),
     [],
   );
+  const canRemove = useSubscription(yourQuestionChoice$, false);
+
+  const handleRemove = (themeIndex: number) => () => {
+    removeTheme(themeIndex);
+  };
 
   return (
     <Styled.Container>
       {themes.map(({ originalIndex, name }) => (
-        <AppButton key={originalIndex} text={name} />
+        <AppButton disabled={!canRemove} onPress={handleRemove(originalIndex)} key={originalIndex} text={name} />
       ))}
     </Styled.Container>
   );

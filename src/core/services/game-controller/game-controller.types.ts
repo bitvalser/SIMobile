@@ -11,6 +11,8 @@ import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.
 import { UserAction } from '@core/interfaces/user-action.interface';
 import { TimerEvent } from '@core/interfaces/timer-event.interface';
 import { GameStage } from '@core/constants/game-stage.constants';
+import { PlayerAction } from '@core/interfaces/player-action.interface';
+import { StakeMessageType } from '@core/constants/stake-message-type.constants';
 
 export interface IGameController {
   chatMessages$: BehaviorSubject<ChatMessage[]>;
@@ -35,10 +37,23 @@ export interface IGameController {
   showTimerBorder$: BehaviorSubject<boolean>;
   gameStage$: BehaviorSubject<GameStage>;
   gameReplic$: BehaviorSubject<string>;
+  playerAction$: Subject<PlayerAction>;
+  currentPlayerIndex$: Observable<number>;
+  yourQuestionChoice$: BehaviorSubject<boolean>;
   sendChatMessage(message: string): Observable<void>;
   start(): this;
   leave(): void;
   createStringSnapshot(): string;
+  choiceQuestion(theme: number, question: number): void;
+  removeTheme(theme: number): void;
+  sendAnswer(answer: string): void;
+  tryAnswer(): void;
+  sendStake(type: StakeMessageType, stake?: number): void;
+  selectCat(index: number): void;
+  selectCatCost(sum: number): void;
+  sendFinalStake(stake?: number): void;
+  mediaEnd(): void;
+  ready(): void;
 }
 
 export interface GameMessage {

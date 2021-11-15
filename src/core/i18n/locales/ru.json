@@ -44,7 +44,15 @@
     "participants": "Участники",
     "questionNoRisk": "Вопрос\nбез риска",
     "questionSecret": "Вопрос с\nсекретом",
-    "questionAuction": "Вопрос со\nставкой"
+    "questionAuction": "Вопрос со\nставкой",
+    "send": "Отправить",
+    "yourAnswer": "Ваш ответ",
+    "selectPlayer": "Выберите игрока",
+    "yourStake": "Ваша ставка",
+    "stake": "Ставка",
+    "nominal": "Номинал",
+    "pass": "Пас",
+    "allIn": "ВА-БАНК!!!"
   },
   "settings": {
     "title": "Настройки",

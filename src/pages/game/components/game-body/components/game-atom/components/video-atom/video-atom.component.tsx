@@ -15,7 +15,7 @@ const BUFF_CONFIG = {
 };
 
 const VideoAtom: FC<VideoAtomProps> = memo(({ uri }) => {
-  const [{ pauseChannel$, timerChannel$ }] = useGameController();
+  const [{ pauseChannel$, timerChannel$, mediaEnd }] = useGameController();
   const videoRef = useRef<Video>();
 
   useEffect(() => {
@@ -41,6 +41,7 @@ const VideoAtom: FC<VideoAtomProps> = memo(({ uri }) => {
       ref={videoRef}
       buffConfig={BUFF_CONFIG}
       repeat={false}
+      onEnd={mediaEnd}
       resizeMode="contain"
       source={{ uri }}
     />

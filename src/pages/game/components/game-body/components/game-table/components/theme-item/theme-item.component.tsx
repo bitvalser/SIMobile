@@ -1,3 +1,5 @@
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
 import React, { FC, memo, useRef, useEffect } from 'react';
 import { Animated, Dimensions, Easing } from 'react-native';
 import { PriceItem } from './components/price-item';
@@ -8,6 +10,8 @@ const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const ThemeItem: FC<ThemeItemProps> = memo(({ prices, theme, themeIndex, index }) => {
   const appearAnim = useRef(new Animated.Value(0)).current;
+  const [{ choiceQuestion, yourQuestionChoice$ }] = useGameController();
+  const pricesEnabled = useSubscription(yourQuestionChoice$, false);
 
   useEffect(() => {
     Animated.timing(appearAnim, {
@@ -17,6 +21,10 @@ const ThemeItem: FC<ThemeItemProps> = memo(({ prices, theme, themeIndex, index }
       toValue: 1,
     }).start();
   }, [appearAnim]);
+
+  const handleSelectQuestion = (questionIndex: number) => () => {
+    choiceQuestion(themeIndex, questionIndex);
+  };
 
   return (
     <Styled.Container
@@ -35,7 +43,7 @@ const ThemeItem: FC<ThemeItemProps> = memo(({ prices, theme, themeIndex, index }
         {prices.map((price, i) => (
           <Styled.QuestionCeil key={i} ceils={prices.length}>
             {price > 0 && (
-              <Styled.PriceButton>
+              <Styled.PriceButton disabled={!pricesEnabled} onPress={handleSelectQuestion(i)}>
                 <PriceItem themeIndex={themeIndex} questionIndex={i} price={price} />
               </Styled.PriceButton>
             )}
