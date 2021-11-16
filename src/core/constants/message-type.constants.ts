@@ -3,6 +3,7 @@ export enum MessageType {
   ShowTablo = 'SHOWTABLO',
   Config = 'CONFIG',
   QuestionType = 'QTYPE',
+  Ready = 'READY',
   Replic = 'REPLIC',
   Atom = 'ATOM',
   Try = 'TRY',
@@ -37,4 +38,5 @@ export enum MessageType {
   Cancel = 'CANCEL',
   Choose = 'CHOOSE',
   FinalStake = 'FINALSTAKE',
+  IsRight = 'ISRIGHT',
 }

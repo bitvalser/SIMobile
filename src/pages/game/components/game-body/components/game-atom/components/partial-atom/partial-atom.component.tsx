@@ -9,7 +9,7 @@ const PartialAtom: FC = () => {
   const [{ atom$ }] = useGameController();
   const text = useSubscription(
     atom$.pipe(
-      filter(({ type }) => type === AtomType.Partial),
+      filter((atom) => atom?.type === AtomType.Partial),
       scan((acc, { data }) => `${acc}${data}`, ''),
     ),
     '',

@@ -2,6 +2,8 @@
   "title": "SIMobile",
   "error": "Ошибка",
   "dialog": "Диалог",
+  "yes": "Да",
+  "no": "Нет",
   "about": {
     "title": "Об игре",
     "text": "Мобильный клиент для игры в \"Свою игру\" (SIGame)\n\n<bold>Автор мобильной версии</bold>: bitvalser@gmail.com\n<bold>Автор оригинальной игры</bold>: Владимир Хиль\n\n<bold>Сайт автора оригинальной игры</bold>:\n<originalLink>{{original_url}}</originalLink><bold>\n\nСвязь со мной</bold>:\n<vkLink>{{vk_url}}</vkLink>"
@@ -52,7 +54,12 @@
     "stake": "Ставка",
     "nominal": "Номинал",
     "pass": "Пас",
-    "allIn": "ВА-БАНК!!!"
+    "allIn": "ВА-БАНК!!!",
+    "answerCheck": "Проверка ответа",
+    "isRightPlayer": "Верен ли ответ игрока <bold>{{name}}</bold>?",
+    "rightAnswers": "Верные ответы",
+    "wrongAnswers": "Неверные ответы",
+    "ready": "Готов"
   },
   "settings": {
     "title": "Настройки",

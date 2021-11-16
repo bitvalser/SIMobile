@@ -17,6 +17,8 @@ export const getBorderColor = (state: AvatarState, theme: AppTheme): string => {
       return theme.pallette.secondaryHighlight;
     case AvatarState.Final:
       return '#cb00f5';
+    case AvatarState.Appealed:
+      return '#cb00f5';
     default:
       return '#000';
   }

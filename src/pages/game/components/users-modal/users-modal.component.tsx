@@ -69,7 +69,7 @@ const UsersModal: FC<UsersModalProps> = ({ close }) => {
           </Styled.Header>
         )}
         keyExtractor={({ name }) => name}
-        renderItem={({ item: { name, avatar, sum, isConnected, inFinal, role } }) => (
+        renderItem={({ item: { name, avatar, sum, isConnected, inFinal, isReady, role } }) => (
           <UserItem
             isConnected={isConnected}
             name={name}
@@ -77,7 +77,8 @@ const UsersModal: FC<UsersModalProps> = ({ close }) => {
             sum={sum}
             hide={gameStage === GameStage.Final && !inFinal && role === GameRole.Player}
             showAvatar={role !== GameRole.Spectator}
-            showSum={role === GameRole.Player}
+            showSum={role === GameRole.Player && gameStage !== GameStage.Before}
+            showReady={gameStage === GameStage.Before && isReady}
           />
         )}
       />

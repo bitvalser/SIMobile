@@ -44,6 +44,7 @@ export interface IGameController {
   start(): this;
   leave(): void;
   createStringSnapshot(): string;
+  sendPlayerRight(right: boolean): void;
   choiceQuestion(theme: number, question: number): void;
   removeTheme(theme: number): void;
   sendAnswer(answer: string): void;
@@ -53,7 +54,7 @@ export interface IGameController {
   selectCatCost(sum: number): void;
   sendFinalStake(stake?: number): void;
   mediaEnd(): void;
-  ready(): void;
+  ready(value: boolean): void;
 }
 
 export interface GameMessage {
@@ -62,4 +63,10 @@ export interface GameMessage {
   receiver: string;
   sender: string;
   text: string;
+}
+
+export interface LastAnswer {
+  name: string;
+  isWon: boolean;
+  sum: number;
 }

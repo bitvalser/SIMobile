@@ -4,4 +4,5 @@ export enum PlayerEvents {
   CatCost = '[PlayerEvents] CatCost',
   Stake = '[PlayerEvents] Stake',
   Final = '[PlayerEvents] Final',
+  Appeal = '[PlayerEvents] Appeal',
 }

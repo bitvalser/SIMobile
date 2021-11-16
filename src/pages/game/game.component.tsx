@@ -8,7 +8,7 @@ import GameBody from './components/game-body/game-body.component';
 import { ButtonFooter } from './components/button-footer';
 import { UserAction } from './components/user-action';
 import { PlayerEvents } from './components/player-events';
-import { ToastsContainer } from '@core/components/toasts-container';
+import { GameToastContainer } from './components/game-toast-container';
 
 const Game = () => {
   const [gameController, leave] = useGameController();
@@ -35,9 +35,7 @@ const Game = () => {
         <UserAction />
         <PlayerEvents />
         <ButtonFooter />
-        <Styled.ToastsContainer>
-          <ToastsContainer container="game" />
-        </Styled.ToastsContainer>
+        <GameToastContainer />
       </Styled.Container>
     </BackgroundContainer>
   );

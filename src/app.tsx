@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import 'react-native-gesture-handler';
 import React, { Suspense } from 'react';
 import { RootNavigator } from './navigators/root';

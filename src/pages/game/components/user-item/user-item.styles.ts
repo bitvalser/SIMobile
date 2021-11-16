@@ -32,7 +32,7 @@ export const InfoContainer = styled.View<{ marginLeft: boolean }>`
 `;
 
 export const TextContainer = styled(LinearGradient).attrs({
-  colors: ['#222223', '#11121a', '#222223'],
+  colors: ['#3b3b3b', '#222223', '#222223'],
   angle: 180,
 })<{ isLast?: boolean }>`
   margin-bottom: ${({ isLast = false }) => (isLast ? 0 : 4)}px;

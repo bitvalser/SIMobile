@@ -11,6 +11,7 @@ export enum AvatarState {
   Quail = 'quail',
   Default = 'default',
   Final = 'final',
+  Appealed = 'appealed',
   Success = 'success',
   Try = 'try',
   WrongTry = 'wrong-try',

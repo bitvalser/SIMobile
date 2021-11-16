@@ -5,12 +5,14 @@ import useAnswerModal from './components/answer-modal/answer-modal.component';
 import { useSelectModal } from './components/select-modal';
 import useStakeModal from './components/stake-modal/stake-modal.component';
 import { StakeMessageType } from '@core/constants/stake-message-type.constants';
+import useAppealModal from './components/appeal-modal/appeal-modal.component';
 
 const PlayerEventsComponent: FC = () => {
-  const [{ playerAction$, selectCatCost, sendStake, sendFinalStake }] = useGameController();
+  const [{ playerAction$, selectCatCost, sendStake, sendFinalStake, sendPlayerRight }] = useGameController();
   const [showAnswerModal, hideAnswerModal] = useAnswerModal();
   const [showSelectModal, hideSelectModal] = useSelectModal();
   const [showStakeModal, hideStakeModal] = useStakeModal();
+  const [showAppealModal, hideAppealModal] = useAppealModal();
 
   useEffect(() => {
     const subscription = playerAction$.subscribe((action) => {
@@ -63,11 +65,20 @@ const PlayerEventsComponent: FC = () => {
               onSelect: sendFinalStake,
             });
             break;
+          case PlayerEvents.Appeal:
+            showAppealModal({
+              answer: action.answer,
+              rightAnswers: action.rightAnswers,
+              name: action.name,
+              onSelect: sendPlayerRight,
+            });
+            break;
         }
       } else {
         hideAnswerModal();
         hideSelectModal();
         hideStakeModal();
+        hideAppealModal();
       }
     });
     return () => {
@@ -75,13 +86,16 @@ const PlayerEventsComponent: FC = () => {
     };
   }, [
     hideAnswerModal,
+    hideAppealModal,
     hideSelectModal,
     hideStakeModal,
     playerAction$,
     selectCatCost,
     sendFinalStake,
+    sendPlayerRight,
     sendStake,
     showAnswerModal,
+    showAppealModal,
     showSelectModal,
     showStakeModal,
   ]);

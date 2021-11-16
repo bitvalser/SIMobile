@@ -31,4 +31,11 @@ export interface FinalAction {
   max: number;
 }
 
-export type PlayerAction = AnswerAction | CatAction | CatCostAction | StakeAction | FinalAction;
+export interface AppealAction {
+  event: PlayerEvents.Appeal;
+  name: string;
+  answer: string;
+  rightAnswers: string[];
+}
+
+export type PlayerAction = AnswerAction | CatAction | CatCostAction | StakeAction | FinalAction | AppealAction;
