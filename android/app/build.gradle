@@ -133,8 +133,8 @@ android {
         applicationId "com.bitvalser.simobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20211114
-        versionName "1.0"
+        versionCode 20211117
+        versionName "1.0.0"
         multiDexEnabled true
     }
     splits {
@@ -153,10 +153,12 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            if (project.hasProperty('SIMOBILE_UPLOAD_STORE_FILE')) {
+                storeFile file(SIMOBILE_UPLOAD_STORE_FILE)
+                storePassword SIMOBILE_UPLOAD_STORE_PASSWORD
+                keyAlias SIMOBILE_UPLOAD_KEY_ALIAS
+                keyPassword SIMOBILE_UPLOAD_KEY_PASSWORD
+            }
         }
     }
     buildTypes {

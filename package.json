@@ -1,6 +1,5 @@
 {
   "name": "SIMobile",
-  "version": "1.0.0",
   "scripts": {
     "prepare-repository": "yarn install -g react-native-cli yarn;yarn install; react-native link",
     "emulator": "emulator -avd Nexus5V6L23_x86_64 -scale 1.0",
