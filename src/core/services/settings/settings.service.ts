@@ -31,7 +31,7 @@ export class AppSettingsService implements IAppSettingsService {
     }
   }
 
-  public getSetting(key: keyof AppSettings): AppSettings[keyof AppSettings] {
+  public getSetting<K extends keyof AppSettings>(key: K): AppSettings[K] {
     return this.settings$.getValue()[key];
   }
 
