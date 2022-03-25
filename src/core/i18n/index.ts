@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import ru from './locales/ru.json';
 import { Platform, NativeModules } from 'react-native';
+// TODO: use mmkv package for storage
 import AsyncStorage from '@react-native-community/async-storage';
 import { AsyncStorageKeys } from '../constants/async-storage.constants';
 import { AppLanguages } from '../constants/languages.constants';

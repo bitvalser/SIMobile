@@ -6,6 +6,7 @@ import { FilterChip } from './components/filter-chip';
 
 export const GameList = styled(FlatList)`
   width: 100%;
+  background-color: ${({ theme }) => theme.pallette.background};
 ` as ComponentType<FlatListProps<GameItem>>;
 
 export const GamesText = styled.Text`

@@ -38,6 +38,7 @@ export const Title = styled(AppText)`
   display: flex;
   flex: 1;
   color: ${({ theme }) => theme.pallette.primary};
+  font-family: ${({ theme }) => theme.fonts.third};
 `;
 
 export const CloseText = styled(AppText)`

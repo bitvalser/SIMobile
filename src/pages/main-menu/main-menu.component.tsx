@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/core';
 import * as Styled from './main-menu.styles';
 import { AppRoutes } from '@navigators/root';
 import { useAboutModal } from './components/about-modal';
+import logoImage from '@assets/images/logo.png';
 
 const MainMenu = () => {
   const [t] = useTranslation();
@@ -23,6 +24,7 @@ const MainMenu = () => {
   return (
     <BackgroundContainer>
       <Styled.Content>
+        <Styled.LogoImage resizeMode="contain" source={logoImage} />
         <AppButton onPress={handleEnterHub} text={t('hub.enterHub')} />
         <AppButton onPress={handleSettings} text={t('settings.title')} />
         <AppButton onPress={showAbout} text={t('about.title')} />

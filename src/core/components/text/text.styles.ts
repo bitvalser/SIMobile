@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const TextContainer = styled.Text<{ shadow: boolean }>`
-  font-family: ${({ theme }) => theme.fonts.primary};
+  font-family: ${({ theme }) => theme.fonts.third};
   font-size: 18px;
   text-shadow-color: #000;
   text-shadow-offset: 0px 1px;

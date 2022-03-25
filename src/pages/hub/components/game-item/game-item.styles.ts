@@ -1,17 +1,13 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  background: ${({ theme }) => theme.pallette.secondaryBackground};
-  padding: 8px;
+  background: ${({ theme }) => theme.pallette.thirdBackground};
+  padding: 16px 12px;
   display: flex;
   flex-direction: column;
-  margin: 4px;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.8;
-  shadow-radius: 2px;
+  margin: 8px 12px;
   elevation: 5;
-  border-radius: 2px;
+  border-radius: 20px;
 `;
 
 export const Footer = styled.View`
