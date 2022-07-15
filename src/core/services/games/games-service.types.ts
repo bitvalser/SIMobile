@@ -15,10 +15,18 @@ export interface JoinGameResponse {
   gameId: number;
 }
 
+export interface HostInfo {
+  name: string;
+  host: string;
+  packagesPublicBaseUrl: string;
+}
+
 export interface IGamesService {
   gamesState$: BehaviorSubject<{
     [id: number]: GameItem;
   }>;
+  packagePublicUrl$: BehaviorSubject<string>;
+  serverName$: BehaviorSubject<string>;
   getAllGames(): Observable<GameItem[]>;
   onGamesCreated(): Observable<GameItem[]>;
   onGamesChanged(): Observable<GameItem[]>;
@@ -26,5 +34,6 @@ export interface IGamesService {
   createGameController(): void;
   getCurrentGameController(): IGameController;
   removeGameController(): void;
+  getHostInfo(): Observable<HostInfo>;
   joinGame(gameId: number, role: GameRole, password?: string): Observable<JoinGameResponse>;
 }

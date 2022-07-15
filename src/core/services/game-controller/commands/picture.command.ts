@@ -8,7 +8,7 @@ GameCommands.defineCommand(MessageType.Picture, function (this: GameController, 
       ...user,
       ...(user.name === args[1]
         ? {
-            avatar: args[2].replace('<SERVERHOST>', this.siApiClient.serverUri$.getValue()),
+            avatar: args[2].replace('<SERVERHOST>', this.publicUrl),
           }
         : {}),
     })),

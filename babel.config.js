@@ -15,5 +15,8 @@ module.exports = {
       },
     ],
     ['@babel/plugin-proposal-decorators', { legacy: true }],
+    'babel-plugin-parameter-decorator',
+    '@babel/plugin-transform-flow-strip-types',
+    '@babel/plugin-proposal-class-properties',
   ],
 };

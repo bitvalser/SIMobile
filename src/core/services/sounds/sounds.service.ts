@@ -8,6 +8,7 @@ import { TYPES } from '../types';
 import { LOCAL_SOUNDS } from './sounds.data';
 import { ISoundsService } from './sounds.types';
 import { IAppSettingsService } from '../settings/settings.types';
+import { i18n } from 'i18next';
 
 @injectable()
 export class SoundsService implements ISoundsService {
@@ -16,6 +17,8 @@ export class SoundsService implements ISoundsService {
   private toastsService: ToastsService;
   @inject(TYPES.AppSettingsService)
   private appSettings: IAppSettingsService;
+  @inject(TYPES.Translation)
+  private translation: i18n;
   private sounds: { [key in AppSound]?: Sound } = LOCAL_SOUNDS;
   private musics: { [key: string]: Promise<Sound> } = {};
 
@@ -40,7 +43,7 @@ export class SoundsService implements ISoundsService {
             reject(error);
             this.toastsService.showToast({
               type: 'danger',
-              text: error,
+              text: error?.message || this.translation.t('errors.soundError'),
             });
           }
           resolve(sound);

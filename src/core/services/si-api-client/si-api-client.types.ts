@@ -11,4 +11,5 @@ export interface ISiApiClient {
   userName$: BehaviorSubject<string>;
   getSupportedServers(): Observable<SiServer>;
   login(name: string, password?: string): Observable<string>;
+  uploadAvatar(uri: string): Observable<string>;
 }

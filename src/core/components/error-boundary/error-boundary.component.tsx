@@ -27,7 +27,7 @@ class ErrorBoundary extends React.Component<WithTranslation, { hasError: boolean
         this.setState({
           errorId,
         });
-      }, console.log);
+      });
   }
 
   render() {

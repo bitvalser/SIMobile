@@ -29,6 +29,7 @@ import { SendMessageType } from '@core/constants/send-message-type.constants';
 import { StakeMessageType } from '@core/constants/stake-message-type.constants';
 import { GameCommands } from './game-commands.class';
 import './commands';
+import { IAuthService } from '../auth/auth.types';
 
 export class GameController implements IGameController {
   protected subscriptions: Subscription[] = [];
@@ -72,6 +73,8 @@ export class GameController implements IGameController {
     protected translation: i18n,
     protected soundsService: ISoundsService,
     protected logsService: ILogsService,
+    protected authService: IAuthService,
+    protected publicUrl: string,
   ) {
     this.start = this.start.bind(this);
     this.leave = this.leave.bind(this);
@@ -183,16 +186,22 @@ export class GameController implements IGameController {
   }
 
   public start(): this {
+    this.sendSystemMessage(SendMessageType.Picture, this.authService.avatar$.getValue());
     this.sendSystemMessage(SendMessageType.Info);
     this.subscriptions.push(
       this.signalR.on<[GameMessage]>(SignalEvent.Receive).subscribe(([{ isSystem, sender, text }]) => {
         if (isSystem) {
           const args = text.split('\n');
           const type = args[0] as MessageType;
-          console.log(type);
-          console.log(args);
           this.logsService.log(args.join('\t'));
-          GameCommands.run.call(this, type, args);
+          try {
+            GameCommands.run.call(this, type, args);
+          } catch (error: any) {
+            this.toastsService.showToast({
+              type: 'danger',
+              text: error?.message || this.translation.t('errors.unknownError'),
+            });
+          }
         } else {
           this.addChatMessage(text, sender);
         }

@@ -11,4 +11,5 @@ export enum SendMessageType {
   CatCost = 'CATCOST',
   FinalStake = 'FINALSTAKE',
   IsRight = 'ISRIGHT',
+  Picture = 'PICTURE',
 }

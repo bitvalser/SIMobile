@@ -3,4 +3,5 @@ export enum SignalRequest {
   JoinGameNew = 'JoinGameNew',
   SendMessage = 'SendMessage',
   LeaveGame = 'LeaveGame',
+  GetGamesHostInfo = 'GetGamesHostInfo',
 }

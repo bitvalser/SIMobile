@@ -8,7 +8,7 @@ import { expand, switchMap, map, combineAll, tap, filter, buffer } from 'rxjs/op
 import { IGameController } from '../game-controller/game-controller.types';
 import { ISignalRClient } from '../signalr-client/signalr-client.types';
 import { TYPES } from '../types';
-import { DataSlice, IGamesService, JoinGameResponse } from './games-service.types';
+import { DataSlice, HostInfo, IGamesService, JoinGameResponse } from './games-service.types';
 
 const UPDATE_DELAY = 2000;
 
@@ -23,6 +23,8 @@ export class GamesService implements IGamesService {
     [id: number]: GameItem;
   }> = new BehaviorSubject({});
   private currentGameController: IGameController;
+  public packagePublicUrl$: BehaviorSubject<string> = new BehaviorSubject(null);
+  public serverName$: BehaviorSubject<string> = new BehaviorSubject(null);
 
   public constructor() {
     this.getAllGames = this.getAllGames.bind(this);
@@ -33,6 +35,7 @@ export class GamesService implements IGamesService {
     this.removeGameController = this.removeGameController.bind(this);
     this.createGameController = this.createGameController.bind(this);
     this.getCurrentGameController = this.getCurrentGameController.bind(this);
+    this.getHostInfo = this.getHostInfo.bind(this);
   }
 
   public createGameController(): void {
@@ -49,6 +52,16 @@ export class GamesService implements IGamesService {
 
   private getGameSlice(fromId: number = 0): Observable<DataSlice<GameItem>> {
     return this.signalR.invoke<DataSlice<GameItem>>(SignalRequest.GetGamesSlice, fromId);
+  }
+
+  public getHostInfo(): Observable<HostInfo> {
+    return this.signalR.invoke<HostInfo>(SignalRequest.GetGamesHostInfo).pipe(
+      tap((info) => {
+        console.log(info);
+        this.packagePublicUrl$.next(info.packagesPublicBaseUrl);
+        this.serverName$.next(info.name);
+      }),
+    );
   }
 
   public getAllGames(): Observable<GameItem[]> {

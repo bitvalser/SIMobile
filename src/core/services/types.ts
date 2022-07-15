@@ -13,4 +13,5 @@ export const TYPES = {
   AppSettingsService: Symbol.for('AppSettingsService'),
   Storage: Symbol.for('Storage'),
   LogsService: Symbol.for('LogsService'),
+  AuthService: Symbol.for('AuthService'),
 };

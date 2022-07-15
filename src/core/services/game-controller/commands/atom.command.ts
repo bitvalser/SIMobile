@@ -10,14 +10,14 @@ GameCommands.defineCommand(MessageType.Atom, function (this: GameController, arg
     case AtomType.Voice:
       this.atom$.next({
         type: atomType,
-        data: this.soundsService.loadMusic(args[3].replace('<SERVERHOST>', this.siApiClient.serverUri$.getValue())),
+        data: this.soundsService.loadMusic(args[3].replace('<SERVERHOST>', this.publicUrl)),
       });
       break;
     case AtomType.Video:
     case AtomType.Image:
       this.atom$.next({
         type: atomType,
-        data: args[3].replace('<SERVERHOST>', this.siApiClient.serverUri$.getValue()),
+        data: args[3].replace('<SERVERHOST>', this.publicUrl),
       });
       break;
     case AtomType.Partial:

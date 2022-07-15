@@ -23,6 +23,8 @@ import { IAppSettingsService } from '@core/services/settings/settings.types';
 import { AppSettingsService } from '@core/services/settings/settings.service';
 import { ILogsService } from '@core/services/logs/logs.types';
 import { LogsService } from '@core/services/logs/logs.service';
+import { IAuthService } from '@core/services/auth/auth.types';
+import { AuthService } from '@core/services/auth/auth.service';
 
 const InversifyContext = createContext<interfaces.Container>(null);
 
@@ -43,6 +45,7 @@ appContainer.bind<IGamesService>(TYPES.GamesService).to(GamesService);
 appContainer.bind<IModalsService>(TYPES.ModalsService).to(ModalsService);
 appContainer.bind<IToastsService>(TYPES.ToastsService).to(ToastsService);
 appContainer.bind<ISoundsService>(TYPES.SoundsService).to(SoundsService);
+appContainer.bind<IAuthService>(TYPES.AuthService).to(AuthService);
 appContainer.bind<IAppSettingsService>(TYPES.AppSettingsService).to(AppSettingsService);
 appContainer.bind<ILogsService>(TYPES.LogsService).to(LogsService);
 appContainer
@@ -55,6 +58,8 @@ appContainer
       container.get<i18n>(TYPES.Translation),
       container.get<ISoundsService>(TYPES.SoundsService),
       container.get<ILogsService>(TYPES.LogsService),
+      container.get<IAuthService>(TYPES.AuthService),
+      container.get<IGamesService>(TYPES.GamesService).packagePublicUrl$.getValue(),
     ),
   );
 

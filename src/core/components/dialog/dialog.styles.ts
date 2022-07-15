@@ -1,5 +1,8 @@
+import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import { AppText } from '../text';
+
+const MIN_WIDTH = Math.min(Dimensions.get('window').width - 24, 400);
 
 export const Container = styled.View`
   display: flex;
@@ -11,7 +14,7 @@ export const Container = styled.View`
 export const ModalContainer = styled.View`
   display: flex;
   max-width: 600px;
-  min-width: 400px;
+  min-width: ${MIN_WIDTH}px;
   flex-direction: column;
   background: ${({ theme }) => theme.pallette.background};
   shadow-color: #000;

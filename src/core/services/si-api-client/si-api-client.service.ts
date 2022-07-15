@@ -1,7 +1,8 @@
 import { i18n } from 'i18next';
 import { inject, injectable } from 'inversify';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import base64 from 'react-native-base64';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { TYPES } from '../types';
 import { ISiApiClient, SiServer } from './si-api-client.types';
 
@@ -21,6 +22,7 @@ export class SiApiClient implements ISiApiClient {
   public constructor() {
     this.getSupportedServers = this.getSupportedServers.bind(this);
     this.login = this.login.bind(this);
+    this.uploadAvatar = this.uploadAvatar.bind(this);
   }
 
   public getSupportedServers(): Observable<SiServer> {
@@ -33,6 +35,7 @@ export class SiApiClient implements ISiApiClient {
         return server;
       }),
       tap((server) => {
+        console.log(server);
         this.serverUri$.next(server.uri);
       }),
     );
@@ -54,6 +57,28 @@ export class SiApiClient implements ISiApiClient {
       tap((token) => {
         this.authToken$.next(token);
         this.userName$.next(name);
+      }),
+    );
+  }
+
+  public uploadAvatar(uri: string): Observable<string> {
+    return of(void 0).pipe(
+      switchMap(() => fetch(uri).then((res) => res.blob())),
+      switchMap((blob) => {
+        const formData = new FormData();
+        formData.append('file', {
+          uri,
+          name: uri.split('/').reverse()[0],
+          type: blob.type,
+        } as any);
+        return fetch(`${this.serverUri$.getValue()}/api/upload/image`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Content-MD5': base64.encode(uri),
+          },
+          body: formData,
+        }).then((res) => res.text()) as Promise<string>;
       }),
     );
   }

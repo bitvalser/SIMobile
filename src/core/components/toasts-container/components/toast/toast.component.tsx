@@ -16,7 +16,7 @@ const getColor = (type: ToastProps['type'], theme: AppTheme) => {
   }
 };
 
-const Toast: FC<ToastProps> = React.memo(({ id, text, content, delay, type, onHide }) => {
+const Toast: FC<ToastProps> = React.memo(({ id, text, content = null, delay, type, onHide }) => {
   const opacityAnim = useRef(new Animated.Value(1)).current;
   const appearAnim = useRef(new Animated.Value(20)).current;
   const theme = useTheme();
@@ -37,6 +37,10 @@ const Toast: FC<ToastProps> = React.memo(({ id, text, content, delay, type, onHi
     }).start(() => onHide(id));
   }, [opacityAnim, delay, onHide, id]);
 
+  if (type === 'danger') {
+    console.log(text);
+  }
+
   return (
     <Styled.AnimatedContainer
       style={{
@@ -48,7 +52,11 @@ const Toast: FC<ToastProps> = React.memo(({ id, text, content, delay, type, onHi
         ],
       }}>
       <Styled.Content>
-        {text ? <Styled.ToastText typeColor={getColor(type, theme)}>{text}</Styled.ToastText> : <>{content}</>}
+        {text ? (
+          <Styled.ToastText typeColor={getColor(type, theme)}>{text?.toString() || ''}</Styled.ToastText>
+        ) : (
+          <>{content}</>
+        )}
       </Styled.Content>
     </Styled.AnimatedContainer>
   );
