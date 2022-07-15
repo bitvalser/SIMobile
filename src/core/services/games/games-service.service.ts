@@ -57,7 +57,6 @@ export class GamesService implements IGamesService {
   public getHostInfo(): Observable<HostInfo> {
     return this.signalR.invoke<HostInfo>(SignalRequest.GetGamesHostInfo).pipe(
       tap((info) => {
-        console.log(info);
         this.packagePublicUrl$.next(info.packagesPublicBaseUrl);
         this.serverName$.next(info.name);
       }),

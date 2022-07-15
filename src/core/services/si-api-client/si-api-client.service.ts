@@ -35,7 +35,6 @@ export class SiApiClient implements ISiApiClient {
         return server;
       }),
       tap((server) => {
-        console.log(server);
         this.serverUri$.next(server.uri);
       }),
     );

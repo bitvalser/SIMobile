@@ -37,10 +37,6 @@ const Toast: FC<ToastProps> = React.memo(({ id, text, content = null, delay, typ
     }).start(() => onHide(id));
   }, [opacityAnim, delay, onHide, id]);
 
-  if (type === 'danger') {
-    console.log(text);
-  }
-
   return (
     <Styled.AnimatedContainer
       style={{
