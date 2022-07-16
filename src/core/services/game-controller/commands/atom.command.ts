@@ -6,18 +6,27 @@ import { GameController } from '../game-controller.service';
 
 GameCommands.defineCommand(MessageType.Atom, function (this: GameController, args: string[]): void {
   const atomType = args[1];
+
+  const getResource = (data: string): string => {
+    const url = data.replace('<SERVERHOST>', this.publicUrl);
+    if (this.appSettingsService.getSetting('preloadResources')) {
+      return this.assetsService.getResource(url);
+    }
+    return url;
+  };
+
   switch (atomType) {
     case AtomType.Voice:
       this.atom$.next({
         type: atomType,
-        data: this.soundsService.loadMusic(args[3].replace('<SERVERHOST>', this.publicUrl)),
+        data: this.soundsService.loadMusic(getResource(args[3])),
       });
       break;
     case AtomType.Video:
     case AtomType.Image:
       this.atom$.next({
         type: atomType,
-        data: args[3].replace('<SERVERHOST>', this.publicUrl),
+        data: getResource(args[3]),
       });
       break;
     case AtomType.Partial:

@@ -30,6 +30,8 @@ import { StakeMessageType } from '@core/constants/stake-message-type.constants';
 import { GameCommands } from './game-commands.class';
 import './commands';
 import { IAuthService } from '../auth/auth.types';
+import { IAppSettingsService } from '../settings/settings.types';
+import { IAssetsService } from '../assets/assets.types';
 
 export class GameController implements IGameController {
   protected subscriptions: Subscription[] = [];
@@ -53,6 +55,7 @@ export class GameController implements IGameController {
   public showTimerBorder$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public timerMaxTime$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public pauseChannel$: Subject<boolean> = new Subject();
+  public resumeChannel$: Subject<boolean> = new Subject();
   public playerAction$: Subject<PlayerAction> = new Subject();
   public yourQuestionChoice$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public lastAnswer$: BehaviorSubject<LastAnswer> = new BehaviorSubject<LastAnswer>(null);
@@ -74,6 +77,8 @@ export class GameController implements IGameController {
     protected soundsService: ISoundsService,
     protected logsService: ILogsService,
     protected authService: IAuthService,
+    protected appSettingsService: IAppSettingsService,
+    protected assetsService: IAssetsService,
     protected publicUrl: string,
   ) {
     this.start = this.start.bind(this);
@@ -193,6 +198,8 @@ export class GameController implements IGameController {
         if (isSystem) {
           const args = text.split('\n');
           const type = args[0] as MessageType;
+          console.log(type);
+          console.log(args);
           this.logsService.log(args.join('\t'));
           try {
             GameCommands.run.call(this, type, args);
@@ -237,5 +244,6 @@ export class GameController implements IGameController {
         subscription.unsubscribe();
       });
     }
+    this.assetsService.clear();
   }
 }

@@ -10,6 +10,7 @@ export enum MessageType {
   Choice = 'CHOICE',
   Pause = 'PAUSE',
   Sums = 'SUMS',
+  Resume = 'RESUME',
   Picture = 'PICTURE',
   WrongTry = 'WRONGTRY',
   Pass = 'PASS',
@@ -39,4 +40,5 @@ export enum MessageType {
   Choose = 'CHOOSE',
   FinalStake = 'FINALSTAKE',
   IsRight = 'ISRIGHT',
+  RoundContent = 'ROUNDCONTENT',
 }

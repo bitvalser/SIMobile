@@ -14,4 +14,5 @@ export const TYPES = {
   Storage: Symbol.for('Storage'),
   LogsService: Symbol.for('LogsService'),
   AuthService: Symbol.for('AuthService'),
+  AssetsService: Symbol.for('AssetsService'),
 };

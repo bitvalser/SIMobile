@@ -33,9 +33,17 @@ export const SettingsValue = styled(AppText)`
 export const RowContainer = styled.View`
   align-items: center;
   margin-top: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 18px;
   display: flex;
   flex-direction: row;
+  width: 100%;
+`;
+
+export const RowHorizontalContainer = styled.View`
+  margin-top: 18px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
   width: 100%;
 `;
 

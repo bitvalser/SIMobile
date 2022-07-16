@@ -1,17 +1,19 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { ChatModalProps } from './chat-modal.types';
 import * as Styled from './chat-modal.styles';
-import { TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { MessageItem } from './components/message-item';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { AppIcon } from '@core/components/icon';
+import { ChatMessage } from '@core/interfaces/chat-message.interface';
 
 const ChatModal: FC<ChatModalProps> = ({ close }) => {
   const [t] = useTranslation();
   const [textValue, setTextValue] = useState('');
+  const flatListRef = useRef<FlatList<ChatMessage>>();
   const [{ chatMessages$, sendChatMessage }] = useGameController();
   const messages = useSubscription(chatMessages$);
 
@@ -20,9 +22,15 @@ const ChatModal: FC<ChatModalProps> = ({ close }) => {
     setTextValue('');
   };
 
+  const handleMessage = () => {
+    flatListRef.current.scrollToEnd();
+  };
+
   return (
     <Styled.Container behavior="padding">
       <Styled.MessagesList
+        ref={flatListRef}
+        onContentSizeChange={handleMessage}
         data={messages}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={

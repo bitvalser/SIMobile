@@ -7,7 +7,7 @@ import { Toast } from './components/toast';
 import { ToastsContainerProps } from './toast-container.types';
 import * as Styled from './toasts-container.styles';
 
-const ModalsContainer: FC<ToastsContainerProps> = memo(({ container = 'root' }) => {
+const ModalsContainer: FC<ToastsContainerProps> = memo(({ container = 'root', position = 'bottom' }) => {
   const { toastsState$, removeToast } = useService(ToastsService);
   const toasts = useSubscription(
     toastsState$.pipe(
@@ -16,10 +16,21 @@ const ModalsContainer: FC<ToastsContainerProps> = memo(({ container = 'root' }) 
     [],
   );
 
+  const items = position === 'top' ? toasts.slice().reverse() : toasts;
+
   return (
-    <Styled.Container>
-      {toasts.map(({ id, type, delay, content, text }) => (
-        <Toast key={id} id={id} type={type} delay={delay} content={content} text={text} onHide={removeToast} />
+    <Styled.Container position={position}>
+      {items.map(({ id, type, delay, content, text }) => (
+        <Toast
+          key={id}
+          id={id}
+          type={type}
+          delay={delay}
+          content={content}
+          text={text}
+          position={position}
+          onHide={removeToast}
+        />
       ))}
     </Styled.Container>
   );

@@ -11,12 +11,13 @@ import { SoundsService } from '@core/services/sounds/sounds.service';
 
 const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
   const { getMusic, releaseMusic } = useService(SoundsService);
-  const [{ pauseChannel$, timerChannel$, mediaEnd }] = useGameController();
+  const [{ pauseChannel$, timerChannel$, resumeChannel$, mediaEnd }] = useGameController();
   const trackRef = useRef<Sound>();
 
   useEffect(() => {
     const subscription = merge(
       pauseChannel$,
+      resumeChannel$.pipe(map(() => false)),
       timerChannel$.pipe(
         filter(({ command }) =>
           [TimerCommand.UserPause, TimerCommand.UserResume, TimerCommand.Resume, TimerCommand.Pause].includes(command),
@@ -24,6 +25,7 @@ const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
         map(({ command }) => [TimerCommand.UserPause, TimerCommand.Pause].includes(command)),
       ),
     ).subscribe((isPause) => {
+      console.log('MUSIC PAUSE');
       if (isPause) {
         trackRef.current?.pause();
       } else {

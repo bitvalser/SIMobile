@@ -31,6 +31,7 @@ const Auth = () => {
   const users = useSubscription(users$, []);
 
   const handleLogin = (user: AuthUser) => () => {
+    console.log(user);
     setLoading(true);
     getSupportedServers()
       .pipe(
@@ -40,25 +41,33 @@ const Auth = () => {
         tap(() => {
           userName$.next(user.name);
         }),
-        finalize(() => setLoading(false)),
       )
       .subscribe(
         () => {
-          uploadAvatar(user.avatar)
-            .pipe(
-              finalize(() => {
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: AppRoutes.MainMenu }],
-                });
-              }),
-            )
-            .subscribe({
-              next: (avatarUrl) => {
-                avatar$.next(`${packagePublicUrl$.getValue()}${avatarUrl}`);
-              },
-              error: () => {},
+          if (user.avatar) {
+            uploadAvatar(user.avatar)
+              .pipe(
+                finalize(() => {
+                  setLoading(false);
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: AppRoutes.MainMenu }],
+                  });
+                }),
+              )
+              .subscribe({
+                next: (avatarUrl) => {
+                  avatar$.next(`${packagePublicUrl$.getValue()}${avatarUrl}`);
+                },
+                error: () => {},
+              });
+          } else {
+            setLoading(false);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: AppRoutes.MainMenu }],
             });
+          }
         },
         (error) => {
           Alert.alert(t('error'), error.message);

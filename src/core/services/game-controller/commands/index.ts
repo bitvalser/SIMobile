@@ -35,3 +35,5 @@ import './final-think.command';
 import './game-themes.command';
 import './is-right.command';
 import './ready.command';
+import './resume.command';
+import './round-content.command';

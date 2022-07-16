@@ -1,4 +1,4 @@
-import { ComponentType } from 'react';
+import { ComponentType, RefAttributes } from 'react';
 import { FlatList, FlatListProps } from 'react-native';
 import styled from 'styled-components/native';
 import { ChatMessage } from '@core/interfaces/chat-message.interface';
@@ -40,12 +40,11 @@ export const Footer = styled.View`
   flex-direction: row;
   align-items: center;
   height: 40px;
-  margin-bottom: 2px;
 `;
 
 export const MessagesList = styled(FlatList)`
   padding: 0 12px;
-` as ComponentType<FlatListProps<ChatMessage>>;
+` as ComponentType<FlatListProps<ChatMessage> & RefAttributes<FlatList<ChatMessage>>>;
 
 export const Input = styled.TextInput`
   margin-top: 12px;

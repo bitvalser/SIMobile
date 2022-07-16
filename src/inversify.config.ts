@@ -25,6 +25,8 @@ import { ILogsService } from '@core/services/logs/logs.types';
 import { LogsService } from '@core/services/logs/logs.service';
 import { IAuthService } from '@core/services/auth/auth.types';
 import { AuthService } from '@core/services/auth/auth.service';
+import { AssetsService } from '@core/services/assets/assets.service';
+import { IAssetsService } from '@core/services/assets/assets.types';
 
 const InversifyContext = createContext<interfaces.Container>(null);
 
@@ -46,6 +48,7 @@ appContainer.bind<IModalsService>(TYPES.ModalsService).to(ModalsService);
 appContainer.bind<IToastsService>(TYPES.ToastsService).to(ToastsService);
 appContainer.bind<ISoundsService>(TYPES.SoundsService).to(SoundsService);
 appContainer.bind<IAuthService>(TYPES.AuthService).to(AuthService);
+appContainer.bind<IAssetsService>(TYPES.AssetsService).to(AssetsService);
 appContainer.bind<IAppSettingsService>(TYPES.AppSettingsService).to(AppSettingsService);
 appContainer.bind<ILogsService>(TYPES.LogsService).to(LogsService);
 appContainer
@@ -59,6 +62,8 @@ appContainer
       container.get<ISoundsService>(TYPES.SoundsService),
       container.get<ILogsService>(TYPES.LogsService),
       container.get<IAuthService>(TYPES.AuthService),
+      container.get<IAppSettingsService>(TYPES.AppSettingsService),
+      container.get<IAssetsService>(TYPES.AssetsService),
       container.get<IGamesService>(TYPES.GamesService).packagePublicUrl$.getValue(),
     ),
   );

@@ -15,12 +15,13 @@ const BUFF_CONFIG = {
 };
 
 const VideoAtom: FC<VideoAtomProps> = memo(({ uri }) => {
-  const [{ pauseChannel$, timerChannel$, mediaEnd }] = useGameController();
+  const [{ pauseChannel$, timerChannel$, resumeChannel$, mediaEnd }] = useGameController();
   const videoRef = useRef<Video>();
 
   useEffect(() => {
     const subscription = merge(
       pauseChannel$,
+      resumeChannel$.pipe(map(() => false)),
       timerChannel$.pipe(
         filter(({ command }) =>
           [TimerCommand.UserPause, TimerCommand.UserResume, TimerCommand.Resume, TimerCommand.Pause].includes(command),
@@ -34,7 +35,7 @@ const VideoAtom: FC<VideoAtomProps> = memo(({ uri }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [pauseChannel$, timerChannel$]);
+  }, [pauseChannel$, resumeChannel$, timerChannel$]);
 
   return (
     <Styled.QuestionVideo

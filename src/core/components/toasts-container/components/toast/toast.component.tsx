@@ -16,9 +16,9 @@ const getColor = (type: ToastProps['type'], theme: AppTheme) => {
   }
 };
 
-const Toast: FC<ToastProps> = React.memo(({ id, text, content = null, delay, type, onHide }) => {
+const Toast: FC<ToastProps> = React.memo(({ id, text, content = null, delay, type, position, onHide }) => {
   const opacityAnim = useRef(new Animated.Value(1)).current;
-  const appearAnim = useRef(new Animated.Value(20)).current;
+  const appearAnim = useRef(new Animated.Value(position === 'bottom' ? 20 : -20)).current;
   const theme = useTheme();
 
   useEffect(() => {

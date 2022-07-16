@@ -7,6 +7,8 @@ import { StorageKeys } from '@core/constants/storage-keys.constants';
 
 const DEFAULT_SETTINGS: AppSettings = {
   soundValue: 100,
+  gameToastsPosition: 'bottom',
+  preloadResources: true,
 };
 
 @injectable()
@@ -31,13 +33,13 @@ export class AppSettingsService implements IAppSettingsService {
     }
   }
 
-  public getSetting(key: keyof AppSettings): AppSettings[keyof AppSettings] {
-    return this.settings$.getValue()[key];
+  public getSetting<K extends keyof AppSettings>(key: K): AppSettings[K] {
+    return this.settings$.getValue()[key] ?? DEFAULT_SETTINGS[key];
   }
 
-  public updateSetting(
+  public updateSetting<K extends keyof AppSettings>(
     settings: {
-      [key in keyof AppSettings]?: AppSettings[keyof AppSettings];
+      [key in K]?: AppSettings[K];
     },
   ): void {
     this.settings$.next({

@@ -63,11 +63,16 @@
     "isRightPlayer": "Верен ли ответ игрока <bold>{{name}}</bold>?",
     "rightAnswers": "Верные ответы",
     "wrongAnswers": "Неверные ответы",
-    "ready": "Готов"
+    "ready": "Готов",
+    "commandConfigNotSupported": "Похоже что конфигурация столов была изменена, но данный тип команды пока не поддерживает, перезайдите пожалуйста в команут чтобы увидеть изменения"
   },
   "settings": {
     "title": "Настройки",
-    "sound": "Звук"
+    "sound": "Звук",
+    "toastPosition": "Позиция игровых сообщений",
+    "toastPositionTop": "Сверху",
+    "toastPositionBottom": "Снизу",
+    "preloadResources": "Предзагружать контент в начале раунда"
   },
   "errors": {
     "serverNotFound": "Подходящий сервер не найден",

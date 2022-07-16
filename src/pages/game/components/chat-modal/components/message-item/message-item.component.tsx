@@ -8,7 +8,9 @@ const MessageItem: FC<MessageItemProps> = memo(({ name = null, text, oneLine = f
     <Styled.Container oneLine={oneLine}>
       {name && <Styled.Name color={stringToColor(name)}>{name}</Styled.Name>}
       {name && <Styled.DividerText>: </Styled.DividerText>}
-      <Styled.MessageText numberOfLines={oneLine ? 1 : null}>{text}</Styled.MessageText>
+      <Styled.MessageText numberOfLines={oneLine ? 1 : null} selectable>
+        {text}
+      </Styled.MessageText>
     </Styled.Container>
   );
 });

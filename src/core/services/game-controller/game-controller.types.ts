@@ -32,6 +32,7 @@ export interface IGameController {
   userAction$: Subject<UserAction>;
   timerChannel$: Subject<TimerEvent>;
   pauseChannel$: Subject<boolean>;
+  resumeChannel$: Subject<boolean>;
   timerMaxTime$: BehaviorSubject<number>;
   canTry$: Subject<boolean>;
   showTimerBorder$: BehaviorSubject<boolean>;
