@@ -191,7 +191,10 @@ export class GameController implements IGameController {
   }
 
   public start(): this {
-    this.sendSystemMessage(SendMessageType.Picture, this.authService.avatar$.getValue());
+    const avatar = this.authService.avatar$.getValue();
+    if (avatar) {
+      this.sendSystemMessage(SendMessageType.Picture, avatar);
+    }
     this.sendSystemMessage(SendMessageType.Info);
     this.subscriptions.push(
       this.signalR.on<[GameMessage]>(SignalEvent.Receive).subscribe(([{ isSystem, sender, text }]) => {

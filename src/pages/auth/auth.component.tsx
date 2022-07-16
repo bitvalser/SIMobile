@@ -62,6 +62,7 @@ const Auth = () => {
               });
           } else {
             setLoading(false);
+            avatar$.next(null);
             navigation.reset({
               index: 0,
               routes: [{ name: AppRoutes.MainMenu }],
