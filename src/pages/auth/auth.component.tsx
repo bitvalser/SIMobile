@@ -31,7 +31,6 @@ const Auth = () => {
   const users = useSubscription(users$, []);
 
   const handleLogin = (user: AuthUser) => () => {
-    console.log(user);
     setLoading(true);
     getSupportedServers()
       .pipe(

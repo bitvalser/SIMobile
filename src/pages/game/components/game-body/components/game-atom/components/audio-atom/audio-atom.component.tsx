@@ -25,7 +25,6 @@ const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
         map(({ command }) => [TimerCommand.UserPause, TimerCommand.Pause].includes(command)),
       ),
     ).subscribe((isPause) => {
-      console.log('MUSIC PAUSE');
       if (isPause) {
         trackRef.current?.pause();
       } else {

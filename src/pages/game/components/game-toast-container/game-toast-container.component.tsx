@@ -13,8 +13,6 @@ const GameToastContainer: FC<GameToastContainerProps> = memo(() => {
   const currentPlayer = useSubscription(currentPlayer$);
   const position = getSetting('gameToastsPosition');
 
-  console.log(position);
-
   return (
     <Styled.ToastsContainer bottomMargin={Boolean(currentPlayer)} position={position}>
       <ToastsContainer container="game" position={position} />

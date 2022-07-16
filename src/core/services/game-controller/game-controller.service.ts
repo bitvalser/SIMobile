@@ -198,8 +198,6 @@ export class GameController implements IGameController {
         if (isSystem) {
           const args = text.split('\n');
           const type = args[0] as MessageType;
-          console.log(type);
-          console.log(args);
           this.logsService.log(args.join('\t'));
           try {
             GameCommands.run.call(this, type, args);
