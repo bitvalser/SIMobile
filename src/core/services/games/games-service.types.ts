@@ -18,6 +18,7 @@ export interface JoinGameResponse {
 export interface HostInfo {
   name: string;
   host: string;
+  license: string;
   packagesPublicBaseUrl: string;
 }
 

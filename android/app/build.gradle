@@ -133,7 +133,7 @@ android {
         applicationId "com.bitvalser.simobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20220718
+        versionCode 20220719
         versionName "1.0.0"
         multiDexEnabled true
     }

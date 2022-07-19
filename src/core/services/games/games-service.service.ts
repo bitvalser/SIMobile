@@ -24,7 +24,7 @@ export class GamesService implements IGamesService {
   }> = new BehaviorSubject({});
   private currentGameController: IGameController;
   public packagePublicUrl$: BehaviorSubject<string> = new BehaviorSubject(null);
-  public serverName$: BehaviorSubject<string> = new BehaviorSubject(null);
+  public hostInfo$: BehaviorSubject<HostInfo> = new BehaviorSubject(null);
 
   public constructor() {
     this.getAllGames = this.getAllGames.bind(this);
@@ -58,7 +58,7 @@ export class GamesService implements IGamesService {
     return this.signalR.invoke<HostInfo>(SignalRequest.GetGamesHostInfo).pipe(
       tap((info) => {
         this.packagePublicUrl$.next(info.packagesPublicBaseUrl);
-        this.serverName$.next(info.name);
+        this.hostInfo$.next(info);
       }),
     );
   }

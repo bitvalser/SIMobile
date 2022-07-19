@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { AppText } from '../text';
 
 const MIN_WIDTH = Math.min(Dimensions.get('window').width - 24, 400);
+const MAX_HEIGHT = Dimensions.get('window').height * (3 / 4);
 
 export const Container = styled.View`
   display: flex;
@@ -51,5 +52,6 @@ export const CloseText = styled(AppText)`
 
 export const Content = styled.View`
   display: flex;
+  max-height: ${MAX_HEIGHT}px;
   flex-direction: column;
 `;

@@ -18,12 +18,14 @@ import { FlatList } from 'react-native-gesture-handler';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import { AppIcon } from '@core/components/icon';
 import { GamesService } from '@core/services/games/games-service.service';
+import useInfoModal from '@core/components/info-modal/info-modal.component';
 
 const Auth = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [t] = useTranslation();
   const [showAddUser] = useNewUserModal();
+  const [showLicenseInfo] = useInfoModal();
   const { getSupportedServers, login, uploadAvatar } = useService(SiApiClient);
   const { getHostInfo, packagePublicUrl$ } = useService(GamesService);
   const { userName$, avatar$, users$, addUser, removeUser } = useService(AuthService);
@@ -31,48 +33,54 @@ const Auth = () => {
   const users = useSubscription(users$, []);
 
   const handleLogin = (user: AuthUser) => () => {
-    setLoading(true);
-    getSupportedServers()
-      .pipe(
-        switchMap(() => login(user.name)),
-        switchMap(() => connect()),
-        switchMap(() => getHostInfo()),
-        tap(() => {
-          userName$.next(user.name);
-        }),
-      )
-      .subscribe(
-        () => {
-          if (user.avatar) {
-            uploadAvatar(user.avatar)
-              .pipe(
-                finalize(() => {
-                  setLoading(false);
-                  navigation.reset({
-                    index: 0,
-                    routes: [{ name: AppRoutes.MainMenu }],
+    showLicenseInfo({
+      title: t('userGeneratedContent.title'),
+      text: t('userGeneratedContent.text'),
+      onConfirm: () => {
+        setLoading(true);
+        getSupportedServers()
+          .pipe(
+            switchMap(() => login(user.name)),
+            switchMap(() => connect()),
+            switchMap(() => getHostInfo()),
+            tap(() => {
+              userName$.next(user.name);
+            }),
+          )
+          .subscribe(
+            () => {
+              if (user.avatar) {
+                uploadAvatar(user.avatar)
+                  .pipe(
+                    finalize(() => {
+                      setLoading(false);
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: AppRoutes.MainMenu }],
+                      });
+                    }),
+                  )
+                  .subscribe({
+                    next: (avatarUrl) => {
+                      avatar$.next(`${packagePublicUrl$.getValue()}${avatarUrl}`);
+                    },
+                    error: () => {},
                   });
-                }),
-              )
-              .subscribe({
-                next: (avatarUrl) => {
-                  avatar$.next(`${packagePublicUrl$.getValue()}${avatarUrl}`);
-                },
-                error: () => {},
-              });
-          } else {
-            setLoading(false);
-            avatar$.next(null);
-            navigation.reset({
-              index: 0,
-              routes: [{ name: AppRoutes.MainMenu }],
-            });
-          }
-        },
-        (error) => {
-          Alert.alert(t('error'), error.message);
-        },
-      );
+              } else {
+                setLoading(false);
+                avatar$.next(null);
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: AppRoutes.MainMenu }],
+                });
+              }
+            },
+            (error) => {
+              Alert.alert(t('error'), error.message);
+            },
+          );
+      },
+    });
   };
 
   const handleAdd = () => {
