@@ -1,8 +1,8 @@
-import { RoundTheme } from '@core/interfaces/round-theme.interface';
 import { ComponentType } from 'react';
 import { FlatListProps } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
+import { RoundTheme } from '@core/interfaces/round-theme.interface';
 
 export const Container = styled.View`
   display: flex;

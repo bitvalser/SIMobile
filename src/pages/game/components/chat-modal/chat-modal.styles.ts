@@ -1,9 +1,9 @@
 import { ComponentType, RefAttributes } from 'react';
 import { FlatList, FlatListProps } from 'react-native';
 import styled from 'styled-components/native';
-import { ChatMessage } from '@core/interfaces/chat-message.interface';
-import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
 import { AppText } from '@core/components/text';
+import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
+import { ChatMessage } from '@core/interfaces/chat-message.interface';
 
 export const Container = styled.KeyboardAvoidingView`
   display: flex;

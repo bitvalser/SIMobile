@@ -1,6 +1,6 @@
+import styled from 'styled-components/native';
 import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
 import { BUTTON_HEIGHT } from '../../components/button-footer/button-footer.styles';
-import styled from 'styled-components/native';
 
 const HEADER_HEIGHT = 40;
 

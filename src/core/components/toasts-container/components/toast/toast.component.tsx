@@ -2,8 +2,8 @@ import React, { useEffect, useRef, FC } from 'react';
 import { Animated } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { AppTheme } from '@theme/index';
-import { ToastProps } from './toast.types';
 import * as Styled from './toast.styles';
+import { ToastProps } from './toast.types';
 
 const getColor = (type: ToastProps['type'], theme: AppTheme) => {
   switch (type) {

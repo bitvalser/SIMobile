@@ -1,6 +1,6 @@
-import { AppText } from '@core/components/text';
 import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
+import { AppText } from '@core/components/text';
 
 export const BUTTON_HEIGHT = 50;
 

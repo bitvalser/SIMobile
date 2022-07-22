@@ -1,8 +1,8 @@
 import React, { memo, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AppIcon } from '@core/components/icon';
 import { GameStatuses } from '@core/constants/game-status.constants';
 import i18n from '@core/i18n';
-import { useTranslation } from 'react-i18next';
 import * as Styled from './game-item.styles';
 import { GameItemProps } from './game-item.types';
 
@@ -24,16 +24,7 @@ const getStatusName = (stage: GameStatuses, stageName: string): string => {
 };
 
 const GameItem: FC<GameItemProps> = memo(
-  ({
-    maxPlayers,
-    players,
-    stage,
-    stageName,
-    startTime,
-    title,
-    withLead,
-    withPassword,
-  }) => {
+  ({ maxPlayers, players, stage, stageName, startTime, title, withLead, withPassword }) => {
     const [t, translation] = useTranslation();
 
     const dateText = new Date(startTime).toLocaleString(translation.language, {

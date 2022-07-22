@@ -1,5 +1,5 @@
-import { AppText } from '@core/components/text';
 import styled from 'styled-components/native';
+import { AppText } from '@core/components/text';
 
 export const ModalContainer = styled.View`
   width: 400px;
@@ -19,8 +19,9 @@ export const Title = styled(AppText)`
   text-align: center;
 `;
 
-export const NoUsers = styled(AppText)`
+export const NoUsers = styled.Text`
   color: ${({ theme }) => theme.pallette.black};
+  font-family: ${({ theme }) => theme.fonts.secondary};
   font-size: 20px;
   text-align: center;
   width: 100%;

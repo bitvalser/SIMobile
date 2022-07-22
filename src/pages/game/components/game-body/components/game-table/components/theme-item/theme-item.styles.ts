@@ -1,6 +1,6 @@
-import { AppText } from '@core/components/text';
 import { Animated, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
+import { AppText } from '@core/components/text';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 

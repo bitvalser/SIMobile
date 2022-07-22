@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
+import { AtomType } from '@core/constants/atom-type.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
-import { AtomType } from '@core/constants/atom-type.constants';
-import * as Styled from './game-atom.styles';
-import { VideoAtom } from './components/video-atom';
 import { AudioAtom } from './components/audio-atom';
-import { TimerBorder } from './components/timer-border';
 import { PartialAtom } from './components/partial-atom';
+import { TimerBorder } from './components/timer-border';
+import { VideoAtom } from './components/video-atom';
+import * as Styled from './game-atom.styles';
 
 const GameAtom: FC = () => {
   const [{ atom$ }] = useGameController();

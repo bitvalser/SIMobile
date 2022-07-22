@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
 import { from, Observable } from 'rxjs';
+import { SignalEvent } from '@core/constants/signal-event.constants';
+import { SignalRequest } from '@core/constants/signal-request.constants';
 import * as signalR from '@microsoft/signalr';
 import { TYPES } from '../types';
-import { SignalRequest } from '@core/constants/signal-request.constants';
-import { SignalEvent } from '@core/constants/signal-event.constants';
 import { ISignalRClient } from './signalr-client.types';
 
 @injectable()
@@ -24,11 +24,7 @@ export class SignalRClient implements ISignalRClient {
   public connect(): Observable<void> {
     return new Observable((observer) => {
       this.connection = new signalR.HubConnectionBuilder()
-        .withUrl(
-          `${this.serverUriFactory()}/sionline?token=${encodeURIComponent(
-            this.authTokenFactory(),
-          )}`,
-        )
+        .withUrl(`${this.serverUriFactory()}/sionline?token=${encodeURIComponent(this.authTokenFactory())}`)
         .build();
 
       this.connection.start().then(() => {
@@ -38,10 +34,7 @@ export class SignalRClient implements ISignalRClient {
     });
   }
 
-  public invoke<T = any>(
-    request: SignalRequest,
-    ...data: any[]
-  ): Observable<T> {
+  public invoke<T = any>(request: SignalRequest, ...data: any[]): Observable<T> {
     return from(this.connection.invoke<T>(request, ...data));
   }
 

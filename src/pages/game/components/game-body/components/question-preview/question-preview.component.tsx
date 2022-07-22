@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import { useService } from '@core/hooks/use-service.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import { SoundsService } from '@core/services/sounds/sounds.service';
-import { useTranslation } from 'react-i18next';
 import { PREVIEW_SOUND, PREVIEW_TEXT } from './question-preview.data';
 import * as Styled from './question-preview.styles';
 

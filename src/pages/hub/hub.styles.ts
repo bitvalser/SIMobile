@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
-import { GameItem } from '@core/interfaces/game-item.interface';
 import { FlatList, FlatListProps } from 'react-native';
 import styled from 'styled-components/native';
+import { GameItem } from '@core/interfaces/game-item.interface';
 import { FilterChip } from './components/filter-chip';
 
 export const GameList = styled(FlatList)`

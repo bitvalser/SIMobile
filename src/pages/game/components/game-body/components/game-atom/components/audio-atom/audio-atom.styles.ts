@@ -1,5 +1,5 @@
-import { RotateContainer } from '@core/components/rotate-container';
 import styled from 'styled-components/native';
+import { RotateContainer } from '@core/components/rotate-container';
 
 export const NoteText = styled.Text`
   font-size: 72px;

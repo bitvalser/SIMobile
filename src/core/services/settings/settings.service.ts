@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
-import { BehaviorSubject } from 'rxjs';
 import MMKVStorage from 'react-native-mmkv-storage';
+import { BehaviorSubject } from 'rxjs';
+import { StorageKeys } from '@core/constants/storage-keys.constants';
 import { TYPES } from '../types';
 import { IAppSettingsService, AppSettings } from './settings.types';
-import { StorageKeys } from '@core/constants/storage-keys.constants';
 
 const DEFAULT_SETTINGS: AppSettings = {
   soundValue: 100,

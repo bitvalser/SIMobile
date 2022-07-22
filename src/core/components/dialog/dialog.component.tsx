@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { DialogProps } from './dialog.types';
-import * as Styled from './dialog.styles';
 import i18n from '@core/i18n';
+import * as Styled from './dialog.styles';
+import { DialogProps } from './dialog.types';
 
 const Dialog: FC<DialogProps> = ({ children, title = i18n.t('dialog'), onClose = null }) => {
   return (

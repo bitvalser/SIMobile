@@ -1,7 +1,7 @@
-import { useGameController } from '@core/hooks/use-game-controller.hook';
-import useSubscription from '@core/hooks/use-subscription.hook';
 import React, { FC, memo, useRef, useEffect } from 'react';
 import { Animated, Dimensions, Easing } from 'react-native';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
 import { PriceItem } from './components/price-item';
 import * as Styled from './theme-item.styles';
 import { ThemeItemProps } from './theme-item.types';

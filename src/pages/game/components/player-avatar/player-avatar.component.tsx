@@ -1,13 +1,13 @@
 import React, { FC, memo } from 'react';
 import { concat, of } from 'rxjs';
 import { delay, filter, map, switchMap } from 'rxjs/operators';
-import { AvatarState, PlayerAvatarProps } from './player-avatar.types';
-import * as Styled from './player-avatar.styles';
-import { getBorderColor } from './player-avatar.data';
-import defaultMaleAvatar from '@assets/images/player-m-avatar.png';
 import { useTheme } from 'styled-components/native';
+import defaultMaleAvatar from '@assets/images/player-m-avatar.png';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
+import { getBorderColor } from './player-avatar.data';
+import * as Styled from './player-avatar.styles';
+import { AvatarState, PlayerAvatarProps } from './player-avatar.types';
 
 const WRONG_TRY_DELAY = 500;
 

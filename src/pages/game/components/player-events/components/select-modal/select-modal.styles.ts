@@ -1,9 +1,9 @@
-import { AppText } from '@core/components/text';
-import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
-import { GamePlayer } from '@core/interfaces/game-player.interface';
 import { ComponentType } from 'react';
 import { FlatList, FlatListProps } from 'react-native';
 import styled from 'styled-components/native';
+import { AppText } from '@core/components/text';
+import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
+import { GamePlayer } from '@core/interfaces/game-player.interface';
 
 export const Container = styled.KeyboardAvoidingView`
   display: flex;

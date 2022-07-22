@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
+import { LayoutAnimation } from 'react-native';
+import { tap } from 'rxjs/operators';
 import { AppButton } from '@core/components/button';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import * as Styled from './final-themes.styles';
-import { LayoutAnimation } from 'react-native';
-import { tap } from 'rxjs/operators';
 
 const FinalThemes: FC = () => {
   const [{ roundThemes$, removeTheme, yourQuestionChoice$ }] = useGameController();

@@ -2,23 +2,25 @@ import React, { FC, memo, useRef, useEffect } from 'react';
 import Sound from 'react-native-sound';
 import { merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { TimerCommand } from '@core/constants/timer-command.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import { useService } from '@core/hooks/use-service.hook';
+import { SoundsService } from '@core/services/sounds/sounds.service';
 import * as Styled from './audio-atom.styles';
 import { AudioAtomProps } from './audio-atom.types';
-import { SoundsService } from '@core/services/sounds/sounds.service';
 
 const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
   const { getMusic, releaseMusic } = useService(SoundsService);
-  const [{ pauseChannel$, timerChannel$, resumeChannel$, mediaEnd }] = useGameController();
+  const [{ listen, mediaEnd }] = useGameController();
   const trackRef = useRef<Sound>();
 
   useEffect(() => {
     const subscription = merge(
-      pauseChannel$,
-      resumeChannel$.pipe(map(() => false)),
-      timerChannel$.pipe(
+      listen(GameEventType.Resume).pipe(map(() => false)),
+      listen(GameEventType.Pause).pipe(map((item) => item.data)),
+      listen(GameEventType.Timer).pipe(
+        map((item) => item.data),
         filter(({ command }) =>
           [TimerCommand.UserPause, TimerCommand.UserResume, TimerCommand.Resume, TimerCommand.Pause].includes(command),
         ),
@@ -38,7 +40,7 @@ const AudioAtom: FC<AudioAtomProps> = memo(({ musicId }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [mediaEnd, musicId, pauseChannel$, releaseMusic, timerChannel$]);
+  }, [listen, mediaEnd, musicId, releaseMusic]);
 
   useEffect(() => {
     if (!trackRef.current) {

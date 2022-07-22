@@ -1,20 +1,20 @@
 export interface AppTheme {
   pallette: {
-    primary: `#${string}`;
-    secondary: `#${string}`;
-    background: `#${string}`;
-    highlight: `#${string}`;
-    white: `#${string}`;
-    black: `#${string}`;
-    gray: `#${string}`;
-    danger: `#${string}`;
-    secondaryBackground: `#${string}`;
-    secondaryHighlight: `#${string}`;
+    primary: string;
+    secondary: string;
+    background: string;
+    highlight: string;
+    white: string;
+    black: string;
+    gray: string;
+    danger: string;
+    secondaryBackground: string;
+    secondaryHighlight: string;
   };
   fonts: {
     primary: string;
     secondary: string;
-  }
+  };
 }
 
 export const defaultTheme: AppTheme = {

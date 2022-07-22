@@ -1,13 +1,13 @@
 import React, { FC, useRef, useEffect } from 'react';
+import { Animated, Easing, TouchableOpacity } from 'react-native';
+import { map } from 'rxjs/operators';
 import { AppIcon } from '@core/components/icon';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
-import { Animated, Easing, TouchableOpacity } from 'react-native';
 import useChatModal from '../chat-modal/chat-modal.component';
 import { MessageItem } from '../chat-modal/components/message-item';
 import useUsersModal from '../users-modal/users-modal.component';
 import * as Styled from './chat-header.styles';
-import { map } from 'rxjs/operators';
 
 const ChatHeader: FC = () => {
   const appearAnim = useRef(new Animated.Value(0)).current;

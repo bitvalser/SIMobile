@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
 import { interfaces } from 'inversify';
+import { useContext, useState } from 'react';
 import { InversifyContext } from '../../inversify.config';
 
 export const useService = <T extends unknown = any>(

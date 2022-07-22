@@ -1,5 +1,5 @@
-import { AppText } from '@core/components/text';
 import styled from 'styled-components/native';
+import { AppText } from '@core/components/text';
 
 export const Container = styled.View<{ selected: boolean }>`
   padding: 4px 16px;

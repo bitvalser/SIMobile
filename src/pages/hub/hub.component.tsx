@@ -1,20 +1,20 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RefreshControl, TouchableOpacity } from 'react-native';
-import { finalize, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 import { useTheme } from 'styled-components/native';
 import { BackgroundContainer } from '@core/components/background-container';
-import { useService } from '@core/hooks/use-service.hook';
-import { GamesService } from '@core/services/games/games-service.service';
-import useSubscription from '@core/hooks/use-subscription.hook';
-import { useNavigation } from '@react-navigation/core';
 import { GameRole } from '@core/constants/game-role.constants';
-import { GameItem } from './components/game-item';
-import * as Styled from './hub.styles';
-import { AppRoutes } from '@navigators/root';
-import { useTranslation } from 'react-i18next';
-import { useJoinModal } from './components/join-modal';
 import { GameType } from '@core/constants/game-type.constants';
+import { useService } from '@core/hooks/use-service.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
+import { GamesService } from '@core/services/games/games-service.service';
+import { AppRoutes } from '@navigators/root';
+import { useNavigation } from '@react-navigation/core';
+import { GameItem } from './components/game-item';
+import { useJoinModal } from './components/join-modal';
+import * as Styled from './hub.styles';
 
 const Hub = () => {
   const { gamesState$, getAllGames, onGamesChanged, onGamesCreated, onGamesDeleted } = useService(GamesService);

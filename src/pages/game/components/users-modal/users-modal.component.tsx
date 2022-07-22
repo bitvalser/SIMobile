@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { createModalHook } from '@core/helpers/create-modal-hook.helper';
-import { useGameController } from '@core/hooks/use-game-controller.hook';
-import useSubscription from '@core/hooks/use-subscription.hook';
 import { useTranslation } from 'react-i18next';
-import { UserItem } from '../user-item';
-import * as Styled from './users-modal.styles';
-import { UsersModalProps } from './users-modal.types';
-import { GameStage } from '@core/constants/game-stage.constants';
+import { TouchableOpacity } from 'react-native';
 import { merge } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { GameRole } from '@core/constants/game-role.constants';
+import { GameStage } from '@core/constants/game-stage.constants';
+import { createModalHook } from '@core/helpers/create-modal-hook.helper';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
+import { UserItem } from '../user-item';
+import * as Styled from './users-modal.styles';
+import { UsersModalProps } from './users-modal.types';
 
 const UsersModal: FC<UsersModalProps> = ({ close }) => {
   const [{ players$, gameStage$, gameMaster$, spectators$ }] = useGameController();

@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dialog } from '@core/components/dialog';
-import { useGameController } from '@core/hooks/use-game-controller.hook';
-import { StakeModalProps } from './stake-modal.types';
-import * as Styled from './stake-modal.styles';
-import { PlayerTimer } from '@pages/game/components/player-timer';
-import useSubscription from '@core/hooks/use-subscription.hook';
-import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { AppButton } from '@core/components/button';
+import { Dialog } from '@core/components/dialog';
+import { createModalHook } from '@core/helpers/create-modal-hook.helper';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
+import { PlayerTimer } from '@pages/game/components/player-timer';
+import * as Styled from './stake-modal.styles';
+import { StakeModalProps } from './stake-modal.types';
 
 const StakeModal: FC<StakeModalProps> = ({
   close,

@@ -4,5 +4,8 @@ module.exports = {
   singleQuote: true,
   printWidth: 120,
   trailingComma: 'all',
-  linebreakStyle: 0,
+  importOrderParserPlugins: ['typescript', 'decorators-legacy', 'jsx'],
+  importOrder: ['^@', '^[./]'],
+  importOrderSeparation: false,
+  importOrderSortSpecifiers: false,
 };

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.types';
-import { useTranslation } from 'react-i18next';
 import { UserItem } from '../../../user-item';
 import * as Styled from './select-modal.styles';
 import { SelectModalProps } from './select-modal.types';

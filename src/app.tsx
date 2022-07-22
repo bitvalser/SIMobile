@@ -1,20 +1,22 @@
-import 'reflect-metadata';
-import 'react-native-gesture-handler';
 import React, { Suspense } from 'react';
-import { RootNavigator } from './navigators/root';
-import i18n from './core/i18n';
 import { I18nextProvider } from 'react-i18next';
 import { UIManager, Platform, StatusBar } from 'react-native';
+import 'react-native-gesture-handler';
+import 'reflect-metadata';
 import { ThemeProvider } from 'styled-components/native';
-import { defaultTheme } from './theme';
-import { appContainer, InversifyContext } from './inversify.config';
+import { ErrorBoundary } from '@core/components/error-boundary';
 import { ModalsContainer } from '@core/components/modals-container';
 import { ToastsContainer } from '@core/components/toasts-container';
-import { ErrorBoundary } from '@core/components/error-boundary';
+import i18n, { initLanguage } from './core/i18n';
+import { appContainer, InversifyContext } from './inversify.config';
+import { RootNavigator } from './navigators/root';
+import { defaultTheme } from './theme';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
+
+initLanguage();
 
 const App = (): JSX.Element => (
   <>

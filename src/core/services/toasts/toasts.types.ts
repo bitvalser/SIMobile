@@ -1,5 +1,5 @@
-import { BehaviorSubject } from 'rxjs';
 import { ReactNode } from 'react';
+import { BehaviorSubject } from 'rxjs';
 
 export interface ToastInstance {
   id: string;

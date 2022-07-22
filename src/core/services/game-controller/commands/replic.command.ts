@@ -1,3 +1,4 @@
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { GameShowMode } from '@core/constants/game-show-mode.constants';
 import { MessageType } from '@core/constants/message-type.constants';
 import { GameCommands } from '../game-commands.class';
@@ -20,7 +21,7 @@ GameCommands.defineCommand(MessageType.Replic, function (this: GameController, a
     case 'p': {
       const player = this.players$.getValue()?.[+args[1][1]];
       if (player) {
-        this.userReplic$.next({
+        this.emitEvent(GameEventType.UserReplic, {
           name: player.name,
           text: args[2],
         });

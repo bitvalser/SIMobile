@@ -1,9 +1,9 @@
 import i18n from 'i18next';
-import ru from './locales/ru.json';
 import { Platform, NativeModules } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { AsyncStorageKeys } from '../constants/async-storage.constants';
+import { StorageKeys } from '@core/constants/storage-keys.constants';
+import { storage } from '../../inversify.config';
 import { AppLanguages } from '../constants/languages.constants';
+import ru from './locales/ru.json';
 
 const resources = {
   [AppLanguages.Ru]: {
@@ -17,12 +17,13 @@ const locale =
     : NativeModules.I18nManager.localeIdentifier;
 
 export const systemLanguage =
-  locale && Object.values(AppLanguages).includes(locale.substr(0, 2))
-    ? (locale as string).substr(0, 2)
+  locale && Object.values(AppLanguages).includes(locale.substring(0, 2))
+    ? (locale as string).substring(0, 2)
     : AppLanguages.Ru;
 
-const initLanguage = async () => {
-  let language = await AsyncStorage.getItem(AsyncStorageKeys.Language);
+export const initLanguage = async () => {
+  console.log(storage);
+  let language = storage.getString(StorageKeys.Language);
   if (!language) {
     language = systemLanguage;
   }
@@ -35,7 +36,5 @@ const initLanguage = async () => {
     whitelist: [AppLanguages.Ru],
   });
 };
-
-initLanguage();
 
 export default i18n;

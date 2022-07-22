@@ -1,8 +1,8 @@
 import React, { FC, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PlayerAvatar } from '@pages/game/components/player-avatar';
 import * as Styled from './user-item.styles';
 import { UserItemProps } from './user-item.types';
-import { useTranslation } from 'react-i18next';
 
 const UserItem: FC<UserItemProps> = memo(
   ({

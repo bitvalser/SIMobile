@@ -1,6 +1,7 @@
+import { take } from 'rxjs/operators';
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { MessageType } from '@core/constants/message-type.constants';
 import { PlayerEvents } from '@core/constants/player-events.constants';
-import { take } from 'rxjs/operators';
 import { GameCommands } from '../game-commands.class';
 import { GameController } from '../game-controller.service';
 
@@ -8,7 +9,7 @@ GameCommands.defineCommand(MessageType.Stake, function (this: GameController, ar
   this.subscriptions.push(
     this.currentPlayer$.pipe(take(1)).subscribe((player) => {
       if (player) {
-        this.playerAction$.next({
+        this.emitEvent(GameEventType.PlayerAction, {
           event: PlayerEvents.Stake,
           nominal: args[1] === '+',
           stake: args[2] === '+',

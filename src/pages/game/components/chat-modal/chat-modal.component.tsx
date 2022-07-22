@@ -1,14 +1,14 @@
 import React, { FC, useRef, useState } from 'react';
-import { ChatModalProps } from './chat-modal.types';
-import * as Styled from './chat-modal.styles';
-import { FlatList, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { MessageItem } from './components/message-item';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { AppIcon } from '@core/components/icon';
+import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
-import { createModalHook } from '@core/helpers/create-modal-hook.helper';
-import { AppIcon } from '@core/components/icon';
 import { ChatMessage } from '@core/interfaces/chat-message.interface';
+import * as Styled from './chat-modal.styles';
+import { ChatModalProps } from './chat-modal.types';
+import { MessageItem } from './components/message-item';
 
 const ChatModal: FC<ChatModalProps> = ({ close }) => {
   const [t] = useTranslation();

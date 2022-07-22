@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AppButton } from '@core/components/button';
 import { Dialog } from '@core/components/dialog';
 import { createModalHook } from '@core/helpers/create-modal-hook.helper';
-import { ModalOptions } from '@core/services/modals/modals.types';
-import * as Styled from './answer-modal.styles';
-import { useTranslation } from 'react-i18next';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
+import { ModalOptions } from '@core/services/modals/modals.types';
 import { PlayerTimer } from '@pages/game/components/player-timer';
+import * as Styled from './answer-modal.styles';
 
 const AnswerModal: FC<ModalOptions> = ({ close }) => {
   const [t] = useTranslation();

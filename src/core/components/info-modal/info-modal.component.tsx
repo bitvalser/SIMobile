@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog } from '@core/components/dialog';
 import { createModalHook } from '@core/helpers/create-modal-hook.helper';
+import { AppButton } from '../button';
 import * as Styled from './info-modal.styles';
 import { InfoModalProps } from './info-modal.types';
-import { AppButton } from '../button';
-import { useTranslation } from 'react-i18next';
 
 const InfoModal: FC<InfoModalProps> = ({ text, title, close, onConfirm = () => null }) => {
   const [t] = useTranslation();

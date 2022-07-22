@@ -1,8 +1,8 @@
+import React, { FC } from 'react';
+import { filter, scan } from 'rxjs/operators';
 import { AtomType } from '@core/constants/atom-type.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
-import React, { FC } from 'react';
-import { filter, scan } from 'rxjs/operators';
 import * as Styled from './partial-atom.styles';
 
 const PartialAtom: FC = () => {

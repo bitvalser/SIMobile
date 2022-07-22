@@ -1,32 +1,32 @@
+import { i18n } from 'i18next';
+import { Container, interfaces } from 'inversify';
 import { createContext } from 'react';
 import MMKVStorage from 'react-native-mmkv-storage';
-import { i18n } from 'i18next';
 import { appConfig } from '@core/config/config';
 import translation from '@core/i18n';
-import { TYPES } from '@core/services/types';
-import { Container, interfaces } from 'inversify';
-import { ISiApiClient } from '@core/services/si-api-client/si-api-client.types';
-import { SiApiClient } from '@core/services/si-api-client/si-api-client.service';
-import { ISignalRClient } from '@core/services/signalr-client/signalr-client.types';
-import { SignalRClient } from '@core/services/signalr-client/signalr-client.service';
-import { IGamesService } from '@core/services/games/games-service.types';
-import { GamesService } from '@core/services/games/games-service.service';
-import { IModalsService } from '@core/services/modals/modals.types';
-import { ModalsService } from '@core/services/modals/modals.service';
-import { IToastsService } from '@core/services/toasts/toasts.types';
-import { ToastsService } from '@core/services/toasts/toasts.service';
-import { IGameController } from '@core/services/game-controller/game-controller.types';
-import { GameController } from '@core/services/game-controller/game-controller.service';
-import { SoundsService } from '@core/services/sounds/sounds.service';
-import { ISoundsService } from '@core/services/sounds/sounds.types';
-import { IAppSettingsService } from '@core/services/settings/settings.types';
-import { AppSettingsService } from '@core/services/settings/settings.service';
-import { ILogsService } from '@core/services/logs/logs.types';
-import { LogsService } from '@core/services/logs/logs.service';
-import { IAuthService } from '@core/services/auth/auth.types';
-import { AuthService } from '@core/services/auth/auth.service';
 import { AssetsService } from '@core/services/assets/assets.service';
 import { IAssetsService } from '@core/services/assets/assets.types';
+import { AuthService } from '@core/services/auth/auth.service';
+import { IAuthService } from '@core/services/auth/auth.types';
+import { GameController } from '@core/services/game-controller/game-controller.service';
+import { IGameController } from '@core/services/game-controller/game-controller.types';
+import { GamesService } from '@core/services/games/games-service.service';
+import { IGamesService } from '@core/services/games/games-service.types';
+import { LogsService } from '@core/services/logs/logs.service';
+import { ILogsService } from '@core/services/logs/logs.types';
+import { ModalsService } from '@core/services/modals/modals.service';
+import { IModalsService } from '@core/services/modals/modals.types';
+import { AppSettingsService } from '@core/services/settings/settings.service';
+import { IAppSettingsService } from '@core/services/settings/settings.types';
+import { SiApiClient } from '@core/services/si-api-client/si-api-client.service';
+import { ISiApiClient } from '@core/services/si-api-client/si-api-client.types';
+import { SignalRClient } from '@core/services/signalr-client/signalr-client.service';
+import { ISignalRClient } from '@core/services/signalr-client/signalr-client.types';
+import { SoundsService } from '@core/services/sounds/sounds.service';
+import { ISoundsService } from '@core/services/sounds/sounds.types';
+import { ToastsService } from '@core/services/toasts/toasts.service';
+import { IToastsService } from '@core/services/toasts/toasts.types';
+import { TYPES } from '@core/services/types';
 
 const InversifyContext = createContext<interfaces.Container>(null);
 
@@ -70,5 +70,6 @@ appContainer
 
 appContainer.get<IAppSettingsService>(TYPES.AppSettingsService).initSettings();
 const logsService = appContainer.get<ILogsService>(TYPES.LogsService);
+const storage = appContainer.get<MMKVStorage.API>(TYPES.Storage);
 
-export { appContainer, InversifyContext, logsService };
+export { appContainer, InversifyContext, logsService, storage };

@@ -1,40 +1,42 @@
-import { BehaviorSubject, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { i18n } from 'i18next';
 import 'react-native-get-random-values';
+import { BehaviorSubject, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { GameEventType } from '@core/constants/game-event-type.constants';
+import { GameShowMode } from '@core/constants/game-show-mode.constants';
+import { GameStage } from '@core/constants/game-stage.constants';
 import { MessageType } from '@core/constants/message-type.constants';
+import { QuestionType } from '@core/constants/question-type.constants';
+import { SendMessageType } from '@core/constants/send-message-type.constants';
 import { SignalEvent } from '@core/constants/signal-event.constants';
 import { SignalRequest } from '@core/constants/signal-request.constants';
+import { StakeMessageType } from '@core/constants/stake-message-type.constants';
 import { ChatMessage } from '@core/interfaces/chat-message.interface';
-import { RoundTheme } from '@core/interfaces/round-theme.interface';
-import { ISignalRClient } from '../signalr-client/signalr-client.types';
-import { GameMessage, IGameController, LastAnswer } from './game-controller.types';
-import { GameUser } from '@core/interfaces/game-user.interface';
-import { GamePlayer } from '@core/interfaces/game-player.interface';
-import { i18n } from 'i18next';
-import { GameShowMode } from '@core/constants/game-show-mode.constants';
-import { ISiApiClient } from '../si-api-client/si-api-client.types';
-import { QuestionType } from '@core/constants/question-type.constants';
 import { GameAnswer } from '@core/interfaces/game-answer.interface';
 import { GameAtom } from '@core/interfaces/game-atom.interface';
-import { IToastsService } from '../toasts/toasts.types';
+import { GamePlayer } from '@core/interfaces/game-player.interface';
+import { GameUser } from '@core/interfaces/game-user.interface';
+import { RoundTheme } from '@core/interfaces/round-theme.interface';
 import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.types';
-import { UserAction } from '@core/interfaces/user-action.interface';
-import { TimerEvent } from '@core/interfaces/timer-event.interface';
-import { GameStage } from '@core/constants/game-stage.constants';
-import { ISoundsService } from '../sounds/sounds.types';
-import { ILogsService } from '../logs/logs.types';
-import { PlayerAction } from '@core/interfaces/player-action.interface';
-import { SendMessageType } from '@core/constants/send-message-type.constants';
-import { StakeMessageType } from '@core/constants/stake-message-type.constants';
-import { GameCommands } from './game-commands.class';
-import './commands';
-import { IAuthService } from '../auth/auth.types';
-import { IAppSettingsService } from '../settings/settings.types';
 import { IAssetsService } from '../assets/assets.types';
+import { IAuthService } from '../auth/auth.types';
+import { ILogsService } from '../logs/logs.types';
+import { IAppSettingsService } from '../settings/settings.types';
+import { ISiApiClient } from '../si-api-client/si-api-client.types';
+import { ISignalRClient } from '../signalr-client/signalr-client.types';
+import { ISoundsService } from '../sounds/sounds.types';
+import { IToastsService } from '../toasts/toasts.types';
+import './commands';
+import { GameCommands } from './game-commands.class';
+import { GameControllerEventMap, GameMessage, IGameController, LastAnswer } from './game-controller.types';
 
 export class GameController implements IGameController {
   protected subscriptions: Subscription[] = [];
+  protected eventChannel$: Subject<{
+    type: GameEventType;
+    data: any;
+  }> = new Subject();
   public chatMessages$: BehaviorSubject<ChatMessage[]> = new BehaviorSubject([]);
   public roundThemes$: BehaviorSubject<RoundTheme[]> = new BehaviorSubject([]);
   public gameMaster$: BehaviorSubject<GameUser> = new BehaviorSubject(null);
@@ -47,22 +49,18 @@ export class GameController implements IGameController {
   public rightAnswer$: BehaviorSubject<GameAnswer> = new BehaviorSubject(null);
   public gameStage$: BehaviorSubject<GameStage> = new BehaviorSubject(null);
   public gameReplic$: BehaviorSubject<string> = new BehaviorSubject(null);
-  public questionSelected$: Subject<[number, number]> = new Subject();
-  public userAction$: Subject<UserAction> = new Subject();
-  public userReplic$: Subject<{ name: string; text: string }> = new Subject();
-  public timerChannel$: Subject<TimerEvent> = new Subject();
-  public canTry$: Subject<boolean> = new Subject();
   public showTimerBorder$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public timerMaxTime$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  public pauseChannel$: Subject<boolean> = new Subject();
-  public resumeChannel$: Subject<boolean> = new Subject();
-  public playerAction$: Subject<PlayerAction> = new Subject();
   public yourQuestionChoice$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public lastAnswer$: BehaviorSubject<LastAnswer> = new BehaviorSubject<LastAnswer>(null);
   public userAvatarState$: ReplaySubject<{ name: string; state: AvatarState }> = new ReplaySubject(12);
   public currentPlayer$: Observable<GamePlayer> = this.players$.pipe(
     withLatestFrom(this.siApiClient.userName$),
     map(([data, userName]) => data.find(({ name }) => name === userName)),
+  );
+  public playerMaster$: Observable<GamePlayer> = this.gameMaster$.pipe(
+    withLatestFrom(this.siApiClient.userName$),
+    map(([data, userName]) => (data.name === userName ? data : null)),
   );
   public currentPlayerIndex$: Observable<number> = this.players$.pipe(
     withLatestFrom(this.siApiClient.userName$),
@@ -94,7 +92,13 @@ export class GameController implements IGameController {
     this.selectCat = this.selectCat.bind(this);
     this.mediaEnd = this.mediaEnd.bind(this);
     this.ready = this.ready.bind(this);
+    this.listen = this.listen.bind(this);
+    this.emitEvent = this.emitEvent.bind(this);
     this.sendPlayerRight = this.sendPlayerRight.bind(this);
+  }
+
+  protected emitEvent<K extends keyof GameControllerEventMap>(type: K, data: GameControllerEventMap[K]['data']): void {
+    this.eventChannel$.next({ type, data });
   }
 
   protected sendSystemMessage<T = any>(...messages: string[]): Observable<T> {
@@ -120,7 +124,7 @@ export class GameController implements IGameController {
     this.questionType$.next(null);
     this.atom$.next(null);
     this.rightAnswer$.next(null);
-    this.userReplic$.next(null);
+    this.emitEvent(GameEventType.UserReplic, null);
     this.showTimerBorder$.next(false);
   }
 
@@ -246,5 +250,14 @@ export class GameController implements IGameController {
       });
     }
     this.assetsService.clear();
+  }
+
+  public listen<K extends keyof GameControllerEventMap>(type: K): Observable<GameControllerEventMap[K]> {
+    return this.eventChannel$.pipe(
+      filter((event) => event.type === type),
+      map((event): GameControllerEventMap[K] => ({
+        data: event.data,
+      })),
+    );
   }
 }

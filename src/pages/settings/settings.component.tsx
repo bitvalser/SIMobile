@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import CheckBox from '@react-native-community/checkbox';
-import { useTheme } from 'styled-components';
-import * as Styled from './settings.styles';
 import { useTranslation } from 'react-i18next';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
+import { useTheme } from 'styled-components';
+import { BackgroundContainer } from '@core/components/background-container';
 import { useService } from '@core/hooks/use-service.hook';
 import { AppSettingsService } from '@core/services/settings/settings.service';
-import { BackgroundContainer } from '@core/components/background-container';
+import CheckBox from '@react-native-community/checkbox';
+import * as Styled from './settings.styles';
 
 const TOAST_POSITIONS_DATA: RadioButtonProps[] = [
   {

@@ -2,11 +2,11 @@ import React, { FC, useRef, useEffect, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import { Observable, of } from 'rxjs';
 import { concatMap, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { AppSound } from '@core/constants/sound.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
-import * as Styled from './round-themes.styles';
 import { useService } from '@core/hooks/use-service.hook';
 import { SoundsService } from '@core/services/sounds/sounds.service';
-import { AppSound } from '@core/constants/sound.constants';
+import * as Styled from './round-themes.styles';
 
 const APPEAR_TIME_DELAY = 300;
 const SHOW_DELAY = 1100;

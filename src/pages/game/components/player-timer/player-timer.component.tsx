@@ -1,13 +1,14 @@
 import React, { FC, useEffect, memo, useState } from 'react';
-import { useGameController } from '@core/hooks/use-game-controller.hook';
-import * as Styled from './player-timer.styles';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { TimerCommand } from '@core/constants/timer-command.constants';
-import { PlayerTimerProps } from './player-timer.types';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
 import { useTimerAnimation } from '@core/hooks/use-timer-animation.hook';
+import * as Styled from './player-timer.styles';
+import { PlayerTimerProps } from './player-timer.types';
 
 const PlayerTimer: FC<PlayerTimerProps> = memo(({ name, initialTime = 0 }) => {
-  const [{ timerChannel$, pauseChannel$ }] = useGameController();
+  const [{ listen }] = useGameController();
   const [stop, setStop] = useState(initialTime === 0);
   const [timerAnim, startTimer, pauseTimer, resetTimer] = useTimerAnimation(initialTime);
 
@@ -20,7 +21,7 @@ const PlayerTimer: FC<PlayerTimerProps> = memo(({ name, initialTime = 0 }) => {
   }, [initialTime, resetTimer, startTimer, timerAnim]);
 
   useEffect(() => {
-    const subscription = pauseChannel$.subscribe((isPaused) => {
+    const subscription = listen(GameEventType.Pause).subscribe(({ data: isPaused }) => {
       if (isPaused) {
         pauseTimer();
       } else {
@@ -30,11 +31,12 @@ const PlayerTimer: FC<PlayerTimerProps> = memo(({ name, initialTime = 0 }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [pauseChannel$, pauseTimer, startTimer]);
+  }, [listen, pauseTimer, startTimer]);
 
   useEffect(() => {
-    const subscription = timerChannel$
+    const subscription = listen(GameEventType.Timer)
       .pipe(
+        map((item) => item.data),
         filter(
           ({ index, playerName, command }) => (index === 2 && playerName === name) || command === TimerCommand.Stop,
         ),
@@ -62,7 +64,7 @@ const PlayerTimer: FC<PlayerTimerProps> = memo(({ name, initialTime = 0 }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [name, pauseTimer, resetTimer, startTimer, timerAnim, timerChannel$]);
+  }, [listen, name, pauseTimer, resetTimer, startTimer, timerAnim]);
 
   return (
     !stop && (

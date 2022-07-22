@@ -1,3 +1,4 @@
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { MessageType } from '@core/constants/message-type.constants';
 import { AppSound } from '@core/constants/sound.constants';
 import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.types';
@@ -30,5 +31,5 @@ GameCommands.defineCommand(MessageType.Person, function (this: GameController, a
     });
     this.soundsService.getSound(isWon ? AppSound.ApplauseSmall : AppSound.AnswerWrong).play();
   }
-  this.userReplic$.next(null);
+  this.emitEvent(GameEventType.UserReplic, null);
 });

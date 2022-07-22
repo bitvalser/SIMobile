@@ -1,17 +1,21 @@
 import React, { FC, memo, useRef, useEffect } from 'react';
+import { Animated, Easing } from 'react-native';
+import { filter, map } from 'rxjs/operators';
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import * as Styled from './price-item.styles';
 import { PriceItemProps } from './price-item.types';
-import { filter } from 'rxjs/operators';
-import { Animated, Easing } from 'react-native';
 
 const PriceItem: FC<PriceItemProps> = memo(({ price, questionIndex, themeIndex }) => {
-  const [{ questionSelected$ }] = useGameController();
+  const [{ listen }] = useGameController();
   const blinkAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const subscription = questionSelected$
-      .pipe(filter(([theme, question]) => themeIndex === theme && question === questionIndex))
+    const subscription = listen(GameEventType.QuestionSelected)
+      .pipe(
+        map((item) => item.data),
+        filter(([theme, question]) => themeIndex === theme && question === questionIndex),
+      )
       .subscribe(() => {
         const stepTime = 125;
         Animated.loop(
@@ -34,7 +38,7 @@ const PriceItem: FC<PriceItemProps> = memo(({ price, questionIndex, themeIndex }
     return () => {
       subscription.unsubscribe();
     };
-  }, [blinkAnim, questionIndex, questionSelected$, themeIndex]);
+  }, [blinkAnim, questionIndex, listen, themeIndex]);
 
   return (
     <Styled.Container

@@ -1,10 +1,10 @@
+import { ComponentType } from 'react';
+import { SectionList, SectionListProps } from 'react-native';
+import styled from 'styled-components/native';
 import { AppText } from '@core/components/text';
 import { GameRole } from '@core/constants/game-role.constants';
 import { DimensionsStyle } from '@core/helpers/dimensions-style.helper';
 import { GamePlayer } from '@core/interfaces/game-player.interface';
-import { ComponentType } from 'react';
-import { SectionList, SectionListProps } from 'react-native';
-import styled from 'styled-components/native';
 
 export const Container = styled.KeyboardAvoidingView`
   display: flex;

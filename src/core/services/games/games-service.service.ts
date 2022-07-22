@@ -1,10 +1,10 @@
+import { inject, injectable } from 'inversify';
+import { BehaviorSubject, EMPTY, interval, Observable, of } from 'rxjs';
+import { expand, switchMap, map, combineAll, tap, filter, buffer } from 'rxjs/operators';
 import { GameRole } from '@core/constants/game-role.constants';
 import { SignalEvent } from '@core/constants/signal-event.constants';
 import { SignalRequest } from '@core/constants/signal-request.constants';
 import { GameItem } from '@core/interfaces/game-item.interface';
-import { inject, injectable } from 'inversify';
-import { BehaviorSubject, EMPTY, interval, Observable, of } from 'rxjs';
-import { expand, switchMap, map, combineAll, tap, filter, buffer } from 'rxjs/operators';
 import { IGameController } from '../game-controller/game-controller.types';
 import { ISignalRClient } from '../signalr-client/signalr-client.types';
 import { TYPES } from '../types';

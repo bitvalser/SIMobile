@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { AppButton } from '@core/components/button';
+import { GameStage } from '@core/constants/game-stage.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useSubscription from '@core/hooks/use-subscription.hook';
 import * as Styled from './button-footer.styles';
-import { GameStage } from '@core/constants/game-stage.constants';
-import { AppButton } from '@core/components/button';
-import { useTranslation } from 'react-i18next';
 
 const DISABLED_DELAY = 3000;
 

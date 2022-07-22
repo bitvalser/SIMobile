@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import * as Styled from './show-logo.styles';
 import logoImage from '@assets/images/logo.png';
+import * as Styled from './show-logo.styles';
 
 const ShowLogo: FC = () => {
   return (

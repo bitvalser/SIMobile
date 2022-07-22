@@ -1,6 +1,6 @@
+import styled from 'styled-components/native';
 import { RotateContainer } from '@core/components/rotate-container';
 import { AppText } from '@core/components/text';
-import styled from 'styled-components/native';
 
 export const Container = styled.View`
   display: flex;

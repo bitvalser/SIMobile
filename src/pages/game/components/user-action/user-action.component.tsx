@@ -1,20 +1,22 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { useGameController } from '@core/hooks/use-game-controller.hook';
-import useSubscription from '@core/hooks/use-subscription.hook';
-import { UserItem } from '../user-item';
-import * as Styled from './user-action.styles';
 import { Animated } from 'react-native';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { GameEventType } from '@core/constants/game-event-type.constants';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
 import { PlayerTimer } from '../player-timer';
+import { UserItem } from '../user-item';
+import * as Styled from './user-action.styles';
 
 const UserAction: FC = () => {
-  const [{ userAction$, userReplic$ }] = useGameController();
+  const [{ listen }] = useGameController();
   const appearUserAnim = useRef(new Animated.Value(0)).current;
   const appearReplicAnim = useRef(new Animated.Value(0)).current;
-  const userAction = useSubscription(userAction$);
+  const userAction = useSubscription(listen(GameEventType.UserAction).pipe(map((item) => item.data)));
   const userReplic = useSubscription(
-    userReplic$.pipe(
-      withLatestFrom(userAction$),
+    listen(GameEventType.UserReplic).pipe(
+      map((item) => item.data),
+      withLatestFrom(listen(GameEventType.UserAction)),
       filter(([replic, data]) => replic === null || replic.name === data.user.name),
       map(([data]) => data),
     ),

@@ -1,5 +1,5 @@
-import { stringToColor } from '@core/helpers/string-to-color.helper';
 import React, { FC, memo } from 'react';
+import { stringToColor } from '@core/helpers/string-to-color.helper';
 import * as Styled from './message-item.styles';
 import { MessageItemProps } from './message-item.types';
 

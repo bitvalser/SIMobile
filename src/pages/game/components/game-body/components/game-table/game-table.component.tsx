@@ -1,7 +1,7 @@
-import { useGameController } from '@core/hooks/use-game-controller.hook';
-import useSubscription from '@core/hooks/use-subscription.hook';
 import React, { FC } from 'react';
 import { filter, map } from 'rxjs/operators';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
 import { ThemeItem } from './components/theme-item';
 import * as Styled from './game-table.styles';
 

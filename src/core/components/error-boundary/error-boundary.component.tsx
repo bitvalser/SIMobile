@@ -1,10 +1,10 @@
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import * as Styled from './error-boundary.styles';
+import { logsService } from '../../../inversify.config';
+import { BackgroundContainer } from '../background-container';
 import { Dialog } from '../dialog';
 import { LinkText } from '../link-text';
-import { BackgroundContainer } from '../background-container';
-import { logsService } from '../../../inversify.config';
+import * as Styled from './error-boundary.styles';
 
 const FEEDBACK_LINK = 'https://vk.com/valerabitkovsky';
 

@@ -1,8 +1,8 @@
 import { ComponentType } from 'react';
-import { SliderProps } from '@miblanchard/react-native-slider/lib/types';
 import styled from 'styled-components/native';
-import { AppText } from '@core/components/text';
 import { AppSlider } from '@core/components/slider';
+import { AppText } from '@core/components/text';
+import { SliderProps } from '@miblanchard/react-native-slider/lib/types';
 
 export const Container = styled.View`
   display: flex;

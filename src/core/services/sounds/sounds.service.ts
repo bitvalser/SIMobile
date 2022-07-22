@@ -1,14 +1,14 @@
+import { i18n } from 'i18next';
 import { inject, injectable } from 'inversify';
-import Sound from 'react-native-sound';
 import 'react-native-get-random-values';
+import Sound from 'react-native-sound';
 import { v4 as uuidv4 } from 'uuid';
 import { AppSound } from '@core/constants/sound.constants';
+import { IAppSettingsService } from '../settings/settings.types';
 import { ToastsService } from '../toasts/toasts.service';
 import { TYPES } from '../types';
 import { LOCAL_SOUNDS } from './sounds.data';
 import { ISoundsService } from './sounds.types';
-import { IAppSettingsService } from '../settings/settings.types';
-import { i18n } from 'i18next';
 
 @injectable()
 export class SoundsService implements ISoundsService {

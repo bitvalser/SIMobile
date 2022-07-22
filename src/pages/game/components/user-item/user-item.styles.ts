@@ -1,8 +1,8 @@
+import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
 import { AppText } from '@core/components/text';
 import { getBorderColor } from '@pages/game/components/player-avatar/player-avatar.data';
 import { AvatarState } from '@pages/game/components/player-avatar/player-avatar.types';
-import LinearGradient from 'react-native-linear-gradient';
-import styled from 'styled-components/native';
 
 export const Container = styled.View<{ hide: boolean }>`
   display: flex;

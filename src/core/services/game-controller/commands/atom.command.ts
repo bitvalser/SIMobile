@@ -1,4 +1,5 @@
 import { AtomType } from '@core/constants/atom-type.constants';
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { GameShowMode } from '@core/constants/game-show-mode.constants';
 import { MessageType } from '@core/constants/message-type.constants';
 import { GameCommands } from '../game-commands.class';
@@ -38,5 +39,5 @@ GameCommands.defineCommand(MessageType.Atom, function (this: GameController, arg
       break;
   }
   this.showMode$.next(GameShowMode.Atom);
-  this.userReplic$.next(null);
+  this.emitEvent(GameEventType.UserReplic, null);
 });

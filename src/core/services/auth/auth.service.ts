@@ -1,7 +1,7 @@
-import { StorageKeys } from '@core/constants/storage-keys.constants';
 import { inject, injectable } from 'inversify';
 import MMKVStorage from 'react-native-mmkv-storage';
 import { BehaviorSubject } from 'rxjs';
+import { StorageKeys } from '@core/constants/storage-keys.constants';
 import { TYPES } from '../types';
 import { AuthUser, IAuthService } from './auth.types';
 

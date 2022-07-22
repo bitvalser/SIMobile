@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { GameItem } from '@core/interfaces/game-item.interface';
 import { GameRole } from '@core/constants/game-role.constants';
+import { GameItem } from '@core/interfaces/game-item.interface';
 import { IGameController } from '../game-controller/game-controller.types';
 
 export interface DataSlice<T> {
@@ -27,7 +27,7 @@ export interface IGamesService {
     [id: number]: GameItem;
   }>;
   packagePublicUrl$: BehaviorSubject<string>;
-  serverName$: BehaviorSubject<string>;
+  hostInfo$: BehaviorSubject<HostInfo>;
   getAllGames(): Observable<GameItem[]>;
   onGamesCreated(): Observable<GameItem[]>;
   onGamesChanged(): Observable<GameItem[]>;

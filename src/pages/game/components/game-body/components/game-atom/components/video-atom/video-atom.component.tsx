@@ -1,11 +1,12 @@
 import React, { FC, memo, useEffect, useRef } from 'react';
+import Video from 'react-native-video';
 import { merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import Video from 'react-native-video';
+import { GameEventType } from '@core/constants/game-event-type.constants';
+import { TimerCommand } from '@core/constants/timer-command.constants';
 import { useGameController } from '@core/hooks/use-game-controller.hook';
 import * as Styled from './video-atom.styles';
 import { VideoAtomProps } from './video-atom.types';
-import { TimerCommand } from '@core/constants/timer-command.constants';
 
 const BUFF_CONFIG = {
   minBufferMs: 2000,
@@ -15,14 +16,15 @@ const BUFF_CONFIG = {
 };
 
 const VideoAtom: FC<VideoAtomProps> = memo(({ uri }) => {
-  const [{ pauseChannel$, timerChannel$, resumeChannel$, mediaEnd }] = useGameController();
+  const [{ listen, mediaEnd }] = useGameController();
   const videoRef = useRef<Video>();
 
   useEffect(() => {
     const subscription = merge(
-      pauseChannel$,
-      resumeChannel$.pipe(map(() => false)),
-      timerChannel$.pipe(
+      listen(GameEventType.Pause).pipe(map((item) => item.data)),
+      listen(GameEventType.Resume).pipe(map(() => false)),
+      listen(GameEventType.Timer).pipe(
+        map((item) => item.data),
         filter(({ command }) =>
           [TimerCommand.UserPause, TimerCommand.UserResume, TimerCommand.Resume, TimerCommand.Pause].includes(command),
         ),
@@ -35,7 +37,7 @@ const VideoAtom: FC<VideoAtomProps> = memo(({ uri }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [pauseChannel$, resumeChannel$, timerChannel$]);
+  }, [listen]);
 
   return (
     <Styled.QuestionVideo

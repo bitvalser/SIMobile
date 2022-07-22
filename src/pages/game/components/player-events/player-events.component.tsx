@@ -1,21 +1,22 @@
 import { FC, useEffect } from 'react';
-import { useGameController } from '@core/hooks/use-game-controller.hook';
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { PlayerEvents } from '@core/constants/player-events.constants';
+import { StakeMessageType } from '@core/constants/stake-message-type.constants';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
 import useAnswerModal from './components/answer-modal/answer-modal.component';
+import useAppealModal from './components/appeal-modal/appeal-modal.component';
 import { useSelectModal } from './components/select-modal';
 import useStakeModal from './components/stake-modal/stake-modal.component';
-import { StakeMessageType } from '@core/constants/stake-message-type.constants';
-import useAppealModal from './components/appeal-modal/appeal-modal.component';
 
 const PlayerEventsComponent: FC = () => {
-  const [{ playerAction$, selectCatCost, sendStake, sendFinalStake, sendPlayerRight }] = useGameController();
+  const [{ listen, selectCatCost, sendStake, sendFinalStake, sendPlayerRight }] = useGameController();
   const [showAnswerModal, hideAnswerModal] = useAnswerModal();
   const [showSelectModal, hideSelectModal] = useSelectModal();
   const [showStakeModal, hideStakeModal] = useStakeModal();
   const [showAppealModal, hideAppealModal] = useAppealModal();
 
   useEffect(() => {
-    const subscription = playerAction$.subscribe((action) => {
+    const subscription = listen(GameEventType.PlayerAction).subscribe(({ data: action }) => {
       if (action) {
         switch (action.event) {
           case PlayerEvents.Answer:
@@ -89,7 +90,7 @@ const PlayerEventsComponent: FC = () => {
     hideAppealModal,
     hideSelectModal,
     hideStakeModal,
-    playerAction$,
+    listen,
     selectCatCost,
     sendFinalStake,
     sendPlayerRight,

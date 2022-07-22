@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import defaultAvatarImage from '@assets/images/player-m-avatar.png';
-import { NewUserModalProps } from './new-user-modal.types';
-import * as Styled from './new-user-modal.styles';
-import { Dialog } from '@core/components/dialog';
-import { useTranslation } from 'react-i18next';
 import { AppButton } from '@core/components/button';
+import { Dialog } from '@core/components/dialog';
+import { createModalHook } from '@core/helpers/create-modal-hook.helper';
+import * as Styled from './new-user-modal.styles';
+import { NewUserModalProps } from './new-user-modal.types';
 
 const MAX_AVATAR_SIZE = 2000;
 const MAX_NAME_LENGTH = 100;

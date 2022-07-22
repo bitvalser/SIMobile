@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { Dialog } from '@core/components/dialog';
-import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { LinkText } from '@core/components/link-text';
+import { createModalHook } from '@core/helpers/create-modal-hook.helper';
 import { ModalOptions } from '@core/services/modals/modals.types';
 import * as Styled from './about-modal.styles';
-import { Trans, useTranslation } from 'react-i18next';
 
 const ORIGINAL_LINK = 'http://vladimirkhil.com/';
 const VK_LINK = 'https://vk.com/valerabitkovsky';

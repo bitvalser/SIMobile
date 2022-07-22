@@ -1,11 +1,11 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
 import { Animated, Easing, LayoutChangeEvent } from 'react-native';
-import { useGameController } from '@core/hooks/use-game-controller.hook';
-import useSubscription from '@core/hooks/use-subscription.hook';
-import * as Styled from './game-themes.styles';
-import { useService } from '@core/hooks/use-service.hook';
-import { SoundsService } from '@core/services/sounds/sounds.service';
 import { AppSound } from '@core/constants/sound.constants';
+import { useGameController } from '@core/hooks/use-game-controller.hook';
+import { useService } from '@core/hooks/use-service.hook';
+import useSubscription from '@core/hooks/use-subscription.hook';
+import { SoundsService } from '@core/services/sounds/sounds.service';
+import * as Styled from './game-themes.styles';
 
 const GameThemes: FC = () => {
   const [{ gameThemes$ }] = useGameController();

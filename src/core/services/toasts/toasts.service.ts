@@ -1,9 +1,9 @@
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 import { injectable } from 'inversify';
+import 'react-native-get-random-values';
 import { BehaviorSubject } from 'rxjs';
-import { IToastsService, ToastInstance } from './toasts.types';
+import { v4 as uuidv4 } from 'uuid';
 import { TYPES } from '../types';
+import { IToastsService, ToastInstance } from './toasts.types';
 
 const DEFAULT_DELAY = 5000;
 

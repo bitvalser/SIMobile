@@ -1,3 +1,4 @@
+import { GameEventType } from '@core/constants/game-event-type.constants';
 import { MessageType } from '@core/constants/message-type.constants';
 import { TimerCommand } from '@core/constants/timer-command.constants';
 import { GameCommands } from '../game-commands.class';
@@ -11,7 +12,7 @@ GameCommands.defineCommand(MessageType.Timer, function (this: GameController, ar
 
   const players = this.players$.getValue();
 
-  this.timerChannel$.next({
+  this.emitEvent(GameEventType.Timer, {
     command: timerCommand as TimerCommand,
     index: timerIndex,
     playerName: players?.[timerPersonIndex]?.name,
@@ -21,7 +22,7 @@ GameCommands.defineCommand(MessageType.Timer, function (this: GameController, ar
   switch (timerCommand) {
     case TimerCommand.Go:
       if (timerIndex === 2 && timerPersonIndex >= 0 && timerPersonIndex < players.length) {
-        this.userAction$.next({
+        this.emitEvent(GameEventType.UserAction, {
           user: players[timerPersonIndex],
           timer: timerArgument,
         });
