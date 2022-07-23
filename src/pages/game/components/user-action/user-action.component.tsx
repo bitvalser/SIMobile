@@ -17,7 +17,7 @@ const UserAction: FC = () => {
     listen(GameEventType.UserReplic).pipe(
       map((item) => item.data),
       withLatestFrom(listen(GameEventType.UserAction)),
-      filter(([replic, data]) => replic === null || replic.name === data.user.name),
+      filter(([replic, { data }]) => replic === null || replic.name === data.user.name),
       map(([data]) => data),
     ),
   );
